@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Determine which smalltalk platform and version to use to run the script:
+#		- GemStone
+#		- Pharo
+#		- Squeak(?)
+#		- VA(?)
+#
