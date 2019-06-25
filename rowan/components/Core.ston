@@ -1,0 +1,34 @@
+RwComponentLoadConfiguration{
+	#name : 'Core',
+	#comment : '',
+	#projectName : 'stash',
+	#version : '0.1.0',
+	#definedGroupNames : {
+		'core' : [ ],
+		'tools' : [ 'core' ],
+		'tests' : [ 'tools' ]
+	},
+	#projectNames : [
+			'stash'
+	],
+	#conditionalPackages : {
+		[
+			'common'
+		] : {
+			'core' : {
+				#packageNames : [
+				]
+			},
+			'tests' : {
+				#packageNames : [
+				]
+			}
+		}
+	},
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'SystemUser' : {
+			}
+		}
+	}
+}

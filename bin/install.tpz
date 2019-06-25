@@ -1,0 +1,22 @@
+#!/usr/local/bin/smalltalk/gemstone/topaz
+
+	input $ROWAN_PROJECTS_HOME/Rowan/platforms/gemstone/topaz/3.5.0/install_1.tpz
+	input $ROWAN_PROJECTS_HOME/Rowan/platforms/gemstone/topaz/3.5.0/install_2.tpz
+	input $ROWAN_PROJECTS_HOME/Rowan/platforms/gemstone/topaz/3.5.0/install_3.tpz
+	input $ROWAN_PROJECTS_HOME/Rowan/platforms/gemstone/topaz/3.5.0/install_4.tpz
+
+	set u SystemUser p swordfish
+	login
+
+	run
+	| url |
+	url := 'file:$ROWAN_PROJECTS_HOME/st_launcher/rowan/specs/st_launcher.ston'.
+	(RwComponentProjectDefinition newForUrl: url)
+		projectHome: '$ROWAN_PROJECTS_HOME';
+		load
+%
+
+	commit
+	errorCount
+	exit
+
