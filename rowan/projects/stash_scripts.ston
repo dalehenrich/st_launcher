@@ -1,5 +1,7 @@
 RwComponentSpecification{
-	#specName : 'stash',
+	#specName : 'stash_scripts',
+	#projectName : 'stash',
+	#projectAlias : 'stash_scripts',
 	#version : '0.3.0',
 	#projectUrl : 'https://github.com/dalehenrich/stash',
 	#configsPath : 'rowan/configs',

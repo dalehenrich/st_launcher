@@ -4,12 +4,8 @@ RwComponentLoadConfiguration{
 	#version : '0.1.0',
 	#definedGroupNames : {
 		'core' : [ ],
-		'tools' : [ 'core' ],
-		'tests' : [ 'tools' ]
+		'tests' : [ 'core' ]
 	},
-	#projectNames : [
-			'stash'
-	],
 	#conditionalPackages : {
 		[
 			'common'

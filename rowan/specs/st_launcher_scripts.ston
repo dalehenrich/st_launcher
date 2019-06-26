@@ -1,5 +1,7 @@
 RwComponentSpecification {
-	#specName : 'st_launcher',
+	#specName : 'st_launcher_scripts',
+	#projectName : 'st_launcher',
+	#projectAlias : 'st_launcher_scripts',
 	#version : '0.3.0',
 	#projectUrl : 'https://github.com/dalehenrich/st_launcher',
 	#configsPath : 'rowan/components',

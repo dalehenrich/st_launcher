@@ -10,12 +10,11 @@
 	set u SystemUser p swordfish
 	login
 
-#	break RwRepositoryComponentProjectTonelReaderVisitor >> readClassFile:inPackage: @14
+#	break RwProjectReferenceDefinition class >> newForSpecification: @1
 	run
 	| url |
-	url := 'file:$ROWAN_PROJECTS_HOME/st_launcher/rowan/specs/st_launcher.ston'.
+	url := 'file:$ROWAN_PROJECTS_HOME/st_launcher/rowan/specs/st_launcher_scripts.ston'.
 	(RwComponentProjectDefinition newForUrl: url)
-		projectAlias: 'st_launcher';
 		projectHome: '$ROWAN_PROJECTS_HOME';
 		read;
 		load
