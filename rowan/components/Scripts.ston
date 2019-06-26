@@ -1,32 +1,27 @@
 RwComponentLoadConfiguration{
-	#name : 'Core',
+	#name : 'Scripts',
 	#comment : '',
 	#version : '0.1.0',
 	#definedGroupNames : {
 		'core' : [ ],
-		'tools' : [ 'core' ],
-		'tests' : [ 'tools' ]
+		'tests' : [ 'core' ]
 	},
 	#projectNames : [
-			'stash'
+			'stash_scripts'
 	],
+	#configurationNames : [ 'Core ' ],
 	#conditionalPackages : {
 		[
 			'common'
 		] : {
 			'core' : {
 				#packageNames : [
+					'st_launcher-Scripts'
 				]
 			},
 			'tests' : {
 				#packageNames : [
 				]
-			}
-		}
-	},
-	#conditionalPackageMapSpecs : {
-		'gemstone' : {
-			'SystemUser' : {
 			}
 		}
 	}
