@@ -1,1 +1,1 @@
-../rowan/src/st_launcher-Scripts/StLHello
+../rowan/src/st_launcher-Scripts/StLHello.class.st

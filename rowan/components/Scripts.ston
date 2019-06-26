@@ -1,15 +1,10 @@
-RwComponentLoadConfiguration{
+RwComponentLoadConfiguration {
 	#name : 'Scripts',
 	#comment : '',
 	#version : '0.1.0',
-	#definedGroupNames : {
-		'core' : [ ],
-		'tests' : [ 'core' ]
-	},
-	#projectNames : [
-			'stash_scripts'
+	#configurationNames : [
+		'Core'
 	],
-	#configurationNames : [ 'Core' ],
 	#conditionalPackages : {
 		[
 			'common'
@@ -20,9 +15,18 @@ RwComponentLoadConfiguration{
 				]
 			},
 			'tests' : {
-				#packageNames : [
-				]
+				#packageNames : [ ]
 			}
 		}
-	}
+	},
+	#conditionalPackageMapSpecs : { },
+	#definedGroupNames : {
+		'tests' : [
+			'core'
+		],
+		'core' : [ ]
+	},
+	#projectNames : [
+		'stash_scripts'
+	]
 }

@@ -10,7 +10,7 @@ RwComponentSpecification{
 	#specsPath : 'rowan/specs',
 	#defaultComponentName : 'Scripts',
 	#defaultGroupNames : [
-		'core'
+		'tools'
 	],
 	#comment : 'load example scripts'
 }
