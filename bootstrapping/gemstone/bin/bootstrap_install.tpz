@@ -13,12 +13,12 @@
 #	break RwRepositoryComponentProjectTonelReaderVisitor >> readClassFile:inPackage: @14
 #	break RwPrjLoadTool >> _loadProjectSetDefinition_254:instanceMigrator: @ 15
 	run
-	| url x |
+	| url projectSetDefinition |
 	url := 'file:$ROWAN_PROJECTS_HOME/st_launcher/rowan/specs/st_launcher_scripts.ston'.
-	x := (RwComponentProjectDefinition newForUrl: url)
+	projectSetDefinition := (RwComponentProjectDefinition newForUrl: url)
 		projectHome: '$ROWAN_PROJECTS_HOME';
 		read.
-	x load
+	projectSetDefinition load
 %
 
 	commit

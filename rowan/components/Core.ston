@@ -12,10 +12,20 @@ RwComponentLoadConfiguration{
 		] : {
 			'core' : {
 				#packageNames : [
+					'st_launcher-Core'
 				]
 			},
 			'tests' : {
 				#packageNames : [
+				]
+			}
+		},
+		[
+			'gs3.[2-]'
+		] : {
+			'core' : {
+				#packageNames : [
+					'st_launcher-GemStone-Core'
 				]
 			}
 		}

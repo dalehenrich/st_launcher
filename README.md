@@ -2,6 +2,7 @@
 
 ## Installation/Bootstrap
 
+
 ### references
 - [mpw/stsh](https://github.com/mpw/stsh)
 - [guillep/PharoBootstrap](https://github.com/guillep/PharoBootstrap/tree/master/scripts)
