@@ -7,9 +7,9 @@ RwComponentLoadConfiguration{
 		'tests' : [ 'core' ]
 	},
 	#projectNames : [
-			'stash_scripts'
+			'stash'
 	],
-	#configurationNames : [ 'Core ' ],
+	#configurationNames : [ 'Core' ],
 	#conditionalPackages : {
 		[
 			'common'

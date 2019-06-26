@@ -1,4 +1,4 @@
-RwComponentSpecification{
+RwComponentSpecification {
 	#specName : 'st_launcher',
 	#version : '0.3.0',
 	#projectUrl : 'https://github.com/dalehenrich/st_launcher',
