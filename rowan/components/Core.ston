@@ -25,7 +25,8 @@ RwComponentLoadConfiguration{
 		] : {
 			'core' : {
 				#packageNames : [
-					'st_launcher-GemStone-Core'
+					'st_launcher-GemStone-Core',
+					'st_launcher-GemStone-Services'
 				]
 			}
 		}
