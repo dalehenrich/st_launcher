@@ -64,6 +64,30 @@ StLauncherGemStoneCheckpoints >> startCheckpointSync [
 					'Could not start a checkpoint, see comment in this method for possible reasons for failure.' ].
 ]
 
+{ #category : 'public' }
+StLauncherGemStoneCheckpoints >> suspendCheckpoints: suspendInMinutes [
+
+	"
+		suspend checkpoints using the recommneded procedure:
+			1. make sure checkpoints aren't already suspended
+			2. perform a checkpoint before suspending checkpoints
+			3. suspend checkpoints
+	"
+
+	self checkpointsSuspended
+		ifTrue: [ self error: 'Checkpoints currently suspended. Please wait and try again. Use `System resumeCheckpoints` to resume checkpoints.' ].
+	self startCheckpointSync
+		ifFalse: [ 
+			self
+				error:
+					'Could not start a checkpoint, See comment in System class>>startCheckpointSync for possible reasons for failure.' ].
+	(self suspendCheckpointsForMinutes: suspendInMinutes)
+		ifFalse: [ 
+			self
+				error:
+					'Could not suspend checkpoints, See comment in System class>>suspendCheckpointsForMinutes: for possible reasons for failure.' ].
+]
+
 { #category : 'utilities' }
 StLauncherGemStoneCheckpoints >> suspendCheckpointsForMinutes: anInt [
 "Suspend all checkpoints for the given number of minutes or until the
