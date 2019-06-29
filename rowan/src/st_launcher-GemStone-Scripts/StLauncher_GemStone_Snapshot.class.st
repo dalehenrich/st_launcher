@@ -5,45 +5,120 @@ a Stash Script
 Class {
 	#name : 'StLauncher_GemStone_Snapshot',
 	#superclass : 'StashScript',
+	#instVars : [
+		'checkpointService',
+		'snapshotService'
+	],
 	#category : 'st_launcher-GemStone-Scripts'
 }
 
+{ #category : 'accessig' }
+StLauncher_GemStone_Snapshot >> checkpointService [
+
+	checkpointService ifNil: [ checkpointService := StLauncherPlatform checkpoints ]
+]
+
 { #category : 'script execution' }
 StLauncher_GemStone_Snapshot >> executeScript [
-	"Called to initiate execution of the script"
-	^ opts
-			at: 'help'
-			ifAbsent: [ 
-'PUT YOUR SCRIPT CODE HERE'
-				 ]
-			ifPresent: [ self usage ]
+
+	opts
+		at: 'help'
+    ifAbsent: [
+			| snapshotExtension snapshotPath suspendInMinutes safely snapShots |
+			opts at: 'resume' ifPresent: [
+				"resume snapshots, if they have already been suspended and the timeout hasn't expired yet"
+				self resumeCheckpoints.
+				GsFile stdout nextPutAll: 'Checkpoints resumed.'; lf.
+				^ self ].
+			args size < 1
+				ifTrue: [ self error: 'Required argument <snapshot-extension> missing.' ].
+			snapshotExtension := args at: 1.
+			opts at: 'dir'
+				ifPresent: [:arg | snapshotPath := arg ]
+				ifAbsent: [ self error: 'Required option --dir missing.' ].
+			suspendInMinutes := 15.
+			safely := false.
+			opts at: 'commit' ifPresent: [:ignored | self commit ].
+			snapShots := self 
+				takeSnapshots: snapshotExtension 
+				to: snapshotPath 
+				suspendInMinutes: suspendInMinutes 
+				safely: safely.
+			snapShots do: [:snapShotFileRef |
+				| resultString |
+				resultString := GsHostProcess execute: '/bin/chmod -w ', snapShotFileRef pathString.
+				GsFile stdout nextPutAll: resultString ] ] 
+    ifPresent: [ ^ self usage ]
+]
+
+{ #category : 'checkpoints' }
+StLauncher_GemStone_Snapshot >> resumeCheckpoints [
+
+	^ self checkpointService resumeCheckpoints
 ]
 
 { #category : 'script execution' }
 StLauncher_GemStone_Snapshot >> scriptOptions [
-	"specify the command line options"
 	^ {
-			#('help' $h #none).
+			#('help' $h #'none').
+			#('safely' $s #'none').
+			#('commit' $c #'none').
+			#('suspend' $m #'required').
+			#('dir' $d #'required').
+			#('resume' nil #'none').
 	}
+]
+
+{ #category : 'accessig' }
+StLauncher_GemStone_Snapshot >> snapshotService [
+
+	snapshotService ifNil: [ snapshotService := StLauncherPlatform snapshots ]
+]
+
+{ #category : 'snapshots' }
+StLauncher_GemStone_Snapshot >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
+
+
+	^ self snapshots takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely
 ]
 
 { #category : 'usage' }
 StLauncher_GemStone_Snapshot >> usage [
-	"Man page for script"
 	| dashes |
 	dashes := '----------------------------------------------------
 '.
-	^ GsFile stdout nextPutAll: dashes,
+  GsFile stdout nextPutAll: dashes,
 		(self manPageClass
-			fromString:
+          fromString:
 'NAME
-	StLauncher_GemStone_Snapshot.st - example script, that can be used as a template to create your own script
+	snapshot - Make a snapshot of the extent files for the current stone.
+
 SYNOPSIS
-	StLauncher_GemStone_Snapshot.st [-h|--help] -- <topaz-arguments>
+  snapshot.st [ --safely ] [ --suspend=<minutes> ] --dir=<snapshot-directory> \
+		<snapshot-extension>  -- <topaz-arguments>
+	snapshot.st --resume  -- <topaz-arguments>
 
 DESCRIPTION
+  Make a snapshot copy of the extent files: 
 
-	This StLauncher_GemStone_Snapshot.st is set up with help (--help).
+    1. Suspend checkpoints. By default, checkpoints will be suspended for 15 
+       minutes. If that may not be enough time, you can specify the number of 
+       minutes to suspend the checkpoints with the --suspend option.
+    2. Copy the extent files to the <snapshot-directory>. (replacing the `.dbf` 
+       file extension with the given <snapshot-file-extension>).
+    3. Resume checkpoints. Since checkpoints are explicitly resumed after the
+       copies have been made, it does not hurt to be generous with the 
+       --suspend option.
+  
+  With the --safely option specified, the snapshot will (quietly) be skipped if
+  the target snapshot already exists.
+
+  With the --commit options specificied, a commit will be performed before the 
+  checkpoints are enabled. A commit is needed to ensure that checkpoint processing
+  is not delayed (I think).
+
+	`--resume`
+		Resume checkpoints if they are currently suspended.
 
 	`-- <topaz-arguments>`
 		The command line arguments following the `--` will be passed to the topaz 
@@ -54,8 +129,8 @@ DESCRIPTION
 		`GEM_SOLO_EXTENT` configuration parameter in your gem.conf file or on the 
 		command line using the `-C` option. The `--solo` option will then initiate a
 		topaz solo login for the session: 
-		
-			-lq -C "GEM_SOLO_EXTENT=$GEMSTONE/bin/extent0.dbf" --solo
+	
+		-lq -C "GEM_SOLO_EXTENT=$GEMSTONE/bin/extent0.dbf" --solo
 
 		GsDevKit_home
 		-------------
@@ -69,11 +144,15 @@ DESCRIPTION
 		defined, `$GEMSTONE/bin/topaz` must be in your `$PATH` env variable.
 
 EXAMPLES
-	StLauncher_GemStone_Snapshot.st --help -- MyStone -lq								# GsDevKit_home
-	StLauncher_GemStone_Snapshot.st --help -- -lq									# GEMSTONE
-	StLauncher_GemStone_Snapshot.st --help -- MyStone -lq -C "GEM_SOLO_EXTENT=$GEMSTONE/bin/extent0.solo.dbf" --solo	# SOLO
-	StLauncher_GemStone_Snapshot.st -h -- -lq										# GEMSTONE
+	snapshot.st --help -- MyStone -lq						# GsDevKit_home
 
+	snapshot.st --dir=$GEMSTONE/data/snapshots solo.dbf -- -lq			# GEMSTONE
+	snapshot.st --dir=$GS_HOME/gemstone/snapshots --commit solo.dbf -- MyStone -lq	# GsDevKit_home
+	snapshot.st --dir=$GEMSTONE/data/snapshots --safely solo.dbf-- -lq		# GEMSTONE
+	snapshot.st --dir=$GS_HOME/gemstone/snapshots solo.dbf	-- MyStone -lq		# GsDevKit_home
 
+	snapshot.st --dir=./snapshots solo.dbf-- -lq					# GEMSTONE
+
+	snapshot.st --resume -- MyStone -lq						# GsDevKit_home
 ') printString, dashes
 ]

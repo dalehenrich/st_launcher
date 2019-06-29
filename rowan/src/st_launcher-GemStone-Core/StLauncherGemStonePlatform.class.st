@@ -1,6 +1,6 @@
 Class {
 	#name : 'StLauncherGemStonePlatform',
-	#superclass : 'StLauncherAbstractPlatform',
+	#superclass : 'StLauncherPlatform',
 	#category : 'st_launcher-GemStone-Core'
 }
 
