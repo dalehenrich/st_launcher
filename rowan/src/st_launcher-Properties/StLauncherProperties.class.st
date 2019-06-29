@@ -16,7 +16,7 @@ StLauncherProperties class >> defaultPropertiesDirectory [
 { #category : 'instance creation' }
 StLauncherProperties class >> defaultPropertyFile [
 
-	self self propertyFileNamed: self defaultPropertyFilename
+	^ self propertyFileNamed: self defaultPropertyFilename
 ]
 
 { #category : 'accessing' }
@@ -28,13 +28,16 @@ StLauncherProperties class >> defaultPropertyFilename [
 { #category : 'instance creation' }
 StLauncherProperties class >> propertyFile: aFilePath [
 
-	aFilePath asFileReference readStreamDo: [:stream | ^ STON fromStream: stream ]
+	aFilePath asFileReference readStreamDo: [:fileStream | 
+		| stream |
+		stream := ZnBufferedReadStream on: fileStream. "hack for now"
+	^ STON fromStream: stream ]
 ]
 
 { #category : 'instance creation' }
 StLauncherProperties class >> propertyFileNamed: aName [
 
-	self propertyFile:  self defaultPropertiesDirectory / aName, 'ston'
+	^ self propertyFile:  self defaultPropertiesDirectory / aName, 'ston'
 ]
 
 { #category : 'accessing' }

@@ -19,6 +19,7 @@
 		read.
 	projectSetDefinition load
 %
+	commit
 
 	run
 "create and install default properties"
@@ -32,18 +33,18 @@
 
 	run
 "create a snapshot to be used as the default image for scrips"
-	| launcherProperties snapshot |
+	| launcherProperties |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
-	snapshot := StLauncher_GemStone_Snapshot_Script new
-	snapshot
+	launcherProperties defaultImage exists
+		ifFalse: [ launcherProperties defaultImage ensureCreateDirectory ].
+	(StLauncher_GemStone_Snapshot_Script new)
 		resumeCheckpoints;
 		takeSnapshots: launcherProperties defaultImageName, '.dbf' 
-		to: launcherProperties defaulImage
+		to: launcherProperties defaultImage
 		suspendInMinutes: 15 
 		safely: false.		
 %
 
-	commit
 	errorCount
 	exit
 

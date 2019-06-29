@@ -18,7 +18,7 @@ StLauncherStructureProperties class >> homePath: aString [
 StLauncherStructureProperties class >> named: aName homePath: aString [
 
 	^ (self new)
-			name: aName
+			name: aName;
 			homePath: aString; 
 			yourself
 ]
@@ -27,6 +27,12 @@ StLauncherStructureProperties class >> named: aName homePath: aString [
 StLauncherStructureProperties >> defaultImage [
 
 	^ self images / self defaultImageName
+]
+
+{ #category : 'accessing' }
+StLauncherStructureProperties >> defaultImageName [
+
+	^ defaultImageName
 ]
 
 { #category : 'accessing' }
@@ -65,7 +71,7 @@ StLauncherStructureProperties >> homePath [
 { #category : 'accessing' }
 StLauncherStructureProperties >> homePath: aString [ 
 
-	homePath := aString
+	homePath := aString asFileReference resolve pathString "resolve any environment variables in path in current environment"
 ]
 
 { #category : 'accessing' }
