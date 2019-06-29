@@ -10,7 +10,20 @@ Class {
 { #category : 'accessing' }
 StLauncherGemStoneSnapshots >> checkpoints [
 
-	checkpoints ifNil: [ checkpoints := super checkpoints ]
+	^ checkpoints ifNil: [ checkpoints := super checkpoints ]
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneSnapshots >> snapshotExtentFilePaths [
+	^ SystemRepository fileNames
+		collect: [ :each | 
+			(each indexOf: $! startingAt: 1) = 0
+				ifTrue: [ each ]
+				ifFalse: [ 
+					| idx |
+					"in 2.4.x, the NRS is tacked on the front of the filename"
+					idx := each indexOf: $! startingAt: 2.
+					each copyFrom: idx + 1 to: each size ] ]
 ]
 
 { #category : 'public' }
@@ -29,14 +42,14 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 	| snapshots snapshotDirRef |
 	snapshotDirRef := snapshotDirPath asFileReference.
 	[ 
-	self checkpoints suspendCheckpoints: suspendInMinutes suspendInMinutes.
+	self checkpoints suspendCheckpoints: suspendInMinutes.
 	snapshots := {}.
 	self snapshotExtentFilePaths
 		do: [ :extentPath | 
 			| extent snapshotName snapshotFile performCopy |
 			extent := extentPath asFileReference.
 			snapshotName := extent basenameWithoutExtension.
-			snapshotFile:= snapshotDirRef / snapshotName.
+			snapshotFile:= snapshotDirRef / snapshotName, snapshotExtension.
 			performCopy := true.
 			safely
 				ifTrue: [ 

@@ -15,7 +15,7 @@ Class {
 { #category : 'accessig' }
 StLauncher_GemStone_Snapshot >> checkpointService [
 
-	checkpointService ifNil: [ checkpointService := StLauncherPlatform checkpoints ]
+	^ checkpointService ifNil: [ checkpointService := StLauncherPlatform checkpoints ]
 ]
 
 { #category : 'script execution' }
@@ -29,7 +29,8 @@ StLauncher_GemStone_Snapshot >> executeScript [
 				"resume snapshots, if they have already been suspended and the timeout hasn't expired yet"
 				self resumeCheckpoints.
 				GsFile stdout nextPutAll: 'Checkpoints resumed.'; lf.
-				^ self ].
+				"allow --resume to be included on snapahot command line"
+				args size < 1 ifTrue: [ ^ self ] ].
 			args size < 1
 				ifTrue: [ self error: 'Required argument <snapshot-extension> missing.' ].
 			snapshotExtension := args at: 1.
@@ -72,14 +73,14 @@ StLauncher_GemStone_Snapshot >> scriptOptions [
 { #category : 'accessig' }
 StLauncher_GemStone_Snapshot >> snapshotService [
 
-	snapshotService ifNil: [ snapshotService := StLauncherPlatform snapshots ]
+	^ snapshotService ifNil: [ snapshotService := StLauncherPlatform snapshots ]
 ]
 
 { #category : 'snapshots' }
 StLauncher_GemStone_Snapshot >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
 
 
-	^ self snapshots takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely
+	^ self snapshotService takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely
 ]
 
 { #category : 'usage' }
@@ -94,9 +95,9 @@ StLauncher_GemStone_Snapshot >> usage [
 	snapshot - Make a snapshot of the extent files for the current stone.
 
 SYNOPSIS
-  snapshot.st [ --safely ] [ --suspend=<minutes> ] --dir=<snapshot-directory> \
-		<snapshot-extension>  -- <topaz-arguments>
-	snapshot.st --resume  -- <topaz-arguments>
+  snapshot.st [ --safely ] [ --suspend=<minutes> ] --resume \
+		--dir=<snapshot-directory> <snapshot-extension>  -- <topaz-arguments>
+  snapshot.st --resume  -- <topaz-arguments>
 
 DESCRIPTION
   Make a snapshot copy of the extent files: 
@@ -150,6 +151,7 @@ EXAMPLES
 	snapshot.st --dir=$GS_HOME/gemstone/snapshots --commit solo.dbf -- MyStone -lq	# GsDevKit_home
 	snapshot.st --dir=$GEMSTONE/data/snapshots --safely solo.dbf-- -lq		# GEMSTONE
 	snapshot.st --dir=$GS_HOME/gemstone/snapshots solo.dbf	-- MyStone -lq		# GsDevKit_home
+	snapshot.st --resume --dir=$GS_HOME/gemstone/snapshots solo.dbf	-- MyStone -lq	# GsDevKit_home
 
 	snapshot.st --dir=./snapshots solo.dbf-- -lq					# GEMSTONE
 

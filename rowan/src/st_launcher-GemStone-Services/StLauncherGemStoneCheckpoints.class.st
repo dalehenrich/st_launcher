@@ -57,11 +57,12 @@ StLauncherGemStoneCheckpoints >> startCheckpointSync [
  It can also happen if more than one session
  calls this method at the same time."
 
-	^ System startCheckpointSync
+	System startCheckpointSync
 		ifFalse: [ 
 			self
 				error:
 					'Could not start a checkpoint, see comment in this method for possible reasons for failure.' ].
+	^true
 ]
 
 { #category : 'public' }

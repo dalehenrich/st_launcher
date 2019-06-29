@@ -15,11 +15,11 @@ StLauncherPlatform class >> snapshots [
 { #category : '*st_launcher-gemstone-services' }
 StLauncherPlatform >> checkpoints [
 
-	^ self checkpoints
+	^ self class checkpoints
 ]
 
 { #category : '*st_launcher-gemstone-services' }
 StLauncherPlatform >> snapshots [
 
-	^ self snapshots
+	^ self class snapshots
 ]
