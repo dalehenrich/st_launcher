@@ -6,6 +6,9 @@ RwComponentLoadConfiguration{
 		'core' : [ ],
 		'tests' : [ 'core' ]
 	},
+	#configurationNames : [
+		'Properties'
+	],
 	#conditionalPackages : {
 		[
 			'common'
