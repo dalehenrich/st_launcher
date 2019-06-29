@@ -38,7 +38,7 @@ StLauncher_GemStone_Snapshot >> executeScript [
 				ifPresent: [:arg | snapshotPath := arg ]
 				ifAbsent: [ self error: 'Required option --dir missing.' ].
 			suspendInMinutes := 15.
-			safely := false.
+			safely := opts includesKey: 'safely'.
 			opts at: 'commit' ifPresent: [:ignored | self commit ].
 			snapShots := self 
 				takeSnapshots: snapshotExtension 
@@ -151,7 +151,7 @@ EXAMPLES
 	snapshot.st --dir=$GS_HOME/gemstone/snapshots --commit solo.dbf -- MyStone -lq	# GsDevKit_home
 	snapshot.st --dir=$GEMSTONE/data/snapshots --safely solo.dbf-- -lq		# GEMSTONE
 	snapshot.st --dir=$GS_HOME/gemstone/snapshots solo.dbf	-- MyStone -lq		# GsDevKit_home
-	snapshot.st --resume --dir=$GS_HOME/gemstone/snapshots solo.dbf	-- MyStone -lq	# GsDevKit_home
+	snapshot.st --resume --dir=$GS_HOME/gemstone/snapshots solo.dbf	-- MyStone -lq		# GsDevKit_home
 
 	snapshot.st --dir=./snapshots solo.dbf-- -lq					# GEMSTONE
 
