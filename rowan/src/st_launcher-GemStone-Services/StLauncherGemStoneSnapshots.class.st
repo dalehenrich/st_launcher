@@ -16,10 +16,15 @@ StLauncherGemStoneSnapshots >> checkpoints [
 { #category : 'public' }
 StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
 
-	"a commit should be performed before calling this method, to make sure that the snapshot contains any changed state 
-		in the current session that you want preserved"
+	"
+		acommit should be performed before calling this method, to make sure that the snapshot contains any changed state 
+		in the current session that you want preserved.
 
-	"one snapshot file is copied to the shapshotDirPath per system extent"
+		One snapshot file is copied to the shapshotDirPath per system extent.  The name of the snapshot file itself is 
+		constructed by replacing the extension of the extent file name with <snapshotExtension>.
+
+		The list of new snapshotFiles is returned.
+	"
 
 	| snapshots snapshotDirRef |
 	snapshotDirRef := snapshotDirPath asFileReference.
@@ -28,20 +33,24 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 	snapshots := {}.
 	self snapshotExtentFilePaths
 		do: [ :extentPath | 
-			| extent extentName snapshotName snapshotFile performCopy |
+			| extent snapshotName snapshotFile performCopy |
 			extent := extentPath asFileReference.
-			snapshotName := extentName := extent basename.
-			(extentName asFileReference extension = 'dbf')
-				ifTrue: [ 
-					snapshotName := (extentName copyFrom: 1 to: extentName size - 3)
-						, snapshotExtension ].
+			snapshotName := extent basenameWithoutExtension.
 			snapshotFile:= snapshotDirRef / snapshotName.
-			performCopy := safely
-				ifTrue: [ snapshotFile exists not ]
-				ifFalse: [ true ].
-			GsFile stdout lf.
-			performCopy
+			performCopy := true.
+			safely
 				ifTrue: [ 
+					snapshotFile exists 
+						ifTrue: [ 
+							GsFile stdout 
+								lf;
+								nextPutAll:
+									'The snapshot file exists, --safely present, copy skipped for: '
+										, snapshotFile printString;
+								lf.
+							performCopy := false ] ].
+			performCopy
+				ifTrue: [
 					GsFile stdout nextPutAll:
 							'---Starting snapshot to ' , (extentPath , ' ' , snapshotFile pathString) printString
 								, '(' , DateAndTime now asString , ')';
@@ -53,11 +62,6 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 					GsFile stdout
 						nextPutAll:
 								'---Finishing snapshot ' , DateAndTime now asString , ' -- ' , snapshotFile pathString;
-						lf]
-				ifFalse: [ 
-					GsFile stdout nextPutAll:
-							'The snapshot file exists, --safely present, copy skipped for: '
-								, snapshotFile printString;
 						lf ] ].
 	self checkpoints checkpointsSuspended
 		ifFalse: [ 
