@@ -10,8 +10,6 @@
 	set u SystemUser p swordfish
 	login
 
-#	break RwRepositoryComponentProjectTonelReaderVisitor >> readClassFile:inPackage: @14
-#	break RwPrjLoadTool >> _loadProjectSetDefinition_254:instanceMigrator: @ 15
 	run
 	| url projectSetDefinition |
 	url := 'file:$ROWAN_PROJECTS_HOME/st_launcher/rowan/specs/st_launcher_scripts.ston'.
@@ -19,6 +17,17 @@
 		projectHome: '$ROWAN_PROJECTS_HOME';
 		read.
 	projectSetDefinition load
+%
+
+	run
+	| snapshot |
+	snapshot := StLauncher_GemStone_Snapshot_Script new
+	snapshot
+		resumeCheckpoints;
+		takeSnapshots: 'st_launcher.dbf' 
+		to: '$ROWAN_PROJECTS_HOME/st_launcher/bootstrapping/gemstone/resources'
+		suspendInMinutes: 15 
+		safely: false.		
 %
 
 	commit

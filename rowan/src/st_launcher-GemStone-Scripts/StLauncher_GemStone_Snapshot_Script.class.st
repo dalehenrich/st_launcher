@@ -3,7 +3,7 @@
 a Stash Script
 "
 Class {
-	#name : 'StLauncher_GemStone_Snapshot',
+	#name : 'StLauncher_GemStone_Snapshot_Script',
 	#superclass : 'StashScript',
 	#instVars : [
 		'checkpointService',
@@ -13,13 +13,13 @@ Class {
 }
 
 { #category : 'accessig' }
-StLauncher_GemStone_Snapshot >> checkpointService [
+StLauncher_GemStone_Snapshot_Script >> checkpointService [
 
 	^ checkpointService ifNil: [ checkpointService := StLauncherPlatform checkpoints ]
 ]
 
 { #category : 'script execution' }
-StLauncher_GemStone_Snapshot >> executeScript [
+StLauncher_GemStone_Snapshot_Script >> executeScript [
 
 	opts
 		at: 'help'
@@ -53,13 +53,13 @@ StLauncher_GemStone_Snapshot >> executeScript [
 ]
 
 { #category : 'checkpoints' }
-StLauncher_GemStone_Snapshot >> resumeCheckpoints [
+StLauncher_GemStone_Snapshot_Script >> resumeCheckpoints [
 
 	^ self checkpointService resumeCheckpoints
 ]
 
 { #category : 'script execution' }
-StLauncher_GemStone_Snapshot >> scriptOptions [
+StLauncher_GemStone_Snapshot_Script >> scriptOptions [
 	^ {
 			#('help' $h #'none').
 			#('safely' $s #'none').
@@ -71,20 +71,20 @@ StLauncher_GemStone_Snapshot >> scriptOptions [
 ]
 
 { #category : 'accessig' }
-StLauncher_GemStone_Snapshot >> snapshotService [
+StLauncher_GemStone_Snapshot_Script >> snapshotService [
 
 	^ snapshotService ifNil: [ snapshotService := StLauncherPlatform snapshots ]
 ]
 
 { #category : 'snapshots' }
-StLauncher_GemStone_Snapshot >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
+StLauncher_GemStone_Snapshot_Script >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
 
 
 	^ self snapshotService takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely
 ]
 
 { #category : 'usage' }
-StLauncher_GemStone_Snapshot >> usage [
+StLauncher_GemStone_Snapshot_Script >> usage [
 	| dashes |
 	dashes := '----------------------------------------------------
 '.
