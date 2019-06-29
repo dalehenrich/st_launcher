@@ -40,6 +40,12 @@ StLauncherProperties class >> propertyFileNamed: aName [
 	^ self propertyFile:  self defaultPropertiesDirectory / aName, 'ston'
 ]
 
+{ #category : 'exporting' }
+StLauncherProperties >> export [
+
+	self subclassResponsibility: #export
+]
+
 { #category : 'accessing' }
 StLauncherProperties >> name [
 
