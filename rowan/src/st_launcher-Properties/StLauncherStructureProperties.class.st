@@ -2,7 +2,8 @@ Class {
 	#name : 'StLauncherStructureProperties',
 	#superclass : 'StLauncherProperties',
 	#instVars : [
-		'homePath'
+		'homePath',
+		'defaultImageName'
 	],
 	#category : 'st_launcher-Properties'
 }
@@ -10,7 +11,7 @@ Class {
 { #category : 'instance creation' }
 StLauncherStructureProperties class >> homePath: aString [
 
-	^ self named: 'st_launcher_home' homePath: aString
+	^ self named: self defaultPropertyFilename homePath: aString
 ]
 
 { #category : 'instance creation' }
@@ -22,10 +23,22 @@ StLauncherStructureProperties class >> named: aName homePath: aString [
 			yourself
 ]
 
+{ #category : 'accessing' }
+StLauncherStructureProperties >> defaultImage [
+
+	^ self images / self defaultImageName
+]
+
+{ #category : 'accessing' }
+StLauncherStructureProperties >> defaultImageName: aString [
+
+	defaultImageName := aString
+]
+
 { #category : 'exporting' }
 StLauncherStructureProperties >> export [
 
-	self export: '$HOME' asFileReference / '.st_launcher' / self name, 'ston'
+	self export: self class defaultPropertiesDirectory / self name, 'ston'
 ]
 
 { #category : 'exporting' }

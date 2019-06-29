@@ -11,6 +11,7 @@
 	login
 
 	run
+"install st_launcher project"
 	| url projectSetDefinition |
 	url := 'file:$ROWAN_PROJECTS_HOME/st_launcher/rowan/specs/st_launcher_scripts.ston'.
 	projectSetDefinition := (RwComponentProjectDefinition newForUrl: url)
@@ -20,12 +21,24 @@
 %
 
 	run
-	| snapshot |
+"create and install default properties"
+	| launcher |
+	launcher := (StLauncherStructureProperties homePath: '$ROWAN_PROJECTS_HOME/st_launcher/home')
+		defaultImageName: 'solo_350';
+		export;
+		yourself.
+
+%
+
+	run
+"create a snapshot to be used as the default image for scrips"
+	| launcherProperties snapshot |
+	launcherProperties := StLauncherProperties defaultPropertyFile.
 	snapshot := StLauncher_GemStone_Snapshot_Script new
 	snapshot
 		resumeCheckpoints;
-		takeSnapshots: 'st_launcher.dbf' 
-		to: '$ROWAN_PROJECTS_HOME/st_launcher/bootstrapping/gemstone/resources'
+		takeSnapshots: launcherProperties defaultImageName, '.dbf' 
+		to: launcherProperties defaulImage
 		suspendInMinutes: 15 
 		safely: false.		
 %
