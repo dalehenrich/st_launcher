@@ -8,12 +8,18 @@ Class {
 }
 
 { #category : 'instance creation' }
-StLauncherGemStoneImageProperties class >> name: nameString gemStoneVersion: gemstoneVersionString [
+StLauncherGemStoneImageProperties class >> named: nameString version: gemstoneVersionString [
 
 	^ self new
 		name: nameString;
 		gemStoneVersion: gemstoneVersionString;
 		yourself
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneImageProperties class >> platformName [
+
+	^ 'gemstone'
 ]
 
 { #category : 'accessing' }

@@ -3,7 +3,8 @@ Class {
 	#superclass : 'StLauncherProperties',
 	#instVars : [
 		'homePath',
-		'defaultImageName'
+		'defaultImageName',
+		'imageMap'
 	],
 	#category : 'st_launcher-Properties'
 }
@@ -72,6 +73,12 @@ StLauncherStructureProperties >> homePath [
 StLauncherStructureProperties >> homePath: aString [ 
 
 	homePath := aString asFileReference resolve pathString "resolve any environment variables in path in current environment"
+]
+
+{ #category : 'accessing' }
+StLauncherStructureProperties >> imageMap [
+
+	^ imageMap ifNil: [ imageMap := Dictionary new ]
 ]
 
 { #category : 'accessing' }

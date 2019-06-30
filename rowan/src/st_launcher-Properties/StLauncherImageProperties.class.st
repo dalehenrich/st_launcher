@@ -7,6 +7,18 @@ Class {
 	#category : 'st_launcher-Properties'
 }
 
+{ #category : 'accessing' }
+StLauncherImageProperties class >> platformName [
+
+	^ ''
+]
+
+{ #category : 'accessing' }
+StLauncherImageProperties class >> propertyClassForPlatform: platformName [
+
+	^ self subclasses detect: [:each | each platformName = platformName ] ifNone: [ self error: 'Platform name ', platformName printString , ' not reconized.' ]
+]
+
 { #category : 'exporting' }
 StLauncherImageProperties >> export [
 

@@ -35,6 +35,13 @@
 "create a snapshot to be used as the default image for scrips"
 	| launcherProperties |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
+
+	StLauncherGemStonePlatform 
+		createImageNamed: launcherProperties defaultImageName 
+		version: '3.5.0'.
+
+self halt.
+
 	launcherProperties defaultImage exists
 		ifFalse: [ launcherProperties defaultImage ensureCreateDirectory ].
 	(StLauncher_GemStone_Snapshot_Script new)
