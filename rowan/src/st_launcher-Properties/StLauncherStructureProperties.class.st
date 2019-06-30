@@ -24,6 +24,12 @@ StLauncherStructureProperties class >> named: aName homePath: aString [
 			yourself
 ]
 
+{ #category : 'image mgmnt' }
+StLauncherStructureProperties >> addImageForProperties: imageProperties [
+
+	self imageMap at: imageProperties name put: imageProperties imagePath
+]
+
 { #category : 'accessing' }
 StLauncherStructureProperties >> defaultImage [
 

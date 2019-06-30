@@ -18,7 +18,14 @@ StLauncherGemStonePlatform class >> platformName [
 	^ 'gemstone'
 ]
 
-{ #category : 'images' }
+{ #category : 'actions' }
+StLauncherGemStonePlatform >> addImageForProperties: imageProperties [
+
+	self structureProperties addImageForProperties: imageProperties.
+	self structureProperties export.
+]
+
+{ #category : 'actions' }
 StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString [
 
 	| imageProperties |
@@ -34,9 +41,10 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 		createStandardStructure;	"create structure on disk"
 		yourself.
 
-	self imageMap at: imageName put: imageProperties imagePath.
-
+	self addImageForProperties: imageProperties.	"register image"
 	self structureProperties export.
+
+	^ imageProperties
 ]
 
 { #category : 'io' }

@@ -84,7 +84,7 @@ StLauncherProperties >> stonInstVarNames [
   | oc |
   oc := self class allInstVarNames asOrderedCollection.
   oc removeAll: self excludedInstVarNames.
-  ^ oc
+  ^ oc asArray sort
 ]
 
 { #category : 'ston' }
@@ -94,15 +94,6 @@ StLauncherProperties >> stonOn: stonWriter [
     streamMap: [ :dictionary | 
       self stonInstVarNames
         do: [ :each | 
-			| value |
-			value := self instVarAt: (self class allInstVarNames indexOf: each asSymbol).
-			dictionary at: each asSymbol put: value ] ]
-]
-
-{ #category : 'ston' }
-StLauncherProperties >> stonShouldWriteNilInstVars [
-	"Return true if my instance variables that are nil should be written out, 
-	false otherwise. Overwrite when necessary. By default, return false."
-	
-	^ true
+			(self instVarAt: (self class allInstVarNames indexOf: each asSymbol))
+				ifNotNil: [ :value | dictionary at: each asSymbol put: value ] ] ]
 ]
