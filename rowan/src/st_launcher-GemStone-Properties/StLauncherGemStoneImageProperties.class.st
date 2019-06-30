@@ -10,9 +10,9 @@ Class {
 { #category : 'instance creation' }
 StLauncherGemStoneImageProperties class >> named: nameString version: gemstoneVersionString [
 
-	^ self new
+	^ (self new)
 		name: nameString;
-		gemStoneVersion: gemstoneVersionString;
+		gemstoneVersion: gemstoneVersionString;
 		yourself
 ]
 
