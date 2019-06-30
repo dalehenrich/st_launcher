@@ -7,9 +7,7 @@ Class {
 { #category : 'instance creation' }
 StLauncherGemStonePlatform class >> createImageNamed: imageName version: versionString [
 
-	^ (self new)
-		createImageNamed: imageName version: versionString;
-		yourself
+	^ self new createImageNamed: imageName version: versionString
 ]
 
 { #category : 'accessing' }

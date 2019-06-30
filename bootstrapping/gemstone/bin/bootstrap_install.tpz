@@ -33,22 +33,19 @@
 
 	run
 "create a snapshot to be used as the default image for scrips"
-	| launcherProperties |
+	| launcherProperties imageProperties |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
 
-	StLauncherPlatform 
+	imageProperties := StLauncherPlatform 
 		createImageNamed: launcherProperties defaultImageName
 		platform: 'gemstone'
 		version: '3.5.0'.
 
-self halt.
-
-	launcherProperties defaultImage exists
-		ifFalse: [ launcherProperties defaultImage ensureCreateDirectory ].
+"create snapshot for use as solo extent for default image"
 	(StLauncher_GemStone_Snapshot_Script new)
 		resumeCheckpoints;
-		takeSnapshots: launcherProperties defaultImageName, '.dbf' 
-		to: launcherProperties defaultImage
+		takeSnapshots: imageProperties name, '.dbf' 
+		to: imageProperties snapshotsDirectory
 		suspendInMinutes: 15 
 		safely: false.		
 %
