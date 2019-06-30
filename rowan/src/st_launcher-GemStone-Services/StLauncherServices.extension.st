@@ -1,25 +1,25 @@
-Extension { #name : 'StLauncherPlatform' }
+Extension { #name : 'StLauncherServices' }
 
 { #category : '*st_launcher-gemstone-services' }
-StLauncherPlatform class >> checkpoints [
+StLauncherServices class >> checkpoints [
 
 	^ StLauncherGemStoneCheckpoints new
 ]
 
 { #category : '*st_launcher-gemstone-services' }
-StLauncherPlatform class >> snapshots [
+StLauncherServices class >> snapshots [
 
 	^ StLauncherGemStoneSnapshots new
 ]
 
 { #category : '*st_launcher-gemstone-services' }
-StLauncherPlatform >> checkpoints [
+StLauncherServices >> checkpoints [
 
 	^ self class checkpoints
 ]
 
 { #category : '*st_launcher-gemstone-services' }
-StLauncherPlatform >> snapshots [
+StLauncherServices >> snapshots [
 
 	^ self class snapshots
 ]

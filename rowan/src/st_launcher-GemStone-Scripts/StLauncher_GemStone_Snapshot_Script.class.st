@@ -15,7 +15,7 @@ Class {
 { #category : 'accessig' }
 StLauncher_GemStone_Snapshot_Script >> checkpointService [
 
-	^ checkpointService ifNil: [ checkpointService := StLauncherPlatform checkpoints ]
+	^ checkpointService ifNil: [ checkpointService := StLauncherServices checkpoints ]
 ]
 
 { #category : 'script execution' }
@@ -73,7 +73,7 @@ StLauncher_GemStone_Snapshot_Script >> scriptOptions [
 { #category : 'accessig' }
 StLauncher_GemStone_Snapshot_Script >> snapshotService [
 
-	^ snapshotService ifNil: [ snapshotService := StLauncherPlatform snapshots ]
+	^ snapshotService ifNil: [ snapshotService := StLauncherServices snapshots ]
 ]
 
 { #category : 'snapshots' }

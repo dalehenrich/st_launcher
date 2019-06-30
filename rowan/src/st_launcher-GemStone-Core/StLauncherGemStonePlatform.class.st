@@ -4,22 +4,30 @@ Class {
 	#category : 'st_launcher-GemStone-Core'
 }
 
-{ #category : 'images' }
-StLauncherGemStonePlatform >> createImageNamed: imageName platform: platformName version: versionString [
+{ #category : 'instance creation' }
+StLauncherGemStonePlatform class >> createImageNamed: imageName version: versionString [
 
-	| imageProperties |
-	self imageNamed: imageName
-		ifPresent: [:imageProps | self error: 'An image named ', imageName printString, ' already exists.']
-		ifAbsent: [].
-	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: platformName) named: imageName version: versionString)
-		structureName: self structureProperties name;
+	^ (self new)
+		createImageNamed: imageName version: versionString;
 		yourself
+]
+
+{ #category : 'accessing' }
+StLauncherGemStonePlatform class >> platformName [
+
+	^ 'gemstone'
 ]
 
 { #category : 'images' }
 StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString [
 
-	^ self createImageNamed: imageName platform: self platformName version: versionString
+	| imageProperties |
+	self imageNamed: imageName
+		ifPresent: [:imageProps | self error: 'An image named ', imageName printString, ' already exists.']
+		ifAbsent: [].
+	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: self platformName) named: imageName version: versionString)
+		structureName: self structureProperties name;
+		yourself
 ]
 
 { #category : 'io' }

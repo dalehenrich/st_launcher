@@ -10,16 +10,28 @@ Class {
 	#category : 'st_launcher-Core'
 }
 
-{ #category : 'images' }
-StLauncherPlatform >> createImageNamed: imageName platform: platformName version: versionString [
+{ #category : 'instance creation' }
+StLauncherPlatform class >> createImageNamed: imageName platform: platformName version: versionString [
 
-	| imageProperties |
-	self imageNamed: imageName
-		ifPresent: [:imageProps | self error: 'An image named ', imageName printString, ' already exists.']
-		ifAbsent: [].
-	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: platformName) named: imageName version: versionString)
-		structureName: self structureProperties name;
-		yourself
+	^ (self platformClassFor: platformName)  createImageNamed: imageName version: versionString
+]
+
+{ #category : 'accessing' }
+StLauncherPlatform class >> platformClassFor: platformName [
+
+	^ self subclasses detect: [:each | each platformName = platformName] ifNone: [ self error: 'No platform class matching ', platformName printString, ' found'].
+]
+
+{ #category : 'accessing' }
+StLauncherPlatform class >> platformName [
+
+	self subclassResponsibility: #platformName
+]
+
+{ #category : 'images' }
+StLauncherPlatform >> createImageNamed: imageName version: versionString [
+
+	self subclassResponsibility: #createImageNamed:version:
 ]
 
 { #category : 'images' }
@@ -40,6 +52,12 @@ StLauncherPlatform >> imageNamed: aString ifPresent: presentBlock ifAbsent: abse
 StLauncherPlatform >> images [
 
 	^ self structureProperties images
+]
+
+{ #category : 'accessing' }
+StLauncherPlatform >> platformName [
+
+	^ self class platformName
 ]
 
 { #category : 'io' }

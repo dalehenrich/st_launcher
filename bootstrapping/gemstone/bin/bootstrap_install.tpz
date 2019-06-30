@@ -36,8 +36,9 @@
 	| launcherProperties |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
 
-	StLauncherGemStonePlatform 
-		createImageNamed: launcherProperties defaultImageName 
+	StLauncherPlatform 
+		createImageNamed: launcherProperties defaultImageName
+		platform: 'gemstone'
 		version: '3.5.0'.
 
 self halt.
