@@ -73,6 +73,12 @@ StLauncherStructureProperties >> imageMap [
 ]
 
 { #category : 'accessing' }
+StLauncherStructureProperties >> imageMap: aDictionary [
+
+	imageMap := aDictionary
+]
+
+{ #category : 'accessing' }
 StLauncherStructureProperties >> images [
 
 	^ self home / 'images'

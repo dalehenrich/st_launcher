@@ -23,12 +23,20 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 
 	| imageProperties |
 	self imageNamed: imageName
-		ifPresent: [:imageProps | self error: 'An image named ', imageName printString, ' already exists.']
+		ifPresent: [:imagePath | self error: 'An image named ', imageName printString, ' already exists (', imagePath printString, ' ).' ]
 		ifAbsent: [].
-	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: self platformName) named: imageName version: versionString)
-		structureName: self structureProperties name;
+	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: self platformName) 
+			named: imageName version: versionString)
+				structureName: self structureProperties name;
+				yourself.
+	imageProperties 
+		export;							"initializes directory paths to defaults if not explicitly set"
+		createStandardStructure;	"create structure on disk"
 		yourself.
-	imageProperties export.	"creates directory structure as needed"
+
+	self imageMap at: imageName put: imageProperties imagePath.
+
+	self structureProperties export.
 ]
 
 { #category : 'io' }
