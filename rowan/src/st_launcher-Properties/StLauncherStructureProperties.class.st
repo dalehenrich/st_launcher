@@ -45,16 +45,7 @@ StLauncherStructureProperties >> defaultImageName: aString [
 { #category : 'exporting' }
 StLauncherStructureProperties >> export [
 
-	self export: self class defaultPropertiesDirectory / self name, 'ston'
-]
-
-{ #category : 'exporting' }
-StLauncherStructureProperties >> export: aFileReferenceOrPath [
-
-	| file |
-	file := aFileReferenceOrPath asFileReference.
-	file parent exists ifFalse: [ file parent ensureCreateDirectory ].
-	file writeStreamDo: [:stream | STON put: self onStreamPretty: stream ]
+	self export: self defaultPropertiesDirectory / self name, 'ston'
 ]
 
 { #category : 'accessing' }

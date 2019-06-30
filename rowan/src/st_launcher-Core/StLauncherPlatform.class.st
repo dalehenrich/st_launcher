@@ -3,7 +3,7 @@ Abstract class that defines the standard protocol expected to be implemented by 
 "
 Class {
 	#name : 'StLauncherPlatform',
-	#superclass : 'Object',
+	#superclass : 'StLauncherCommon',
 	#instVars : [
 		'structureProperties'
 	],
@@ -70,5 +70,5 @@ StLauncherPlatform >> stdout: aString [
 { #category : 'properties' }
 StLauncherPlatform >> structureProperties [
 
-	^ structureProperties ifNil: [ structureProperties := StLauncherProperties defaultPropertyFile ]
+	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
 ]

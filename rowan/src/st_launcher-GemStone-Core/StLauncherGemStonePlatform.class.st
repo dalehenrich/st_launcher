@@ -27,7 +27,8 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 		ifAbsent: [].
 	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: self platformName) named: imageName version: versionString)
 		structureName: self structureProperties name;
-		yourself
+		yourself.
+	imageProperties export.	"creates directory structure as needed"
 ]
 
 { #category : 'io' }

@@ -1,5 +1,5 @@
 Class {
 	#name : 'StLauncherServices',
-	#superclass : 'Object',
+	#superclass : 'StLauncherCommon',
 	#category : 'st_launcher-Core'
 }
