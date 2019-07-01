@@ -46,7 +46,7 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 	snapshots := {}.
 	self snapshotExtentFilePaths
 		do: [ :extentPath | 
-			| extent snapshotName snapshotFile performCopy |
+			| extent snapshotName snapshotFile snapshotFileRef performCopy |
 			extent := extentPath asFileReference.
 			snapshotName := extent basenameWithoutExtension.
 			snapshotFile:= snapshotDirRef / snapshotName, snapshotExtension.
@@ -70,7 +70,15 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 						lf.
 					snapshotFile exists
 						ifTrue: [ snapshotFile delete ].
+true ifTrue: [
+					snapshotFileRef := snapshotFile asFileReference.
+					snapshotFileRef extensions last ~= 'gz'
+						ifTrue: [ snapshotFileRef := snapshotFileRef , 'gz' ].	".gz extension required for gzip compression"
+					self copydbf: extent to: snapshotFileRef args: '-C'.	"use gzip compression"
+]
+ifFalse: [ 
 					extent copyTo: snapshotFile.
+].
 					snapshots add: snapshotFile.
 					GsFile stdout
 						nextPutAll:
