@@ -28,6 +28,33 @@ StLauncherGemStoneSystem class >> copydbf: sourceFile to: destFile args: args [
 ]
 
 { #category : 'copydbf' }
+StLauncherGemStoneSystem class >> uname [
+
+	|  ar cmd |
+	cmd := '/bin/uname -sm'.
+	ar := GsHostProcess 
+		_execute: cmd
+		input: nil.
+	cmd :=  '/usr/bin/tr '' '' ''-'''.
+	ar := GsHostProcess 
+		_execute: cmd
+		input: (ar at: 1).
+false ifTrue: [
+	GsFile stdout 
+		lf; 
+		nextPutAll: 'STDOUT:';
+		lf; 
+		nextPutAll: (ar at: 1);
+		lf;
+		nextPutAll: 'STDERR:';
+		lf; 
+		nextPutAll: (ar at: 2);
+		yourself.
+].
+	^ ar at: 1	"stdout"
+]
+
+{ #category : 'copydbf' }
 StLauncherGemStoneSystem >> copydbf: sourceFile to: destFile args: args [
 
 	self class copydbf: sourceFile to: destFile args: args

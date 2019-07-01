@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'ftpSiteFilename',
 		'ftpSiteDirectoryname',
-		'downloadFilename'
+		'downloadFilename',
+		'osVersion'
 	],
 	#category : 'st_launcher-GemStone-Properties'
 }
@@ -35,6 +36,12 @@ StLauncherGemStoneProductProperties >> downloadFilename [
 	^ downloadFilename ifNil: [ 'not defined yet' ]
 ]
 
+{ #category : 'ston' }
+StLauncherGemStoneProductProperties >> excludedInstVarNames [
+
+	^ #( ftpSiteFilename ftpSiteDirectoryname downloadFilename )
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> ftpSiteDirectoryname [
 
@@ -54,10 +61,43 @@ StLauncherGemStoneProductProperties >> initialize [
 	self createStandardStructure
 ]
 
+{ #category : 'testing' }
+StLauncherGemStoneProductProperties >> isLinux [
+
+	^ self osversion = 'Linux-x86_64'
+]
+
+{ #category : 'testing' }
+StLauncherGemStoneProductProperties >> isMac [
+
+	^ self osversion = 'Darwin-x86_64'
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> osVersion [
+
+	^ osVersion 
+		ifNil: [ 
+			| uname |
+			uname := StLauncherGemStoneSystem uname.
+			uname = 'Darwin-i386'
+				ifTrue: [ 
+					"normalize mac os name"
+					uname := 'Darwin-x86_64'].
+			osVersion := uname ]
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> productVersionNameFor: aVersionString [
 
-	^ 'GemStone64Bit', aVersionString, '-x86_64.Linux'
+	| osExtension |
+	osExtension := self isLinux
+		ifTrue: [ '-x86_64.Linux' ]
+		ifFalse: [
+			self isMac
+				ifTrue: [ '-i386.Darwin' ]
+				ifFalse: [ self error: 'Unsupported platform ', self osVersion printString ] ].
+	^ 'GemStone64Bit', aVersionString, osExtension
 ]
 
 { #category : 'accessing' }
