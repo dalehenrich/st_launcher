@@ -51,7 +51,7 @@ false ifTrue: [
 		nextPutAll: (ar at: 2);
 		yourself.
 ].
-	^ ar at: 1	"stdout"
+	^ (ar at: 1) trimRight	"stdout"
 ]
 
 { #category : 'copydbf' }

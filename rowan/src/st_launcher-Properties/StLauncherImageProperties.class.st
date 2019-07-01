@@ -58,14 +58,14 @@ StLauncherImageProperties >> export [
 ]
 
 { #category : 'exporting' }
-StLauncherImageProperties >> export: aFileReferenceOrPath [
+StLauncherImageProperties >> exportToStream: aStream [
 
 	"lazily initialize any of the fields that haven't already been set, that need to be set"
 
 	self 
 		imageDirectory;
 		yourself.
-	super export: aFileReferenceOrPath
+	super exportToStream: aStream
 ]
 
 { #category : 'accessing' }

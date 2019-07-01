@@ -66,11 +66,16 @@ StLauncherProperties >> export [
 
 { #category : 'exporting' }
 StLauncherProperties >> export: aFileReferenceOrPath [
-
 	| file |
 	file := aFileReferenceOrPath asFileReference.
 	file parent exists ifFalse: [ file parent ensureCreateDirectory ].
 	file writeStreamDo: [:stream | STON put: self onStreamPretty: stream ]
+]
+
+{ #category : 'exporting' }
+StLauncherProperties >> exportToStream: aStream [
+
+	STON put: self onStreamPretty: aStream
 ]
 
 { #category : 'accessing' }

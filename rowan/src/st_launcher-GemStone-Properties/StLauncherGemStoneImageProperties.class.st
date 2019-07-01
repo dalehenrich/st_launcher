@@ -90,7 +90,7 @@ StLauncherGemStoneImageProperties >> createStatsDirectoryStructure [
 ]
 
 { #category : 'exporting' }
-StLauncherGemStoneImageProperties >> export: aFileReferenceOrPath [
+StLauncherGemStoneImageProperties >> exportToStream: aStream [
 
 	"lazily initialize any of the fields that haven't already been set, that need to be set"
 
@@ -103,7 +103,7 @@ StLauncherGemStoneImageProperties >> export: aFileReferenceOrPath [
 		extentsPath;
 		snapshotsPath;
 		yourself.
-	super export: aFileReferenceOrPath
+	super exportToStream: aStream
 ]
 
 { #category : 'accessing' }

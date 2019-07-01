@@ -8,6 +8,12 @@ Class {
 	#category : 'st_launcher-Properties'
 }
 
+{ #category : 'accessing' }
+StLauncherProductProperties class >> defaultPropertyFilename [
+
+	^ 'productProperties.ston'
+]
+
 { #category : 'instance creation' }
 StLauncherProductProperties class >> new [
 
@@ -39,9 +45,39 @@ StLauncherProductProperties >> createStandardStructure [
 ]
 
 { #category : 'accessing' }
+StLauncherProductProperties >> defaultPropertiesDirectory [
+
+	^ self structureProperties platforms / self platformName
+]
+
+{ #category : 'accessing' }
+StLauncherProductProperties >> downloadFilename [
+
+	self subclassResponsibility: #downloadFilename
+]
+
+{ #category : 'accessing' }
 StLauncherProductProperties >> downloads [
 
 	^ self structureProperties  platforms / self platformName / 'downloads'
+]
+
+{ #category : 'exporting' }
+StLauncherProductProperties >> export [
+
+	self export: self defaultPropertiesDirectory / self defaultPropertyFilename
+]
+
+{ #category : 'exporting' }
+StLauncherProductProperties >> exportToStream: aStream [
+
+	"lazily initialize any of the fields that haven't already been set, that need to be set"
+
+	self 
+		productName;
+		downloadFilename;
+		yourself.
+	super exportToStream: aStream
 ]
 
 { #category : 'initialize' }

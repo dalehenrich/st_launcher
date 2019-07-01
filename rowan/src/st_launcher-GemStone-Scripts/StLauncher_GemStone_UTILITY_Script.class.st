@@ -53,9 +53,8 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 			].
 			opts at: 'download' ifPresent: [:alternameFtpDir |
 				"download and create a 3.5.0 product tree"
-				| downloadVersion |
 				gemstoneVersion ifNil: [ self error: 'no gemstone version specified' ].
-				self download: downloadVersion alternateFtpDir: alternameFtpDir
+				self download: gemstoneVersion alternateFtpDir: alternameFtpDir
 			].
 		] 
     ifPresent: [ ^ self usage ]
@@ -64,7 +63,8 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir: alternateFtpDirOrNil [
 	| productProperties |
 	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
-	GsFile stdout lf; nextPutAll: 'uname :: ', productProperties osVersion; lf; nextPutAll: 'download dir :: ', alternateFtpDirOrNil printString; lf
+	productProperties exportToStream: GsFile stdout.
+	GsFile stdout lf
 ]
 
 { #category : 'script execution' }

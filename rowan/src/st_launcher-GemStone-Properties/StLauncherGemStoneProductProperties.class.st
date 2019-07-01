@@ -33,13 +33,19 @@ StLauncherGemStoneProductProperties >> downloadFile [
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> downloadFilename [
 
-	^ downloadFilename ifNil: [ 'not defined yet' ]
+	^ downloadFilename ifNil: [ downloadFilename := self productName ]
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> downloadFilename: alternateDownloadName [
+
+	downloadFilename := alternateDownloadName
 ]
 
 { #category : 'ston' }
 StLauncherGemStoneProductProperties >> excludedInstVarNames [
 
-	^ #( ftpSiteFilename ftpSiteDirectoryname downloadFilename )
+	^ #( ftpSiteFilename ftpSiteDirectoryname )
 ]
 
 { #category : 'accessing' }
@@ -64,13 +70,13 @@ StLauncherGemStoneProductProperties >> initialize [
 { #category : 'testing' }
 StLauncherGemStoneProductProperties >> isLinux [
 
-	^ self osversion = 'Linux-x86_64'
+	^ self osVersion = 'Linux-x86_64'
 ]
 
 { #category : 'testing' }
 StLauncherGemStoneProductProperties >> isMac [
 
-	^ self osversion = 'Darwin-x86_64'
+	^ self osVersion = 'Darwin-x86_64'
 ]
 
 { #category : 'accessing' }
