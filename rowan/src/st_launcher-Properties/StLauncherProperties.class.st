@@ -25,6 +25,12 @@ StLauncherProperties class >> defaultPropertyFilename [
 	^ 'st_launcher_home'
 ]
 
+{ #category : 'accessing' }
+StLauncherProperties class >> platformName [
+
+	self subclassResponsibility: #platformName
+]
+
 { #category : 'instance creation' }
 StLauncherProperties class >> propertyFile: aFilePath [
 
@@ -77,6 +83,12 @@ StLauncherProperties >> name [
 StLauncherProperties >> name: aString [
 
 	name := aString
+]
+
+{ #category : 'accessing' }
+StLauncherProperties >> platformName [
+
+	^self class platformName
 ]
 
 { #category : 'ston' }

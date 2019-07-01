@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'homePath',
 		'defaultImageName',
-		'imageMap'
+		'imageMap',
+		'productMap'
 	],
 	#category : 'st_launcher-Properties'
 }
@@ -24,10 +25,26 @@ StLauncherStructureProperties class >> named: aName homePath: aString [
 			yourself
 ]
 
-{ #category : 'image mgmnt' }
+{ #category : 'image management' }
 StLauncherStructureProperties >> addImageForProperties: imageProperties [
 
 	self imageMap at: imageProperties name put: imageProperties imagePath
+]
+
+{ #category : 'product management' }
+StLauncherStructureProperties >> addProductProperties: productProperties [
+
+	(self productMap at: productProperties platformName ifAbsentPut: [ Dictionary new ])
+		at: productProperties name
+		put: productProperties
+]
+
+{ #category : 'product management' }
+StLauncherStructureProperties >> addProductProperties: productProperties for: platformName [
+
+	(self productMap at: platformName ifAbsentPut: [ Dictionary new ])
+		at: productProperties name
+		put: productProperties
 ]
 
 { #category : 'accessing' }
@@ -94,4 +111,16 @@ StLauncherStructureProperties >> images [
 StLauncherStructureProperties >> platforms [
 
 	^ self home / 'platforms'
+]
+
+{ #category : 'accessing' }
+StLauncherStructureProperties >> productMap [
+
+	^ productMap ifNil: [ productMap := Dictionary new ]
+]
+
+{ #category : 'accessing' }
+StLauncherStructureProperties >> productMap: aDictionary [
+
+	productMap := aDictionary
 ]

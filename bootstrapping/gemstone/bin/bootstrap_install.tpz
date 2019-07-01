@@ -51,7 +51,22 @@
 
 	snapshots size > 1 ifTrue: [ self error: 'A single snapshot file is needed for solo ... use a stone with a single extent to create snapshot' ].
 
-	imageProperties soloSnapshot: (snapshots at: 1).
+	imageProperties 
+		soloSnapshot: (snapshots at: 1);
+		export;
+		yourself.
+%
+
+run
+"download and create a 3.5.0 product tree"
+	| launcherProperties platformProperties snapshots |
+	launcherProperties := StLauncherProperties defaultPropertyFile.
+
+	launcherProperties gemstone exists
+		ifFalse: [ launcherProperties gemston ensureCreateDirectory ].
+
+
+
 %
 
 	errorCount
