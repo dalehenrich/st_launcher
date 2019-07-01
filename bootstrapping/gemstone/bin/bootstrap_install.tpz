@@ -33,7 +33,7 @@
 
 	run
 "create a snapshot to be used as the default image for scrips"
-	| launcherProperties imageProperties |
+	| launcherProperties imageProperties snapshots |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
 
 	imageProperties := StLauncherPlatform 
@@ -41,13 +41,17 @@
 		platform: 'gemstone'
 		version: '3.5.0'.
 
-"create snapshot for use as solo extent for default image"
-	(StLauncher_GemStone_Snapshot_Script new)
+"create snapshot for use as solo extent for default image ... use gzip compression to save space for deplyment/download"
+	snapshots := (StLauncher_GemStone_Snapshot_Script new)
 		resumeCheckpoints;
-		takeSnapshots: imageProperties name, '.dbf' 
+		takeSnapshots: imageProperties name, '.dbf.gz' 
 		to: imageProperties snapshotsDirectory
 		suspendInMinutes: 15 
-		safely: false.		
+		safely: false.
+
+	snapshots size > 1 ifTrue: [ self error: 'A single snapshot file is needed for solo ... use a stone with a single extent to create snapshot' ].
+
+	imageProperties soloSnapshot: (snapshots at: 1).
 %
 
 	errorCount

@@ -9,7 +9,8 @@ Class {
 		'logsPath',
 		'binPath',
 		'extentsPath',
-		'snapshotsPath'
+		'snapshotsPath',
+		'soloSnapshot'
 	],
 	#category : 'st_launcher-GemStone-Properties'
 }
@@ -169,6 +170,18 @@ StLauncherGemStoneImageProperties >> snapshotsPath [
 StLauncherGemStoneImageProperties >> snapshotsPath: aString [
 
 	snapshotsPath := aString
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneImageProperties >> soloSnapshot [
+
+	^ soloSnapshot
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneImageProperties >> soloSnapshot: aStringOrFileRef [
+
+	soloSnapshot := aStringOrFileRef asFileReference resolve pathString	"resolve any env vars that may be present in path"
 ]
 
 { #category : 'accessing' }

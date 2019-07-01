@@ -64,25 +64,20 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 							performCopy := false ] ].
 			performCopy
 				ifTrue: [
-					GsFile stdout nextPutAll:
-							'---Starting snapshot to ' , (extentPath , ' ' , snapshotFile pathString) printString
-								, '(' , DateAndTime now asString , ')';
-						lf.
-					snapshotFile exists
-						ifTrue: [ snapshotFile delete ].
-true ifTrue: [
 					snapshotFileRef := snapshotFile asFileReference.
 					snapshotFileRef extensions last ~= 'gz'
 						ifTrue: [ snapshotFileRef := snapshotFileRef , 'gz' ].	".gz extension required for gzip compression"
+					GsFile stdout nextPutAll:
+							'---Starting snapshot to ' , (extentPath , ' ' , snapshotFileRef pathString) printString
+								, '(' , DateAndTime now asString , ')';
+						lf.
+					snapshotFileRef exists
+						ifTrue: [ snapshotFileRef delete ].
 					self copydbf: extent to: snapshotFileRef args: '-C'.	"use gzip compression"
-]
-ifFalse: [ 
-					extent copyTo: snapshotFile.
-].
-					snapshots add: snapshotFile.
+					snapshots add: snapshotFileRef.
 					GsFile stdout
 						nextPutAll:
-								'---Finishing snapshot ' , DateAndTime now asString , ' -- ' , snapshotFile pathString;
+								'---Finishing snapshot ' , DateAndTime now asString , ' -- ' , snapshotFileRef pathString;
 						lf ] ].
 	self checkpoints checkpointsSuspended
 		ifFalse: [ 
@@ -91,5 +86,10 @@ ifFalse: [
 				error:
 					'Checkpoints were resumed before the extent copies were completed. Extent copies have been deleted.' ] ]
 		ensure: [ self checkpoints resumeCheckpoints ].
+	snapshots do: [:snapShotFile |
+		"in order for snapshot files to be usable by a topaz solo gem, the snapshot must be read only"
+		| resultString |
+		resultString := GsHostProcess execute: '/bin/chmod -w ', snapShotFile pathString.
+		GsFile stdout nextPutAll: resultString ].
 	^ snapshots
 ]

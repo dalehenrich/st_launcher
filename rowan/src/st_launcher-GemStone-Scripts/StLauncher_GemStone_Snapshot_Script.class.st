@@ -45,10 +45,7 @@ StLauncher_GemStone_Snapshot_Script >> executeScript [
 				to: snapshotPath 
 				suspendInMinutes: suspendInMinutes 
 				safely: safely.
-			snapShots do: [:snapShotFileRef |
-				| resultString |
-				resultString := GsHostProcess execute: '/bin/chmod -w ', snapShotFileRef pathString.
-				GsFile stdout nextPutAll: resultString ] ] 
+			^ snapShots ] 
     ifPresent: [ ^ self usage ]
 ]
 
