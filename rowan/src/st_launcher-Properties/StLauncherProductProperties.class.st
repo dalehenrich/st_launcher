@@ -9,6 +9,14 @@ Class {
 }
 
 { #category : 'instance creation' }
+StLauncherProductProperties class >> new [
+
+	^ self basicNew
+		initialize;
+		yourself
+]
+
+{ #category : 'instance creation' }
 StLauncherProductProperties class >> productName: productNameString version: productVersionString [
 
 	^ self new
@@ -25,10 +33,20 @@ StLauncherProductProperties class >> version: productVersionString [
 		yourself
 ]
 
+{ #category : 'actions' }
+StLauncherProductProperties >> createStandardStructure [
+	"create standard directory structure on disk"
+]
+
 { #category : 'accessing' }
 StLauncherProductProperties >> downloads [
 
 	^ self structureProperties  platforms / self platformName / 'downloads'
+]
+
+{ #category : 'initialize' }
+StLauncherProductProperties >> initialize [
+	"noop"
 ]
 
 { #category : 'accessing' }

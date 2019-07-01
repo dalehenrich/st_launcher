@@ -15,6 +15,14 @@ StLauncherGemStoneProductProperties class >> platformName [
 	^ 'gemstone'
 ]
 
+{ #category : 'actions' }
+StLauncherGemStoneProductProperties >> createStandardStructure [
+	"create standard directory structure on disk"
+
+	super createStandardStructure.
+	self downloads exists ifFalse: [ self downloads ensureCreateDirectory ].	"side effect is to create gemstone parent directory"
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> downloadFile [
 
@@ -37,6 +45,13 @@ StLauncherGemStoneProductProperties >> ftpSiteDirectoryname [
 StLauncherGemStoneProductProperties >> ftpSiteFilename [
 
 	^ ftpSiteFilename ifNil: [ ftpSiteFilename := self productName ]
+]
+
+{ #category : 'initialize' }
+StLauncherGemStoneProductProperties >> initialize [
+	"noop"
+
+	self createStandardStructure
 ]
 
 { #category : 'accessing' }
