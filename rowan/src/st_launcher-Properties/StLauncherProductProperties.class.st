@@ -26,15 +26,27 @@ StLauncherProductProperties class >> version: productVersionString [
 ]
 
 { #category : 'accessing' }
+StLauncherProductProperties >> downloads [
+
+	^ self structureProperties  platforms / self platformName / 'downloads'
+]
+
+{ #category : 'accessing' }
 StLauncherProductProperties >> productName [
 
-	^ productName ifNil: [ productName := 'GemStone64Bit', self productVersionString ]
+	^ productName ifNil: [ productName := self productVersionNameFor: self productVersionString ]
 ]
 
 { #category : 'accessing' }
 StLauncherProductProperties >> productName: aString [ 
 
 	productName := aString
+]
+
+{ #category : 'accessing' }
+StLauncherProductProperties >> productVersionNameFor: aVersionString [
+
+	self subclassResponsibility: #productVersionNameFor:
 ]
 
 { #category : 'accessing' }

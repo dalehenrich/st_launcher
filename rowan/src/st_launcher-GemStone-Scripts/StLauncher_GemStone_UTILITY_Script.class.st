@@ -53,10 +53,25 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 				downloadVersion := aVersionOrNil ifNil: [ theVersion ].
 				launcherProperties gemstone exists
 					ifFalse: [ launcherProperties gemstone ensureCreateDirectory ].
-				productProperties := StLauncherGemStoneProductProperties version: downloadVersion
+				self download: downloadVersion
 			].
 		] 
     ifPresent: [ ^ self usage ]
+]
+{ #category : 'script execution' }
+StLauncher_GemStone_UTILITY_Script >> download: downloadVersion [
+	| productProperties |
+	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
+	GsFile stdout 
+		nextPutAll: 'product name ::', productProperties productName;
+		lf;
+		nextPutAll: 'ftp dir ::', productProperties ftpSiteDirectoryname;
+		lf;
+		nextPutAll: 'ftp file ::', productProperties ftpSiteFilename;
+		lf;
+		nextPutAll: 'ftp download file ::', productProperties downloadFile pathString;
+		lf;
+		yourself.
 ]
 
 { #category : 'script execution' }
