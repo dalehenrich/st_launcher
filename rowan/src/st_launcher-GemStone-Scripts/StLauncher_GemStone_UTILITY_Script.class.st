@@ -64,7 +64,7 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir: alternateFtpDirOrNil [
 	| productProperties |
 	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
-	GsFile stdout lf; nextPutAll: productProperties osVersion; lf; nextPutAll: 'download dir', alternateFtpDirOrNil printString
+	GsFile stdout lf; nextPutAll: 'uname :: ', productProperties osVersion; lf; nextPutAll: 'download dir :: ', alternateFtpDirOrNil printString; lf
 ]
 
 { #category : 'script execution' }
