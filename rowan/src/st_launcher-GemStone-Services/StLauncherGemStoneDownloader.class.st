@@ -31,6 +31,12 @@ StLauncherGemStoneDownloader >> downloadGemStoneVersion: versionString to: direc
 ]
 
 { #category : 'accessing' }
+StLauncherGemStoneDownloader >> ftpServerUrl [
+
+	^ 'https://downloads.gemtalksystems.com'
+]
+
+{ #category : 'accessing' }
 StLauncherGemStoneDownloader >> safely [
 
 	^ safely
