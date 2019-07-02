@@ -63,6 +63,9 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir: alternateFtpDirOrNil [
 	| productProperties |
 	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
+	StLauncherGemStoneSystem 
+		downloadHttps: productProperties downloadHttpsUrl
+		to: productProperties downloadFile pathString.
 	productProperties exportToStream: GsFile stdout.
 	GsFile stdout lf
 ]

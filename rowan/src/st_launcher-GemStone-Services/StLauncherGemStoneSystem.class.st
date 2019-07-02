@@ -4,7 +4,7 @@ Class {
 	#category : 'st_launcher-GemStone-Services'
 }
 
-{ #category : 'copydbf' }
+{ #category : 'shell commands' }
 StLauncherGemStoneSystem class >> copydbf: sourceFile to: destFile args: args [
 
 	| cmdPath ar cmd |
@@ -27,7 +27,47 @@ StLauncherGemStoneSystem class >> copydbf: sourceFile to: destFile args: args [
 	^ ar at: 1	"stdout"
 ]
 
-{ #category : 'copydbf' }
+{ #category : 'shell commands' }
+StLauncherGemStoneSystem class >> downloadHttps: httpsUrl [ 
+
+	| downloadCmd |
+	downloadCmd := (self which: 'wget')
+		ifNotNil: [:cmdPath |  cmdPath, ' --no-verbose' ]
+		ifNil: [
+			(self which: 'curl')
+					ifNotNil: [:cmdPath |  cmdPath, ' -O -s -S' ]
+					ifNil: [ self error: 'neither wget nor curl found ... cannot download' ] ].
+]
+
+{ #category : 'shell commands' }
+StLauncherGemStoneSystem class >> downloadHttps: httpsUrl  to:  filePath [
+
+	| downloadCmd ar |
+	downloadCmd := (self which: 'wget')
+		ifNotNil: [:cmdPath |  cmdPath, ' --no-verbose -O ', filePath ]
+		ifNil: [
+			(self which: 'curl')
+					ifNotNil: [:cmdPath |  cmdPath, ' -O -s -S -o ', filePath ]
+					ifNil: [ self error: 'neither wget nor curl found ... cannot download' ] ].
+	ar := GsHostProcess 
+		_execute: downloadCmd
+		input: nil.
+false ifTrue: [
+	GsFile stdout 
+		lf; 
+		nextPutAll: 'STDOUT:';
+		lf; 
+		nextPutAll: (ar at: 1);
+		lf;
+		nextPutAll: 'STDERR:';
+		lf; 
+		nextPutAll: (ar at: 2);
+		yourself.
+].
+	^ (ar at: 1) "stdout"
+]
+
+{ #category : 'shell commands' }
 StLauncherGemStoneSystem class >> uname [
 
 	|  ar cmd |
@@ -52,6 +92,18 @@ false ifTrue: [
 		yourself.
 ].
 	^ (ar at: 1) trimRight	"stdout"
+]
+
+{ #category : 'shell commands' }
+StLauncherGemStoneSystem class >> which: filename [
+
+	|  ar cmd |
+	cmd := '/usr/bin/which ', filename .
+	[
+	ar := GsHostProcess 
+		_execute: cmd
+		input: nil.
+	^(ar at: 1) trimRight ] on: Error do: [:ignored | ^ nil ]
 ]
 
 { #category : 'copydbf' }

@@ -42,6 +42,12 @@ StLauncherGemStoneProductProperties >> downloadFilename: alternateDownloadName [
 	downloadFilename := alternateDownloadName
 ]
 
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> downloadHttpsUrl [
+
+	^ 'https://downloads.gemtalksystems.com/pub/GemStone64/', self ftpSiteDirectoryname, '/', self ftpSiteFilename
+]
+
 { #category : 'ston' }
 StLauncherGemStoneProductProperties >> excludedInstVarNames [
 
