@@ -33,7 +33,7 @@ StLauncherGemStoneProductProperties >> downloadFile [
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> downloadFilename [
 
-	^ downloadFilename ifNil: [ downloadFilename := self productName ]
+	^ downloadFilename ifNil: [ downloadFilename := self productName, '.zip' ]
 ]
 
 { #category : 'accessing' }
@@ -45,7 +45,7 @@ StLauncherGemStoneProductProperties >> downloadFilename: alternateDownloadName [
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> downloadHttpsUrl [
 
-	^ 'https://downloads.gemtalksystems.com/pub/GemStone64/', self ftpSiteDirectoryname, '/', self ftpSiteFilename
+	^ 'https://downloads.gemtalksystems.com/pub/GemStone64/', self ftpSiteDirectoryname, '/', self ftpSiteFilename,  '.zip'
 ]
 
 { #category : 'ston' }

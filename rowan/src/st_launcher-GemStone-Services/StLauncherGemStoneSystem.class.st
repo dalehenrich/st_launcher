@@ -28,26 +28,14 @@ StLauncherGemStoneSystem class >> copydbf: sourceFile to: destFile args: args [
 ]
 
 { #category : 'shell commands' }
-StLauncherGemStoneSystem class >> downloadHttps: httpsUrl [ 
-
-	| downloadCmd |
-	downloadCmd := (self which: 'wget')
-		ifNotNil: [:cmdPath |  cmdPath, ' --no-verbose' ]
-		ifNil: [
-			(self which: 'curl')
-					ifNotNil: [:cmdPath |  cmdPath, ' -O -s -S' ]
-					ifNil: [ self error: 'neither wget nor curl found ... cannot download' ] ].
-]
-
-{ #category : 'shell commands' }
 StLauncherGemStoneSystem class >> downloadHttps: httpsUrl  to:  filePath [
 
 	| downloadCmd ar |
 	downloadCmd := (self which: 'wget')
-		ifNotNil: [:cmdPath |  cmdPath, ' --no-verbose -O ', filePath ]
+		ifNotNil: [:cmdPath |  cmdPath, ' --no-verbose -O ', filePath, ' ', httpsUrl ]
 		ifNil: [
 			(self which: 'curl')
-					ifNotNil: [:cmdPath |  cmdPath, ' -O -s -S -o ', filePath ]
+					ifNotNil: [:cmdPath |  cmdPath, ' -O -s -S -o ', filePath, ' ', httpsUrl ]
 					ifNil: [ self error: 'neither wget nor curl found ... cannot download' ] ].
 	ar := GsHostProcess 
 		_execute: downloadCmd
