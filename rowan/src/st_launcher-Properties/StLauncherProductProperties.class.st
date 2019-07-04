@@ -86,6 +86,12 @@ StLauncherProductProperties >> initialize [
 ]
 
 { #category : 'accessing' }
+StLauncherProductProperties >> productFilename [
+
+	self subclassResponsibility: #productFilename
+]
+
+{ #category : 'accessing' }
 StLauncherProductProperties >> productName [
 
 	^ productName ifNil: [ productName := self productVersionNameFor: self productVersionString ]
@@ -95,6 +101,12 @@ StLauncherProductProperties >> productName [
 StLauncherProductProperties >> productName: aString [ 
 
 	productName := aString
+]
+
+{ #category : 'accessing' }
+StLauncherProductProperties >> products [
+
+	^ self structureProperties  platforms / self platformName / 'products'
 ]
 
 { #category : 'accessing' }

@@ -83,6 +83,29 @@ false ifTrue: [
 ]
 
 { #category : 'shell commands' }
+StLauncherGemStoneSystem class >> unzip: zipFile to: directory [
+    
+
+	| ar cmd |
+	cmd := '/usr/bin/unzip -q -d ', directory asFileReference resolve pathString, ' ',  zipFile asFileReference resolve pathString.
+	GsFile stdout lf; nextPutAll: cmd; lf.
+	ar := GsHostProcess 
+		_execute: cmd
+		input: nil.
+	GsFile stdout 
+		lf; 
+		nextPutAll: 'STDOUT:';
+		lf; 
+		nextPutAll: (ar at: 1);
+		lf;
+		nextPutAll: 'STDERR:';
+		lf; 
+		nextPutAll: (ar at: 2);
+		yourself.
+	^ ar at: 1	"stdout"
+]
+
+{ #category : 'shell commands' }
 StLauncherGemStoneSystem class >> which: filename [
 
 	|  ar cmd |

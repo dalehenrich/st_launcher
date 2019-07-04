@@ -5,7 +5,8 @@ Class {
 		'ftpSiteFilename',
 		'ftpSiteDirectoryname',
 		'downloadFilename',
-		'osVersion'
+		'osVersion',
+		'productFilename'
 	],
 	#category : 'st_launcher-GemStone-Properties'
 }
@@ -45,7 +46,7 @@ StLauncherGemStoneProductProperties >> downloadFilename: alternateDownloadName [
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> downloadHttpsUrl [
 
-	^ 'https://downloads.gemtalksystems.com/pub/GemStone64/', self ftpSiteDirectoryname, '/', self ftpSiteFilename,  '.zip'
+	^ 'https://downloads.gemtalksystems.com/pub/GemStone64/', self ftpSiteDirectoryname, '/', self ftpSiteFilename
 ]
 
 { #category : 'ston' }
@@ -63,7 +64,7 @@ StLauncherGemStoneProductProperties >> ftpSiteDirectoryname [
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties >> ftpSiteFilename [
 
-	^ ftpSiteFilename ifNil: [ ftpSiteFilename := self productName ]
+	^ ftpSiteFilename ifNil: [ ftpSiteFilename := self productName,  '.zip' ]
 ]
 
 { #category : 'initialize' }
@@ -97,6 +98,24 @@ StLauncherGemStoneProductProperties >> osVersion [
 					"normalize mac os name"
 					uname := 'Darwin-x86_64'].
 			osVersion := uname ]
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> productFile [
+
+	^ self products / self productFilename
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> productFilename [
+
+	^ productFilename ifNil: [ productFilename := self productName ]
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> productFilename: alternateProductName [
+
+	productFilename := alternateProductName
 ]
 
 { #category : 'accessing' }
