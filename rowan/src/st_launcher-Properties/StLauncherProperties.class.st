@@ -52,6 +52,12 @@ StLauncherProperties >> defaultPropertiesDirectory [
 	^ self class defaultPropertiesDirectory
 ]
 
+{ #category : 'accessing' }
+StLauncherProperties >> defaultPropertyFilename [
+
+	^ self class defaultPropertyFilename
+]
+
 { #category : 'ston' }
 StLauncherProperties >> excludedInstVarNames [
 

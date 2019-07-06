@@ -39,12 +39,6 @@ StLauncherImageProperties >> defaultPropertiesDirectory [
 	^ self structureProperties images / self name
 ]
 
-{ #category : 'accessing' }
-StLauncherImageProperties >> defaultPropertyFilename [
-
-	^ self class defaultPropertyFilename
-]
-
 { #category : 'ston' }
 StLauncherImageProperties >> excludedInstVarNames [
 
