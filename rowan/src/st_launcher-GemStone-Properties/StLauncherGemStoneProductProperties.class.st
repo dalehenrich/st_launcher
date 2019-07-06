@@ -52,7 +52,7 @@ StLauncherGemStoneProductProperties >> downloadHttpsUrl [
 { #category : 'ston' }
 StLauncherGemStoneProductProperties >> excludedInstVarNames [
 
-	^ #( ftpSiteFilename ftpSiteDirectoryname )
+	^ super excludedInstVarNames, #( ftpSiteFilename ftpSiteDirectoryname )
 ]
 
 { #category : 'accessing' }

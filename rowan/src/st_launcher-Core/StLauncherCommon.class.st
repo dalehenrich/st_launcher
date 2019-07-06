@@ -7,7 +7,7 @@ Class {
 { #category : 'install / uninstall' }
 StLauncherCommon class >> _deleteStructure [
 
-	| launcherProperties imageProperties |
+	| launcherProperties |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
 	launcherProperties images children 
 		do: [:ent | 
@@ -19,6 +19,7 @@ StLauncherCommon class >> _deleteStructure [
 		do: [:ent | 
 			ent isDirectory
 				ifTrue: [ ent ensureDeleteAll ] ].
+	launcherProperties productMap: nil.
 
 	launcherProperties export.
 ]

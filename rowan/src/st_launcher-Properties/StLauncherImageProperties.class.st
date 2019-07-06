@@ -42,7 +42,7 @@ StLauncherImageProperties >> defaultPropertiesDirectory [
 { #category : 'ston' }
 StLauncherImageProperties >> excludedInstVarNames [
 
-	^ super excludedInstVarNames , #( imageDirectory )
+	^ super excludedInstVarNames , #( imageDirectory structureProperties )
 ]
 
 { #category : 'exporting' }

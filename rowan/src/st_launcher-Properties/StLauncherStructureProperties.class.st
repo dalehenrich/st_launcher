@@ -34,9 +34,7 @@ StLauncherStructureProperties >> addImageForProperties: imageProperties [
 { #category : 'product management' }
 StLauncherStructureProperties >> addProductProperties: productProperties [
 
-	(self productMap at: productProperties platformName ifAbsentPut: [ Dictionary new ])
-		at: productProperties name
-		put: productProperties
+	self addProductProperties: productProperties for: productProperties platformName
 ]
 
 { #category : 'product management' }

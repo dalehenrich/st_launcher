@@ -9,27 +9,6 @@ Class {
 }
 
 { #category : 'script execution' }
-StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir: alternateFtpDirOrNil [
-	| productProperties |
-	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
-	true ifTrue: [
-	'$GS_HOME/shared/downloads/zip/GemStone64Bit3.5.0-x86_64.Linux.zip' asFileReference copyTo: productProperties downloadFile.
-]
-		ifFalse: [
-	StLauncherGemStoneSystem 
-		downloadHttps: productProperties downloadHttpsUrl
-		to: productProperties downloadFile pathString.
-].
-	StLauncherGemStoneSystem unzip: productProperties downloadFile to: productProperties products.
-
-	productProperties productFile exists
-		ifFalse: [ "ln -s ln -s $GS_SHARED_DOWNLOADS/products/${dlvers} ${gs_product}" self halt].
-
-	productProperties exportToStream: GsFile stdout.
-	GsFile stdout lf
-]
-
-{ #category : 'script execution' }
 StLauncher_GemStone_UTILITY_Script >> executeScript [
 
 	opts
@@ -79,6 +58,32 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 			].
 		] 
     ifPresent: [ ^ self usage ]
+]
+
+{ #category : 'script execution' }
+StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir: alternateFtpDirOrNil [
+	| productProperties |
+	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
+	true ifTrue: [
+	'$GS_HOME/shared/downloads/zip/GemStone64Bit3.5.0-x86_64.Linux.zip' asFileReference copyTo: productProperties downloadFile.
+]
+		ifFalse: [
+	StLauncherGemStoneSystem 
+		downloadHttps: productProperties downloadHttpsUrl
+		to: productProperties downloadFile pathString.
+].
+	StLauncherGemStoneSystem unzip: productProperties downloadFile to: productProperties products.
+
+	productProperties productFile exists
+		ifFalse: [ "ln -s ln -s $GS_SHARED_DOWNLOADS/products/${dlvers} ${gs_product}" self halt].
+
+	productProperties export.
+	(productProperties structureProperties productMap 
+		at: productProperties platformName
+		ifAbsentPut: [ Dictionary new ])
+			at: productProperties productVersionString
+			put: productProperties productFile pathString.
+	productProperties structureProperties export.
 ]
 
 { #category : 'script execution' }

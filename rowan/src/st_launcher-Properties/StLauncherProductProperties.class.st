@@ -3,7 +3,8 @@ Class {
 	#superclass : 'StLauncherProperties',
 	#instVars : [
 		'productName',
-		'productVersionString'
+		'productVersionString',
+		'structureProperties'
 	],
 	#category : 'st_launcher-Properties'
 }
@@ -60,6 +61,12 @@ StLauncherProductProperties >> downloadFilename [
 StLauncherProductProperties >> downloads [
 
 	^ self structureProperties  platforms / self platformName / 'downloads'
+]
+
+{ #category : 'ston' }
+StLauncherProductProperties >> excludedInstVarNames [
+
+	^ super excludedInstVarNames , #( structureProperties )
 ]
 
 { #category : 'exporting' }
@@ -125,4 +132,10 @@ StLauncherProductProperties >> productVersionString [
 StLauncherProductProperties >> productVersionString: aString [ 
 
 	productVersionString := aString
+]
+
+{ #category : 'accessing' }
+StLauncherProductProperties >> structureProperties [
+
+	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
 ]
