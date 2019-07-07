@@ -2,7 +2,8 @@ Class {
 	#name : 'StLauncherProperties',
 	#superclass : 'StLauncherCommon',
 	#instVars : [
-		'name'
+		'name',
+		'structureProperties'
 	],
 	#category : 'st_launcher-Properties'
 }
@@ -61,7 +62,7 @@ StLauncherProperties >> defaultPropertyFilename [
 { #category : 'ston' }
 StLauncherProperties >> excludedInstVarNames [
 
-	^ #()
+	^ #( structureProperties )
 ]
 
 { #category : 'exporting' }
@@ -119,4 +120,10 @@ StLauncherProperties >> stonOn: stonWriter [
         do: [ :each | 
 			(self instVarAt: (self class allInstVarNames indexOf: each asSymbol))
 				ifNotNil: [ :value | dictionary at: each asSymbol put: value ] ] ]
+]
+
+{ #category : 'accessing' }
+StLauncherImageProperties >> structureProperties [
+
+	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
 ]

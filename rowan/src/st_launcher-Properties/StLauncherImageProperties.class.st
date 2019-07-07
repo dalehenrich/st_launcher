@@ -3,12 +3,25 @@ Class {
 	#superclass : 'StLauncherProperties',
 	#instVars : [
 		'structureName',
-		'structureProperties',
 		'imagePath',
 		'imageDirectory'
 	],
 	#category : 'st_launcher-Properties'
 }
+
+{ #category : 'install / uninstall' }
+StLauncherImageProperties class >> _deleteStructure [
+
+	| launcherProperties |
+	launcherProperties := StLauncherProperties defaultPropertyFile.
+	launcherProperties images children 
+		do: [:ent | 
+			ent isDirectory
+				ifTrue: [ ent ensureDeleteAll ] ].
+	launcherProperties imageMap: nil.
+
+	launcherProperties export.
+]
 
 { #category : 'accessing' }
 StLauncherImageProperties class >> defaultPropertyFilename [
@@ -42,7 +55,7 @@ StLauncherImageProperties >> defaultPropertiesDirectory [
 { #category : 'ston' }
 StLauncherImageProperties >> excludedInstVarNames [
 
-	^ super excludedInstVarNames , #( imageDirectory structureProperties )
+	^ super excludedInstVarNames , #( imageDirectory )
 ]
 
 { #category : 'exporting' }
@@ -90,12 +103,6 @@ StLauncherImageProperties >> structureName [
 StLauncherImageProperties >> structureName: aString [
 
 	structureName := aString
-]
-
-{ #category : 'accessing' }
-StLauncherImageProperties >> structureProperties [
-
-	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
 ]
 
 { #category : 'accessing' }

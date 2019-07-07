@@ -5,6 +5,17 @@ Class {
 }
 
 { #category : 'shell commands' }
+StLauncherGemStoneSystem class >> chmod: args [
+
+	|  ar cmd |
+	cmd := '/bin/chmod ', args .
+	ar := GsHostProcess 
+		_execute: cmd
+		input: nil.
+	^ar at: 1
+]
+
+{ #category : 'shell commands' }
 StLauncherGemStoneSystem class >> copydbf: sourceFile to: destFile args: args [
 
 	| cmdPath ar cmd |

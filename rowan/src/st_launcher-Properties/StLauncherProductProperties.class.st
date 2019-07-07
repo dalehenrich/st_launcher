@@ -3,11 +3,29 @@ Class {
 	#superclass : 'StLauncherProperties',
 	#instVars : [
 		'productName',
-		'productVersionString',
-		'structureProperties'
+		'productVersionString'
 	],
 	#category : 'st_launcher-Properties'
 }
+
+{ #category : 'install / uninstall' }
+StLauncherProductProperties class >> _deleteStructure [
+
+	| launcherProperties |
+	self subclasses do: [:each | each _deleteStructure ].
+
+	launcherProperties := StLauncherProperties defaultPropertyFile.
+
+	launcherProperties platforms exists 
+		ifTrue: [ 
+			launcherProperties platforms children 
+				do: [:ent | 
+					ent isDirectory
+						ifTrue: [ ent ensureDeleteAll ] ] ].
+	launcherProperties productMap: nil.
+
+	launcherProperties export.
+]
 
 { #category : 'accessing' }
 StLauncherProductProperties class >> defaultPropertyFilename [
@@ -61,12 +79,6 @@ StLauncherProductProperties >> downloadFilename [
 StLauncherProductProperties >> downloads [
 
 	^ self structureProperties  platforms / self platformName / 'downloads'
-]
-
-{ #category : 'ston' }
-StLauncherProductProperties >> excludedInstVarNames [
-
-	^ super excludedInstVarNames , #( structureProperties )
 ]
 
 { #category : 'exporting' }
@@ -132,10 +144,4 @@ StLauncherProductProperties >> productVersionString [
 StLauncherProductProperties >> productVersionString: aString [ 
 
 	productVersionString := aString
-]
-
-{ #category : 'accessing' }
-StLauncherProductProperties >> structureProperties [
-
-	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
 ]

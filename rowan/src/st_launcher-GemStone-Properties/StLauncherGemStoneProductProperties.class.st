@@ -11,6 +11,25 @@ Class {
 	#category : 'st_launcher-GemStone-Properties'
 }
 
+{ #category : 'install / uninstall' }
+StLauncherGemStoneProductProperties class >> _deleteStructure [
+
+	| launcherProperties |
+	launcherProperties := StLauncherProperties defaultPropertyFile.
+
+	(launcherProperties gemstone / 'products') exists
+		ifTrue: [ StLauncherGemStoneSystem chmod: ' +w -R ', (launcherProperties gemstone / 'products') pathString ].
+	(launcherProperties gemstone) exists
+		ifTrue: [ 
+			launcherProperties gemstone children 
+				do: [:ent | 
+					ent isDirectory
+						ifTrue: [ ent ensureDeleteAll ] ] ].
+	launcherProperties productMap removeKey: self platformName ifAbsent: [].
+
+	launcherProperties export.
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneProductProperties class >> platformName [
 
