@@ -54,36 +54,10 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 			opts at: 'download' ifPresent: [:alternameFtpDir |
 				"download and create a 3.5.0 product tree"
 				gemstoneVersion ifNil: [ self error: 'no gemstone version specified' ].
-				self download: gemstoneVersion alternateFtpDir: alternameFtpDir
+				StLauncherGemStonePlatform download: gemstoneVersion alternateFtpDir: alternameFtpDir
 			].
 		] 
     ifPresent: [ ^ self usage ]
-]
-
-{ #category : 'script execution' }
-StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir: alternateFtpDirOrNil [
-	| productProperties |
-	productProperties := StLauncherGemStoneProductProperties version: downloadVersion.
-	true ifTrue: [
-	'$GS_HOME/shared/downloads/zip/GemStone64Bit3.5.0-x86_64.Linux.zip' asFileReference copyTo: productProperties downloadFile.
-]
-		ifFalse: [
-	StLauncherGemStoneSystem 
-		downloadHttps: productProperties downloadHttpsUrl
-		to: productProperties downloadFile pathString.
-].
-	StLauncherGemStoneSystem unzip: productProperties downloadFile to: productProperties products.
-
-	productProperties productDirectory exists
-		ifFalse: [ "ln -s $GS_SHARED_DOWNLOADS/products/${dlvers} ${gs_product}" self halt].
-
-	productProperties export.
-	(productProperties structureProperties productMap 
-		at: productProperties platformName
-		ifAbsentPut: [ Dictionary new ])
-			at: productProperties productVersionString
-			put: productProperties productDirectory pathString.
-	productProperties structureProperties export.
 ]
 
 { #category : 'script execution' }

@@ -34,6 +34,12 @@ StLauncherPlatform >> createImageNamed: imageName version: versionString [
 	self subclassResponsibility: #createImageNamed:version:
 ]
 
+{ #category : 'products' }
+StLauncherPlatform >> download: productVersionString alternateFtpDir: alternameFtpDir [
+
+	self subclassResponsibility: #download:alternateFtpDir:
+]
+
 { #category : 'images' }
 StLauncherPlatform >> imageMap [
 
