@@ -13,7 +13,13 @@ Class {
 { #category : 'instance creation' }
 StLauncherPlatform class >> createImageNamed: imageName platform: platformName version: versionString [
 
-	^ (self platformClassFor: platformName)  createImageNamed: imageName version: versionString
+	^ (self platformClassFor: platformName) createImageNamed: imageName version: versionString
+]
+
+{ #category : 'instance creation' }
+StLauncherPlatform class >> download: productVersionString platform: platformName [
+
+	^ (self platformClassFor: platformName) download: productVersionString
 ]
 
 { #category : 'accessing' }
@@ -77,4 +83,10 @@ StLauncherPlatform >> stdout: aString [
 StLauncherPlatform >> structureProperties [
 
 	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
+]
+
+{ #category : 'properties' }
+StLauncherPlatform >> structureProperties: aValueOrNil [
+
+	^ structureProperties := aValueOrNil
 ]

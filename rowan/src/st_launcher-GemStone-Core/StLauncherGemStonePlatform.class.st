@@ -11,6 +11,13 @@ StLauncherGemStonePlatform class >> createImageNamed: imageName version: version
 ]
 
 { #category : 'instance creation' }
+StLauncherGemStonePlatform class >> download: productVersionString [
+
+
+	^ self download: productVersionString alternateFtpDir: nil
+]
+
+{ #category : 'instance creation' }
 StLauncherGemStonePlatform class >> download: productVersionString alternateFtpDir: alternameFtpDir [
 
 
@@ -28,6 +35,7 @@ StLauncherGemStonePlatform >> addImageForProperties: imageProperties [
 
 	self structureProperties addImageForProperties: imageProperties.
 	self structureProperties export.
+	self structureProperties: nil.
 ]
 
 { #category : 'actions' }
@@ -37,19 +45,27 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 	self imageNamed: imageName
 		ifPresent: [:imagePath | self error: 'An image named ', imageName printString, ' already exists (', imagePath printString, ' ).' ]
 		ifAbsent: [].
+	((self structureProperties productMap at: self platformName ifAbsent: [ Dictionary new ]) includesKey: versionString)
+		ifFalse: [ self download: versionString ].
 	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: self platformName) 
 			named: imageName version: versionString)
 				structureName: self structureProperties name;
 				yourself.
+	imageProperties productPath: ((self structureProperties productMap at: self platformName) at: versionString).
 	imageProperties 
 		export;							"initializes directory paths to defaults if not explicitly set"
 		createStandardStructure;	"create structure on disk"
 		yourself.
 
 	self addImageForProperties: imageProperties.	"register image"
-	self structureProperties export.
 
 	^ imageProperties
+]
+
+{ #category : 'products' }
+StLauncherGemStonePlatform >> download: productVersionString [
+
+	^ self download: productVersionString alternateFtpDir: nil
 ]
 
 { #category : 'products' }
@@ -77,6 +93,7 @@ StLauncherGemStonePlatform >> download: productVersionString alternateFtpDir: al
 			at: productProperties productVersionString
 			put: productProperties productDirectory pathString.
 	productProperties structureProperties export.
+	self structureProperties: nil.
 ]
 
 { #category : 'io' }

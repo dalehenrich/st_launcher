@@ -10,7 +10,8 @@ Class {
 		'binPath',
 		'extentsPath',
 		'snapshotsPath',
-		'soloSnapshot'
+		'soloSnapshot',
+		'productPath'
 	],
 	#category : 'st_launcher-GemStone-Properties'
 }
@@ -152,6 +153,18 @@ StLauncherGemStoneImageProperties >> logsPath [
 StLauncherGemStoneImageProperties >> logsPath: aString [
 
 	logsPath := aString
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneImageProperties >> productPath [
+
+	^ productPath
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneImageProperties >> productPath: aString [
+
+	productPath := aString
 ]
 
 { #category : 'accessing' }

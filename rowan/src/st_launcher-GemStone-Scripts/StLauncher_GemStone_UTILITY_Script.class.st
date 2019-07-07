@@ -14,11 +14,15 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 	opts
 		at: 'help'
     ifAbsent: [
-			| launcherProperties imageProperties snapshots gemstoneVersion |
+			| launcherProperties imageProperties snapshots |
 			launcherProperties := StLauncherProperties defaultPropertyFile.
 			opts at: 'clean' ifPresent: [
 				"clean up old directory structure"
 				StLauncherCommon _deleteStructure.
+			].
+			opts at: 'download' ifPresent: [:version |
+				"download and create a product tree"
+				StLauncherPlatform download: version platform: 'gemstone'
 			].
 			opts at: 'create' 
 				ifPresent: [:version |
@@ -26,10 +30,6 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 						createImageNamed: launcherProperties defaultImageName
 						platform: 'gemstone'
 						version: version.
-					gemstoneVersion := version
-				]
-				ifAbsent: [
-					opts at: 'version' ifPresent: [:arg | gemstoneVersion := arg ].
 				].
 			opts at: 'solo' ifPresent: [
 				"create snapshot for use as solo extent for default image ... use gzip compression to save space for deplyment/download"
@@ -51,11 +51,6 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 					export;
 					yourself.
 			].
-			opts at: 'download' ifPresent: [:alternameFtpDir |
-				"download and create a 3.5.0 product tree"
-				gemstoneVersion ifNil: [ self error: 'no gemstone version specified' ].
-				StLauncherGemStonePlatform download: gemstoneVersion alternateFtpDir: alternameFtpDir
-			].
 		] 
     ifPresent: [ ^ self usage ]
 ]
@@ -68,7 +63,7 @@ StLauncher_GemStone_UTILITY_Script >> scriptOptions [
 			#('create' nil #'required').
 			#('solo' nil #'none').
 			#('version' nil #'required').
-			#('download' nil #'optional').
+			#('download' nil #'required').
 	}
 ]
 
@@ -96,8 +91,8 @@ EXAMPLES
 	./utility.st --clean -- st_launcher_350 -lq
 	./utility.st --clean --create="3.5.0" -- st_launcher_350 -lq
 	./utility.st --clean --create="3.5.0" --solo -- st_launcher_350 -lq
-	./utility.st --clean --create="3.5.0" --solo --download -- st_launcher_350 -lq
+	./utility.st --clean --create="3.5.0" --solo -- st_launcher_350 -lq
 
-	./utility.st --download --version="3.5.0" -- st_launcher_350 -lq
+	./utility.st --download="3.5.0" -- st_launcher_350 -lq
 ') printString, dashes
 ]
