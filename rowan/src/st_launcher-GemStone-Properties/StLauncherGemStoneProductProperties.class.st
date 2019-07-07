@@ -45,6 +45,12 @@ StLauncherGemStoneProductProperties >> createStandardStructure [
 ]
 
 { #category : 'accessing' }
+StLauncherGemStoneProductProperties >> defaultPropertiesDirectory [
+
+	^ self productDirectory
+]
+
+{ #category : 'accessing' }
 StLauncherGemStoneProductProperties >> downloadFile [
 
 	^ self downloads / self downloadFilename
@@ -117,6 +123,12 @@ StLauncherGemStoneProductProperties >> osVersion [
 					"normalize mac os name"
 					uname := 'Darwin-x86_64'].
 			osVersion := uname ]
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties >> productDirectory [
+
+	^ self products / self productFilename
 ]
 
 { #category : 'accessing' }

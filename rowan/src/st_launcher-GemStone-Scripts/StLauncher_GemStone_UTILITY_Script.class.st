@@ -74,15 +74,15 @@ StLauncher_GemStone_UTILITY_Script >> download: downloadVersion alternateFtpDir:
 ].
 	StLauncherGemStoneSystem unzip: productProperties downloadFile to: productProperties products.
 
-	productProperties productFile exists
-		ifFalse: [ "ln -s ln -s $GS_SHARED_DOWNLOADS/products/${dlvers} ${gs_product}" self halt].
+	productProperties productDirectory exists
+		ifFalse: [ "ln -s $GS_SHARED_DOWNLOADS/products/${dlvers} ${gs_product}" self halt].
 
 	productProperties export.
 	(productProperties structureProperties productMap 
 		at: productProperties platformName
 		ifAbsentPut: [ Dictionary new ])
 			at: productProperties productVersionString
-			put: productProperties productFile pathString.
+			put: productProperties productDirectory pathString.
 	productProperties structureProperties export.
 ]
 
