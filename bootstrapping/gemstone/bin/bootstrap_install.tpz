@@ -21,54 +21,6 @@
 %
 	commit
 
-	run
-"create and install default properties"
-	| launcher |
-	launcher := (StLauncherStructureProperties homePath: '$ROWAN_PROJECTS_HOME/st_launcher/home')
-		defaultImageName: 'solo_350';
-		export;
-		yourself.
-
-%
-
-	run
-"create a snapshot to be used as the default image for scrips"
-	| launcherProperties imageProperties snapshots |
-	launcherProperties := StLauncherProperties defaultPropertyFile.
-
-	imageProperties := StLauncherPlatform 
-		createImageNamed: launcherProperties defaultImageName
-		platform: 'gemstone'
-		version: '3.5.0'.
-
-"create snapshot for use as solo extent for default image ... use gzip compression to save space for deplyment/download"
-	snapshots := (StLauncher_GemStone_Snapshot_Script new)
-		resumeCheckpoints;
-		takeSnapshots: imageProperties name, '.dbf.gz' 
-		to: imageProperties snapshotsDirectory
-		suspendInMinutes: 15 
-		safely: false.
-
-	snapshots size > 1 ifTrue: [ self error: 'A single snapshot file is needed for solo ... use a stone with a single extent to create snapshot' ].
-
-	imageProperties 
-		soloSnapshot: (snapshots at: 1);
-		export;
-		yourself.
-%
-
-run
-"download and create a 3.5.0 product tree"
-	| launcherProperties platformProperties snapshots |
-	launcherProperties := StLauncherProperties defaultPropertyFile.
-
-	launcherProperties gemstone exists
-		ifFalse: [ launcherProperties gemston ensureCreateDirectory ].
-
-
-
-%
-
 	errorCount
 	exit
 

@@ -73,14 +73,16 @@ StLauncherGemStonePlatform >> download: productVersionString alternateFtpDir: al
 
 	| productProperties |
 	productProperties := StLauncherGemStoneProductProperties version: productVersionString.
-	true ifTrue: [
-	'$GS_HOME/shared/downloads/zip/GemStone64Bit3.5.0-x86_64.Linux.zip' asFileReference copyTo: productProperties downloadFile.
-]
+	productProperties downloadFile exists
 		ifFalse: [
-	StLauncherGemStoneSystem 
-		downloadHttps: productProperties downloadHttpsUrl
-		to: productProperties downloadFile pathString.
-].
+true ifTrue: [
+			'$GS_HOME/shared/downloads/zip/GemStone64Bit3.5.0-x86_64.Linux.zip' asFileReference copyTo: productProperties downloadFile.
+]
+ifFalse: [
+			StLauncherGemStoneSystem 
+				downloadHttps: productProperties downloadHttpsUrl
+				to: productProperties downloadFile pathString.
+] ].
 	StLauncherGemStoneSystem unzip: productProperties downloadFile to: productProperties products.
 
 	productProperties productDirectory exists
