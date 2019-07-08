@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 #
 
-set -x 
-
 . $HOME/.st_launcher/st_launcher_default.env
 
 stashFile=`realpath $1`
 shift
-
-imageName=$1
-shift
+stashArgs="$*" 
+debugCommandError="true"
 
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
@@ -25,7 +22,6 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 
 	run
 	| imagePath imageName stashFilename cmdLine imageProperties structureProperties  |
-	imageName := '$imageName'.
 	stashFilename := '$stashFile'.
 	structureProperties := StLauncherProperties defaultPropertyFile.
 	imageName := structureProperties defaultImageName.
@@ -65,7 +61,7 @@ cat - > $file << EOF
 		StashScript
 			loadAndExecuteScriptClassFile: '$stashFile'
 			stashArgs: '$stashArgs'
-			topazArgs: '$topazArgs'
+			topazArgs: ''
 			workingDir: '$pwd'
 			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'

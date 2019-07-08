@@ -14,7 +14,10 @@ StLauncher_Hello >> executeScript [
 	opts
 		at: 'help'
     ifAbsent: [
-			self stdout: 'hello world'; lf
+			self stdout
+				nextPutAll: 'hello world';
+				lf;
+				yourself
 		] 
     ifPresent: [ ^ self usage ]
 ]
@@ -42,7 +45,7 @@ SYNOPSIS
 
 DESCRIPTION
 
-	Hello world for Samlltalk.
+	Hello world for Smalltalk.
 
 EXAMPLES
 	./hello.st --help
