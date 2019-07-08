@@ -1,22 +1,52 @@
-#!/usr/local/bin/smalltalk/gemstone/stash
+#!/usr/local/bin/smalltalk/gemstone/launcher
 "
-	Write `Hello World` to stdout and exit.
+Hello world smalltalk script
 "
 Class {
 	#name : 'StLauncher_Hello',
 	#superclass : 'StashScript',
-	#category : 'st_launcher-Scripts'
+	#category : 'hello'
 }
 
 { #category : 'script execution' }
 StLauncher_Hello >> executeScript [
 
-	opts at: 'help' ifPresent: [ ^ self usage ].
-	GsFile stdout nextPutAll: 'Hello World'; lf
+	opts
+		at: 'help'
+    ifAbsent: [
+			self stdout: 'hello world'; lf
+		] 
+    ifPresent: [ ^ self usage ]
+]
+
+{ #category : 'script execution' }
+StLauncher_Hello >> scriptOptions [
+	^ {
+			#('help' $h #'none').
+	}
 ]
 
 { #category : 'usage' }
 StLauncher_Hello >> usage [
+	| dashes |
+	dashes := '----------------------------------------------------
+'.
+  GsFile stdout nextPutAll: dashes,
+		(self manPageClass
+          fromString:
+'NAME
+	hello.st - hello world.
 
-	self usage: 'hello.st' description: 'Write `hello world` to stdout and exit.'
+SYNOPSIS
+  hello.st [--help]
+
+DESCRIPTION
+
+	Hello world for Samlltalk.
+
+EXAMPLES
+	./hello.st --help
+
+	./hello.st
+') printString, dashes
 ]

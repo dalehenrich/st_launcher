@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+
+
+. $HOME/.st_launcher/st_launcher_default.env
+
+stashFile=`realpath $1`
+shift
+
+imageName=$1
+shift
+
+if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
+	inputFile=`mktemp`
+	cat - > $inputFile << EOF
+
+	set solologin on
+	login
+
+	run
+	| cmdLine |
+	cmdLine := StLauncherPlatform scriptCommandLineForImageNamed: '$imageName' stashFile: '$stashFile'. 
+	GsFile stdout nextPutAll: cmdLine; lf
+%
+exit 
+EOF
+	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
+	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=ST_LAUNCHER_DEFAULT_IMAGE_PATH/snapshots/extent0.solo.dbf.gz" -S $inputFile`
+elseif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
+	echo "PHARO not supported ... yet"
+	exit 1
+else
+	echo "\$ST_LAUNCHER_DEFAULT_PLATFORM not defined"
+	exit 1
+fi
+
+file=`mktemp`
+cat - > $file << EOF
+	iferr 1 stk
+
+	$solo
+	login
+
+	run
+	[
+		StashScript
+			loadAndExecuteScriptClassFile: '$stashFile'
+			stashArgs: '$stashArgs'
+			topazArgs: '$topazArgs'
+			workingDir: '$pwd'
+			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
+			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
+			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__' ]
+		on: StashCommandError
+		do: [:ex |
+			$debugCommandError
+				ifTrue: [ ex pass ]
+				ifFalse: [ 
+					StashScript 
+						ansiRedOn: GsFile stdout 
+						during: [ GsFile stdout nextPutAll: ex description ].
+					GsFile stdout lf	] ]
+%
+EOF
+
+$scriptCmdLine -S $file
