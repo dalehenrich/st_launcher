@@ -1,11 +1,11 @@
-#!/usr/local/bin/smalltalk/gemstone/launcher
+#!/usr/local/bin/smalltalk/gemstone/stash
 "
 Hello world smalltalk script
 "
 Class {
 	#name : 'StLauncher_Hello',
 	#superclass : 'StashScript',
-	#category : 'hello'
+	#category : 'st_launcher-Scripts'
 }
 
 { #category : 'script execution' }

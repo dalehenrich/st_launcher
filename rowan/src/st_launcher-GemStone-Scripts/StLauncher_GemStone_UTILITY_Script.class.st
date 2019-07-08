@@ -37,7 +37,7 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 					ifNil: [ imageProperties := launcherProperties imageMap at: launcherProperties defaultImageName ].
 				snapshots := (StLauncher_GemStone_Snapshot_Script new)
 					resumeCheckpoints;
-					takeSnapshots: imageProperties name, '.dbf.gz' 
+					takeSnapshots: imageProperties name, '.dbf' 
 					to: imageProperties snapshotsDirectory
 					suspendInMinutes: 15 
 					safely: false.

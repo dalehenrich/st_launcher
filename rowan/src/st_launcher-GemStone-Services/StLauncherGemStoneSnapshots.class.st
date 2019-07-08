@@ -27,7 +27,7 @@ StLauncherGemStoneSnapshots >> snapshotExtentFilePaths [
 ]
 
 { #category : 'public' }
-StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
+StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension compression: compressionSymbol to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
 
 	"
 		acommit should be performed before calling this method, to make sure that the snapshot contains any changed state 
@@ -64,16 +64,30 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 							performCopy := false ] ].
 			performCopy
 				ifTrue: [
+					| compressionArgs |
 					snapshotFileRef := snapshotFile asFileReference.
-					snapshotFileRef extensions last ~= 'gz'
-						ifTrue: [ snapshotFileRef := snapshotFileRef , 'gz' ].	".gz extension required for gzip compression"
+					compressionSymbol == #none
+						ifTrue: [ compressionArgs := '' ]
+						ifFalse: [
+							compressionSymbol == #gz
+								ifTrue: [ 
+									compressionArgs := '-C'.
+									snapshotFileRef extensions last ~= 'gz'
+										ifTrue: [ snapshotFileRef := snapshotFileRef , 'gz' ].	".gz extension required for gzip compression" ]
+								ifFalse: [
+									compressionSymbol == #lz4
+										ifTrue: [ 
+											compressionArgs := '-Z'.
+											snapshotFileRef extensions last ~= 'gz'
+												ifTrue: [ snapshotFileRef := snapshotFileRef , 'gz' ].	".gz extension required for gzip compression" ]
+												ifFalse: [ self error: 'Unknown compression type: ', compressionSymbol asString ] ] ].
 					GsFile stdout nextPutAll:
 							'---Starting snapshot to ' , (extentPath , ' ' , snapshotFileRef pathString) printString
 								, '(' , DateAndTime now asString , ')';
 						lf.
 					snapshotFileRef exists
 						ifTrue: [ snapshotFileRef delete ].
-					self copydbf: extent to: snapshotFileRef args: '-C'.	"use gzip compression"
+					self copydbf: extent to: snapshotFileRef args: compressionArgs.	"use gzip compression"
 					snapshots add: snapshotFileRef.
 					GsFile stdout
 						nextPutAll:
@@ -88,8 +102,12 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirP
 		ensure: [ self checkpoints resumeCheckpoints ].
 	snapshots do: [:snapShotFile |
 		"in order for snapshot files to be usable by a topaz solo gem, the snapshot must be read only"
-		| resultString |
-		resultString := GsHostProcess execute: '/bin/chmod -w ', snapShotFile pathString.
-		GsFile stdout nextPutAll: resultString ].
+		StLauncherGemStoneSystem chmod: ' -w ', snapShotFile pathString ].
 	^ snapshots
+]
+
+{ #category : 'public' }
+StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely [
+
+	^ self takeSnapshots: snapshotExtension compression: #none to: snapshotDirPath suspendInMinutes: suspendInMinutes safely: safely
 ]
