@@ -17,18 +17,24 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 
 	iferr 1 stk
 
+	set user SystemUser
+	set password swordfish
+
 	set solologin on
 	login
 
 	run
 	| cmdLine |
+	GsFile stdout nextPutAll: 'HELLO'.
+true ifTrue: [ 
 	cmdLine := StLauncherPlatform scriptCommandLineForImageNamed: '$imageName' stashFile: '$stashFile'. 
 	GsFile stdout nextPutAll: cmdLine; lf
+]
 %
 exit 
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=ST_LAUNCHER_DEFAULT_IMAGE_PATH/snapshots/extent0.solo.dbf.gz" -S $inputFile`
+	$GEMSTONE/bin/topaz -l -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_IMAGE_PATH/snapshots/extent0.solo_350.dbf" -S $inputFile
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1

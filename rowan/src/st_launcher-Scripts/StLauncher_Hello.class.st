@@ -1,4 +1,4 @@
-#!/usr/local/bin/smalltalk/gemstone/stash
+#!/usr/local/bin/smalltalk/gemstone/launcher
 "
 Hello world smalltalk script
 "
