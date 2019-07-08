@@ -22,6 +22,22 @@ StLauncherPlatform class >> download: productVersionString platform: platformNam
 	^ (self platformClassFor: platformName) download: productVersionString
 ]
 
+{ #category : 'images' }
+StLauncherPlatform class >> imageNamed: aString ifAbsent: absentBlock [
+
+
+	^ self new imageNamed: aString 
+		ifPresent: [:imageProperties | ^ imageProperties ]
+		ifAbsent: absentBlock
+]
+
+{ #category : 'images' }
+StLauncherPlatform class >> imageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock [
+
+
+	^ self new imageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock
+]
+
 { #category : 'accessing' }
 StLauncherPlatform class >> platformClassFor: platformName [
 

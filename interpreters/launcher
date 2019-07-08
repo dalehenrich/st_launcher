@@ -24,17 +24,27 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	login
 
 	run
-	| cmdLine |
-	GsFile stdout nextPutAll: 'HELLO'.
-true ifTrue: [ 
-	cmdLine := StLauncherPlatform scriptCommandLineForImageNamed: '$imageName' stashFile: '$stashFile'. 
-	GsFile stdout nextPutAll: cmdLine; lf
-]
+	| imagePath imageName stashFilename cmdLine imageProperties structureProperties  |
+	imageName := '$imageName'.
+	stashFilename := '$stashFile'.
+	structureProperties := StLauncherProperties defaultPropertyFile.
+	imageName := structureProperties defaultImageName.
+	imagePath := (StLauncherPlatform 
+		imageNamed: imageName 
+		ifAbsent: [ self error: 'No image named ', imageName printString, ' found ' ]) asFileReference.
+	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
+	GsFile stdout 
+		nextPutAll: (imageProperties productDirectory / 'bin' / 'topaz' ) pathString;
+		nextPutAll: ' -lq -C "GEM_SOLO_EXTENT=';
+		nextPutAll: imageProperties soloSnapshot;
+		nextPutAll: '" -S ', stashFilename;
+		lf;
+		yourself.
 %
 exit 
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	$GEMSTONE/bin/topaz -l -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_IMAGE_PATH/snapshots/extent0.solo_350.dbf" -S $inputFile
+	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_IMAGE_PATH/snapshots/extent0.solo_350.dbf" -S $inputFile`
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1

@@ -156,6 +156,12 @@ StLauncherGemStoneImageProperties >> logsPath: aString [
 ]
 
 { #category : 'accessing' }
+StLauncherGemStoneImageProperties >> productDirectory [
+
+	^ productPath asFileReference
+]
+
+{ #category : 'accessing' }
 StLauncherGemStoneImageProperties >> productPath [
 
 	^ productPath
