@@ -22,6 +22,36 @@ StLauncherPlatform class >> download: productVersionString platform: platformNam
 	^ (self platformClassFor: platformName) download: productVersionString
 ]
 
+{ #category : 'launcher' }
+StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions [
+
+	"fabricate a platform-specific command line for executing the stashFile"
+
+	| imagePath imageName imageProperties idx tokens vmArgs |
+
+	vmArgs := ''.
+	imageName := self structureProperties defaultImageName.
+
+	tokens := interpreterOptions subStrings.
+	idx := tokens indexOf: '--'.
+	idx > 0
+		ifTrue: [
+			1 to: idx -1 do: [:i |
+				| arg |
+				arg := tokens at: i.
+				(arg findString: '-' startingAt: 1) = 1
+					ifTrue: [ vmArgs := vmArgs, ' ', arg ]
+					ifFalse: [
+						i = 1 ifTrue: [ imageName := arg ] ] ] ].
+	vmArgs isEmpty ifTrue: [ vmArgs := ' -lq' ].
+	
+	imagePath := (StLauncherPlatform 
+		imageNamed: imageName 
+		ifAbsent: [ self error: 'No image named ', imageName printString, ' found ' ]) asFileReference.
+	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
+	^ imageProperties generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs
+]
+
 { #category : 'images' }
 StLauncherPlatform class >> imageNamed: aString ifAbsent: absentBlock [
 

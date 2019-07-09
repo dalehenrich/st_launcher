@@ -59,6 +59,8 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 
 	self addImageForProperties: imageProperties.	"register image"
 
+	imageProperties export.
+
 	^ imageProperties
 ]
 

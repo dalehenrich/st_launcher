@@ -10,7 +10,6 @@ Class {
 		'binPath',
 		'extentsPath',
 		'snapshotsPath',
-		'soloSnapshot',
 		'productPath'
 	],
 	#category : 'st_launcher-GemStone-Properties'
@@ -137,6 +136,18 @@ StLauncherGemStoneImageProperties >> gemstoneVersion: aGemStoneVersionString [
 	gemstoneVersion := aGemStoneVersionString
 ]
 
+{ #category : 'launcher' }
+StLauncherGemStoneImageProperties >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs [
+
+	"fabricate a topaz command line for executing the stashFile using a solo extent"
+
+	GsFile stdout 
+		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
+		nextPutAll: vmArgs;
+		lf;
+		yourself.
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneImageProperties >> logsDirectory [
 
@@ -189,18 +200,6 @@ StLauncherGemStoneImageProperties >> snapshotsPath [
 StLauncherGemStoneImageProperties >> snapshotsPath: aString [
 
 	snapshotsPath := aString
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> soloSnapshot [
-
-	^ soloSnapshot
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> soloSnapshot: aStringOrFileRef [
-
-	soloSnapshot := aStringOrFileRef asFileReference resolve pathString	"resolve any env vars that may be present in path"
 ]
 
 { #category : 'accessing' }

@@ -14,25 +14,30 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 	opts
 		at: 'help'
     ifAbsent: [
-			| launcherProperties imageProperties snapshots |
+			| launcherProperties imageProperties snapshots platformVersionString |
 			launcherProperties := StLauncherProperties defaultPropertyFile.
 			opts at: 'clean' ifPresent: [
 				"clean up old directory structure"
 				StLauncherCommon _deleteStructure.
 			].
+			opts at: 'version' ifPresent: [:version |
+				"smalltalk platform version string, used with several other options"
+				platformVersionString := version ].
 			opts at: 'download' ifPresent: [:version |
 				"download and create a product tree"
-				StLauncherPlatform download: version platform: 'gemstone'
+				StLauncherPlatform 
+					download: (version ifNil: [ platformVersionString ])
+					platform: 'gemstone'
 			].
 			opts at: 'create' 
-				ifPresent: [:version |
+				ifPresent: [:imageName |
 					imageProperties := StLauncherPlatform 
-						createImageNamed: launcherProperties defaultImageName
+						createImageNamed: (imageName ifNil: [ launcherProperties defaultImageName ])
 						platform: 'gemstone'
-						version: version.
+						version: platformVersionString.
 				].
-			opts at: 'solo' ifPresent: [
-				"create snapshot for use as solo extent for default image ... use gzip compression to save space for deplyment/download"
+			opts at: 'snapshot' ifPresent: [
+				"create snapshot that can be used as solo extent"
 				imageProperties 
 					ifNil: [ imageProperties := launcherProperties imageMap at: launcherProperties defaultImageName ].
 				snapshots := (StLauncher_GemStone_Snapshot_Script new)
@@ -41,15 +46,6 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 					to: imageProperties snapshotsDirectory
 					suspendInMinutes: 15 
 					safely: false.
-
-				snapshots size > 1 
-					ifTrue: [ 
-						self error: 'A single snapshot file is needed for solo ... use a stone with a single extent to create snapshot' ].
-
-				imageProperties 
-					soloSnapshot: (snapshots at: 1);
-					export;
-					yourself.
 			].
 		] 
     ifPresent: [ ^ self usage ]
@@ -60,10 +56,10 @@ StLauncher_GemStone_UTILITY_Script >> scriptOptions [
 	^ {
 			#('help' $h #'none').
 			#('clean' nil #'none').
-			#('create' nil #'required').
-			#('solo' nil #'none').
+			#('create' nil #'optional').
+			#('snapshot' nil #'none').
 			#('version' nil #'required').
-			#('download' nil #'required').
+			#('download' nil #'optional').
 	}
 ]
 
@@ -83,15 +79,15 @@ SYNOPSIS
 
 DESCRIPTION
 
-	Test script for st_launcher.
+	Script for creating a GemStone image.
 
 EXAMPLES
 	./utility.st --help -- st_launcher_350 -lq
 
 	./utility.st --clean -- st_launcher_350 -lq
-	./utility.st --clean --create="3.5.0" -- st_launcher_350 -lq
-	./utility.st --clean --create="3.5.0" --solo -- st_launcher_350 -lq
-	./utility.st --clean --create="3.5.0" --solo -- st_launcher_350 -lq
+	./utility.st --clean --create --version=3.5.0 -- st_launcher_350 -lq
+	./utility.st --clean --create="gs_350" --version=3.5.0 --snapshot -- st_launcher_350 -lq
+	./utility.st --clean --create= --snapshot -- st_launcher_350 -lq
 
 	./utility.st --download="3.5.0" -- st_launcher_350 -lq
 ') printString, dashes
