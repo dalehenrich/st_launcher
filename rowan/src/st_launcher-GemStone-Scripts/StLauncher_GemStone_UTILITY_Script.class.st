@@ -14,7 +14,7 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 	opts
 		at: 'help'
     ifAbsent: [
-			| launcherProperties imageProperties snapshots platformVersionString |
+			| launcherProperties imageProperties snapshots platformVersionString sourceImageName |
 			launcherProperties := StLauncherProperties defaultPropertyFile.
 			opts at: 'clean' ifPresent: [
 				"clean up old directory structure"
@@ -23,12 +23,26 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 			opts at: 'version' ifPresent: [:version |
 				"smalltalk platform version string, used with several other options"
 				platformVersionString := version ].
+			opts at: 'sourceImage' ifPresent: [:imageName |
+				"name of smalltalk platform image, used with several other options"
+				sourceImageName := imageName ].
 			opts at: 'download' ifPresent: [:version |
 				"download and create a product tree"
 				StLauncherPlatform 
 					download: (version ifNil: [ platformVersionString ])
 					platform: 'gemstone'
 			].
+			opts at: 'createSolo' 
+				ifPresent: [:imageName |
+					| snapshotPath sourceImageProperties sourceImagePath |
+					sourceImagePath := (launcherProperties imageMap at: sourceImageName) asFileReference / StLauncherImageProperties defaultPropertyFilename.
+					sourceImageProperties := StLauncherProperties propertyFile: sourceImagePath.
+					snapshotPath := sourceImageProperties snapshotsDirectory / ('extent0.', sourceImageName, '.dbf'). 
+					imageProperties := StLauncherGemStonePlatform 
+						createSoloImageNamed: (imageName ifNil: [ launcherProperties defaultImageName ])
+						version: sourceImageProperties gemstoneVersion
+						sourceSnapshotFile: snapshotPath.
+				].
 			opts at: 'create' 
 				ifPresent: [:imageName |
 					imageProperties := StLauncherPlatform 
@@ -57,7 +71,9 @@ StLauncher_GemStone_UTILITY_Script >> scriptOptions [
 			#('help' $h #'none').
 			#('clean' nil #'none').
 			#('create' nil #'optional').
+			#('createSolo' nil #'optional').
 			#('snapshot' nil #'none').
+			#('sourceImage' nil #'required').
 			#('version' nil #'required').
 			#('download' nil #'optional').
 	}
@@ -72,23 +88,26 @@ StLauncher_GemStone_UTILITY_Script >> usage [
 		(self manPageClass
           fromString:
 'NAME
-	utility.st - Utility script.
+	utility.gs.st - Utility script.
 
 SYNOPSIS
-  utility.st [--help]
+  utility.gs.st [--help]
 
 DESCRIPTION
 
 	Script for creating a GemStone image.
 
 EXAMPLES
-	./utility.st --help -- st_launcher_350 -lq
+	./utility.gs.st --help -- st_launcher_350 -lq
 
-	./utility.st --clean -- st_launcher_350 -lq
-	./utility.st --clean --create --version=3.5.0 -- st_launcher_350 -lq
-	./utility.st --clean --create="gs_350" --version=3.5.0 --snapshot -- st_launcher_350 -lq
-	./utility.st --clean --create= --snapshot -- st_launcher_350 -lq
+	./utility.gs.st --clean -- st_launcher_350 -lq
 
-	./utility.st --download="3.5.0" -- st_launcher_350 -lq
+	./utility.gs.st --create=stl_350 --version=3.5.0 --snapshot -- st_launcher_350 -lq
+	./utility.gs.st --createSolo=solo_350 --sourceImage=stl_350 -- st_launcher_350 -lq
+
+	./utility.gs.st --clean --create --version=3.5.0 -- st_launcher_350 -lq
+	./utility.gs.st --clean --create=stl_350 --version=3.5.0 --snapshot -- st_launcher_350 -lq
+
+	./utility.gs.st --download="3.5.0" -- st_launcher_350 -lq
 ') printString, dashes
 ]

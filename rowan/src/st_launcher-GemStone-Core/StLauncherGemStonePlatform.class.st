@@ -11,6 +11,12 @@ StLauncherGemStonePlatform class >> createImageNamed: imageName version: version
 ]
 
 { #category : 'instance creation' }
+StLauncherGemStonePlatform class >> createSoloImageNamed: imageName version: versionString sourceSnapshotFile: snapshotPath [
+
+	^ self new createSoloImageNamed: imageName version: versionString sourceSnapshotFile: snapshotPath
+]
+
+{ #category : 'instance creation' }
 StLauncherGemStonePlatform class >> download: productVersionString [
 
 
@@ -52,6 +58,33 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 				structureName: self structureProperties name;
 				yourself.
 	imageProperties productPath: ((self structureProperties productMap at: self platformName) at: versionString).
+	imageProperties 
+		export;							"initializes directory paths to defaults if not explicitly set"
+		createStandardStructure;	"create structure on disk"
+		yourself.
+
+	self addImageForProperties: imageProperties.	"register image"
+
+	imageProperties export.
+
+	^ imageProperties
+]
+
+{ #category : 'actions' }
+StLauncherGemStonePlatform >> createSoloImageNamed: imageName version: versionString sourceSnapshotFile: snapshotPath [
+
+	| imageProperties |
+	self imageNamed: imageName
+		ifPresent: [:imagePath | self error: 'An image named ', imageName printString, ' already exists (', imagePath printString, ' ).' ]
+		ifAbsent: [].
+	imageProperties := (StLauncherGemStoneSoloImageProperties 
+			named: imageName version: versionString)
+				structureName: self structureProperties name;
+				yourself.
+	imageProperties productPath: ((self structureProperties productMap at: self platformName) at: versionString).
+
+	imageProperties soloSnapshot: snapshotPath asFileReference pathString.
+
 	imageProperties 
 		export;							"initializes directory paths to defaults if not explicitly set"
 		createStandardStructure;	"create structure on disk"

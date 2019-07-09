@@ -1,28 +1,14 @@
 Class {
 	#name : 'StLauncherGemStoneImageProperties',
-	#superclass : 'StLauncherImageProperties',
+	#superclass : 'StLauncherGemStoneCommonImageProperties',
 	#instVars : [
-		'gemstoneVersion',
 		'statsPath',
 		'tranlogsPath',
 		'backupsPath',
-		'logsPath',
-		'binPath',
-		'extentsPath',
-		'snapshotsPath',
-		'productPath'
+		'extentsPath'
 	],
 	#category : 'st_launcher-GemStone-Properties'
 }
-
-{ #category : 'instance creation' }
-StLauncherGemStoneImageProperties class >> named: nameString version: gemstoneVersionString [
-
-	^ (self new)
-		name: nameString;
-		gemstoneVersion: gemstoneVersionString;
-		yourself
-]
 
 { #category : 'accessing' }
 StLauncherGemStoneImageProperties class >> platformName [
@@ -48,24 +34,6 @@ StLauncherGemStoneImageProperties >> backupsPath: aString [
 	backupsPath := aString
 ]
 
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> binDirectory [
-
-	^ self imageDirectory / self binPath
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> binPath [
-
-	^ binPath ifNil: [ binPath := 'bin' ]
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> binPath: aString [
-
-	binPath := aString
-]
-
 { #category : 'actions' }
 StLauncherGemStoneImageProperties >> createStandardStructure [
 	"create standard directory structure on disk"
@@ -74,10 +42,7 @@ StLauncherGemStoneImageProperties >> createStandardStructure [
 	self statsDirectory exists ifFalse: [ self createStatsDirectoryStructure ].
 	self tranlogsDirectory exists ifFalse: [ self tranlogsDirectory ensureCreateDirectory ].
 	self backupsDirectory exists ifFalse: [ self backupsDirectory ensureCreateDirectory ].
- 	self logsDirectory exists ifFalse: [ self logsDirectory ensureCreateDirectory ].
-	self binDirectory exists ifFalse: [ self binDirectory ensureCreateDirectory ].
 	self extentsDirectory exists ifFalse: [ self extentsDirectory ensureCreateDirectory ].
-	self snapshotsDirectory exists ifFalse: [ self snapshotsDirectory ensureCreateDirectory ].
 ]
 
 { #category : 'actions' }
@@ -98,10 +63,7 @@ StLauncherGemStoneImageProperties >> exportToStream: aStream [
 		statsPath;
 		tranlogsPath;
 		backupsPath;
-		logsPath;
-		binPath;
 		extentsPath;
-		snapshotsPath;
 		yourself.
 	super exportToStream: aStream
 ]
@@ -122,84 +84,6 @@ StLauncherGemStoneImageProperties >> extentsPath [
 StLauncherGemStoneImageProperties >> extentsPath: aString [
 
 	extentsPath := aString
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> gemstoneVersion [
-
-	^ gemstoneVersion
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> gemstoneVersion: aGemStoneVersionString [
-
-	gemstoneVersion := aGemStoneVersionString
-]
-
-{ #category : 'launcher' }
-StLauncherGemStoneImageProperties >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs [
-
-	"fabricate a topaz command line for executing the stashFile using a solo extent"
-
-	GsFile stdout 
-		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: vmArgs;
-		lf;
-		yourself.
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> logsDirectory [
-
-	^ self imageDirectory / self logsPath
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> logsPath [
-
-	^ logsPath ifNil: [ logsPath := 'logs' ]
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> logsPath: aString [
-
-	logsPath := aString
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> productDirectory [
-
-	^ productPath asFileReference
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> productPath [
-
-	^ productPath
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> productPath: aString [
-
-	productPath := aString
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> snapshotsDirectory [
-
-	^ self imageDirectory / self snapshotsPath
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> snapshotsPath [
-
-	^ snapshotsPath ifNil: [ snapshotsPath := 'snapshots' ]
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> snapshotsPath: aString [
-
-	snapshotsPath := aString
 ]
 
 { #category : 'accessing' }
@@ -242,10 +126,4 @@ StLauncherGemStoneImageProperties >> tranlogsPath [
 StLauncherGemStoneImageProperties >> tranlogsPath: aString [
 
 	tranlogsPath := aString
-]
-
-{ #category : 'accessing' }
-StLauncherGemStoneImageProperties >> version [
-
-	^ RwGemStoneVersionNumber fromString: self gemstoneVersion
 ]

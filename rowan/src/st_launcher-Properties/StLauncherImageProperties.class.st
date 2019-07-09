@@ -38,7 +38,7 @@ StLauncherImageProperties class >> platformName [
 { #category : 'accessing' }
 StLauncherImageProperties class >> propertyClassForPlatform: platformName [
 
-	^ self subclasses detect: [:each | each platformName = platformName ] ifNone: [ self error: 'Platform name ', platformName printString , ' not reconized.' ]
+	^ self allSubclasses detect: [:each | each platformName = platformName ] ifNone: [ self error: 'Platform name ', platformName printString , ' not reconized.' ]
 ]
 
 { #category : 'actions' }

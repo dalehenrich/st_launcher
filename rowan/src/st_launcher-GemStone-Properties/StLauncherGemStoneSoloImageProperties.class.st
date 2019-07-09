@@ -1,6 +1,6 @@
 Class {
 	#name : 'StLauncherGemStoneSoloImageProperties',
-	#superclass : 'StLauncherGemStoneImageProperties',
+	#superclass : 'StLauncherGemStoneCommonImageProperties',
 	#instVars : [
 		'soloSnapshot'
 	],
@@ -16,6 +16,7 @@ StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
 		nextPutAll: vmArgs, ' -C "GEM_SOLO_EXTENT=';
 		nextPutAll: self soloSnapshot;
+		nextPutAll: '"'
 		lf;
 		yourself.
 ]

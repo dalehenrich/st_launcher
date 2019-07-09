@@ -3,6 +3,7 @@
 # Args:
 # 	<stash-file-path> [ [<image-name> [ <vm-args> ] ] -- ] [ <script-args> ]
 #
+set -x
 
 . $HOME/.st_launcher/st_launcher_default.env
 
@@ -13,6 +14,9 @@ vmArgs=""
 scriptArgs=""
 debugCommandError="false"
 
+interpArgs="$*"
+
+echo "$interpArgs :: $@ :: $*"
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
@@ -26,42 +30,12 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	login
 
 	run
-"fabricate a topaz command line for executing the stashFile using a solo extent"
-	| imagePath imageName stashFilename cmdLine imageProperties structureProperties
- 		interpreterCommandLineArgs idx tokens vmArgs |
-	stashFilename := '$stashFile'.
-
-	interpreterCommandLineArgs := '$*'.
-	vmArgs := ''.
-	tokens := interpreterCommandLineArgs subStrings.
-	idx := tokens indexOf: '--'.
-	idx > 0
-		ifTrue: [
-			1 to: idx -1 do: [:i |
-				| arg |
-				arg := tokens at: i.
-				(arg findString: '-' startingAt: 1) = 1
-					ifTrue: [ 
-						vmArgs := vmArgs, ' ', arg ] ] ].
-	vmArgs isEmpty ifTrue: [ vmArgs := ' -lq' ].
-	
-	structureProperties := StLauncherProperties defaultPropertyFile.
-	imageName := structureProperties defaultImageName.
-	imagePath := (StLauncherPlatform 
-		imageNamed: imageName 
-		ifAbsent: [ self error: 'No image named ', imageName printString, ' found ' ]) asFileReference.
-	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
-	GsFile stdout 
-		nextPutAll: (imageProperties productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: vmArgs, ' -C "GEM_SOLO_EXTENT=';
-		nextPutAll: imageProperties soloSnapshot;
-		lf;
-		yourself.
+	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs'
 %
 exit 
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_IMAGE_PATH/snapshots/extent0.solo_350.dbf" -S $inputFile`
+	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1
