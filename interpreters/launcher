@@ -1,12 +1,46 @@
 #!/usr/bin/env bash
 #
+# Args:
+# 	<stash-file-path> [ [<image-name> [ <vm-args> ] ] -- ] [ <script-args> ]
+#
 
 . $HOME/.st_launcher/st_launcher_default.env
 
 stashFile=`realpath $1`
 shift
-stashArgs="$*" 
-debugCommandError="true"
+imageName=""
+vmArgs=""
+scriptArgs=""
+argsType="vm"
+debugCommandError="false"
+for argument in $@ ; do
+	echo $argument
+	if [ "$argument" = "--" ] ; then
+		case "$argsType" in
+			vm)
+				argsType="script"
+				;;
+			script)
+				;;
+			*)
+				;;
+		esac
+	else
+		case "$argsType" in
+			vm)
+				vmArgs+=" $argument"
+				;;
+			script)
+				scriptArgs+=" $argument"
+				;;
+			*)
+				;;
+		esac
+	fi
+	echo "argsType: $argsType vmArgs: $vmArgs scriptArgs: $scriptArgs"
+done
+
+echo "$vmArgs"
 
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
@@ -21,8 +55,12 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	login
 
 	run
-	| imagePath imageName stashFilename cmdLine imageProperties structureProperties  |
+"fabricate a topaz command line for executing the stashFile using a solo extent"
+	| imagePath imageName stashFilename cmdLine imageProperties structureProperties vmArgs |
 	stashFilename := '$stashFile'.
+	vmArgs := '$vmArgs'.
+	vmArgs isEmpty ifTrue: [ vmArgs := ' -lq'].
+
 	structureProperties := StLauncherProperties defaultPropertyFile.
 	imageName := structureProperties defaultImageName.
 	imagePath := (StLauncherPlatform 
@@ -31,9 +69,8 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
 	GsFile stdout 
 		nextPutAll: (imageProperties productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: ' -lq -C "GEM_SOLO_EXTENT=';
+		nextPutAll: vmArgs, ' -C "GEM_SOLO_EXTENT=';
 		nextPutAll: imageProperties soloSnapshot;
-		nextPutAll: '" -S ', stashFilename;
 		lf;
 		yourself.
 %
@@ -60,8 +97,8 @@ cat - > $file << EOF
 	[
 		StashScript
 			loadAndExecuteScriptClassFile: '$stashFile'
-			stashArgs: '$stashArgs'
-			topazArgs: ''
+			stashArgs: '$scriptArgs'
+			topazArgs: '$vmArgs'
 			workingDir: '$pwd'
 			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
@@ -78,4 +115,5 @@ cat - > $file << EOF
 %
 EOF
 
+echo "$scriptCmdLine -S $file"
 $scriptCmdLine -S $file
