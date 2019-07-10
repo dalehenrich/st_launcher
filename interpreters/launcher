@@ -8,12 +8,19 @@
 
 stashFile=`realpath $1`
 shift
-imageName=""
-vmArgs=""
 scriptArgs=""
 debugCommandError="false"
 
 interpArgs="$*"
+
+for argument in $@ ; do
+	if [ "$argument" = "--" ] ; then
+		startScript="true"
+		scriptArgs=""
+	else
+		scriptArgs+=" $argument"
+	fi
+done
 
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
@@ -54,7 +61,7 @@ cat - > $file << EOF
 		StashScript
 			loadAndExecuteScriptClassFile: '$stashFile'
 			stashArgs: '$scriptArgs'
-			topazArgs: '$vmArgs'
+			topazArgs: ''	"not used"
 			workingDir: '$pwd'
 			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'

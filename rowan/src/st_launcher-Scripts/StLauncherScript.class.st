@@ -19,10 +19,10 @@ StLauncherScript >> executeScript [
 			(opts includesKey: option)
 				ifTrue: [
 					| selector |
-					selector := self optionsMap at: option.
+					selector := (self scriptOptionsMap at: option) at: 4.
 					selector numArgs = 0
 						ifTrue: [ self perform: selector asSymbol ]
-						ifFalse: [ self perform: selector asSymbol withArg: (opts at: option) ] ] ].
+						ifFalse: [ self perform: selector asSymbol with: (opts at: option) ] ] ].
 		self postExecute ] 
     ifPresent: [ ^ self usage ]
 ]

@@ -1,1 +1,1 @@
-../rowan/src/st_launcher-GemStone-Scripts/StLauncher_GemStone_UTILITY_Script.class.st
+../rowan/src/st_launcher-GemStone-Scripts/StLauncher_GemStone_UTILITY_NEW_Script.class.st

@@ -21,12 +21,6 @@ StLauncherGemStoneCommonImageProperties class >> named: nameString version: gems
 ]
 
 { #category : 'accessing' }
-StLauncherGemStoneCommonImageProperties class >> platformName [
-
-	^ 'gemstone'
-]
-
-{ #category : 'accessing' }
 StLauncherGemStoneCommonImageProperties >> binDirectory [
 
 	^ self imageDirectory / self binPath

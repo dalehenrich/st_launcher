@@ -7,6 +7,12 @@ Class {
 	#category : 'st_launcher-GemStone-Properties'
 }
 
+{ #category : 'accessing' }
+StLauncherGemStoneSoloImageProperties class >> platformName [
+
+	^ 'gemstone'
+]
+
 { #category : 'launcher' }
 StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs [
 
