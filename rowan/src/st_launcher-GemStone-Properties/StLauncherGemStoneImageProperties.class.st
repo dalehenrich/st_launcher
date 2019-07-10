@@ -11,12 +11,6 @@ Class {
 }
 
 { #category : 'accessing' }
-StLauncherGemStoneImageProperties class >> platformName [
-
-	^ 'gemstone'
-]
-
-{ #category : 'accessing' }
 StLauncherGemStoneImageProperties >> backupsDirectory [
 
 	^ self imageDirectory / self backupsPath

@@ -34,9 +34,8 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 			].
 			opts at: 'createSolo' 
 				ifPresent: [:imageName |
-					| snapshotPath sourceImageProperties sourceImagePath |
-					sourceImagePath := (launcherProperties imageMap at: sourceImageName) asFileReference / StLauncherImageProperties defaultPropertyFilename.
-					sourceImageProperties := StLauncherProperties propertyFile: sourceImagePath.
+					| snapshotPath sourceImageProperties  |
+					sourceImageProperties := launcherProperties propertiesForImageNamed: sourceImageName.
 					snapshotPath := sourceImageProperties snapshotsDirectory / ('extent0.', sourceImageName, '.dbf'). 
 					imageProperties := StLauncherGemStonePlatform 
 						createSoloImageNamed: (imageName ifNil: [ launcherProperties defaultImageName ])

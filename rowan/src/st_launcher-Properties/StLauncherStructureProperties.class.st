@@ -66,7 +66,25 @@ StLauncherStructureProperties >> defaultImageName: aString [
 { #category : 'exporting' }
 StLauncherStructureProperties >> export [
 
-	self export: self defaultPropertiesDirectory / self name, 'ston'
+	| defaultEnvFile |
+	self export: self defaultPropertiesDirectory / self name, 'ston'.
+	defaultEnvFile := self defaultPropertiesDirectory / 'st_launcher_default.env'.
+	self 
+		propertiesForImageNamed: self defaultImageName 
+		ifPresent: [:defaultImageProperties |
+			defaultEnvFile
+				writeStreamDo: [:stream |
+					stream
+						nextPutAll: 'export ST_LAUNCHER_DEFAULT_PLATFORM=', defaultImageProperties platformName;
+						lf;
+						nextPutAll: 'export ST_LAUNCHER_DEFAULT_PRODUCT_PATH="', defaultImageProperties productPath, '"';
+						lf;
+						nextPutAll: 'export ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH="', defaultImageProperties soloSnapshot, '"';
+						lf;
+						yourself ] ]
+		ifAbsent: [ 
+			"no default image present, so we can't execute scripts, until it reappears"
+			defaultEnvFile deleteIfAbsent: [ "not there, so we're good" ] ].
 ]
 
 { #category : 'accessing' }
@@ -99,6 +117,20 @@ StLauncherStructureProperties >> imageMap: aDictionary [
 	imageMap := aDictionary
 ]
 
+{ #category : 'image management' }
+StLauncherStructureProperties >> imageNamed: aString ifAbsent: absentBlock [
+
+	^ self imageNamed: aString ifPresent: [:imagePath | imagePath ] ifAbsent: absentBlock
+]
+
+{ #category : 'image management' }
+StLauncherStructureProperties >> imageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock [
+
+	| imagePropertiesPath |
+	imagePropertiesPath := self imageMap at: aString ifAbsent: [ ^ absentBlock value ].
+	^ presentBlock cull: imagePropertiesPath
+]
+
 { #category : 'accessing' }
 StLauncherStructureProperties >> images [
 
@@ -121,4 +153,30 @@ StLauncherStructureProperties >> productMap [
 StLauncherStructureProperties >> productMap: aDictionary [
 
 	productMap := aDictionary
+]
+
+{ #category : 'image management' }
+StLauncherStructureProperties >> propertiesForImageNamed: aString [
+
+	^ self propertiesForImageNamed: aString ifAbsent: [ self error: 'No image found for ', aString printString, '.' ]
+]
+
+{ #category : 'image management' }
+StLauncherStructureProperties >> propertiesForImageNamed: aString ifAbsent: absentBlock [
+
+	^ self propertiesForImageNamed: aString ifPresent: [:imageProperties | imageProperties ] ifAbsent: absentBlock
+]
+
+{ #category : 'image management' }
+StLauncherStructureProperties >> propertiesForImageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock [
+
+	| imagePath imagePropertiesPath imageProperties |
+	imagePath := self imageNamed: aString ifAbsent: absentBlock.
+	imagePropertiesPath := imagePath asFileReference / StLauncherImageProperties defaultPropertyFilename.
+	imagePropertiesPath exists 
+		ifFalse: [ 
+			"no file no properties"
+			^ absentBlock value ].
+	imageProperties := StLauncherProperties propertyFile: imagePropertiesPath.
+	^ presentBlock cull: imageProperties
 ]

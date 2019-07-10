@@ -126,6 +126,12 @@ StLauncherPlatform >> platformName [
 	^ self class platformName
 ]
 
+{ #category : 'images' }
+StLauncherPlatform >> propertiesForImageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock [
+
+	^ self structureProperties propertiesForImageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock
+]
+
 { #category : 'io' }
 StLauncherPlatform >> stdout: aString [
 	"Write aString to stdout with a trailing lf"
