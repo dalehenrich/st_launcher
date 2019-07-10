@@ -4,29 +4,17 @@ Hello world smalltalk script
 "
 Class {
 	#name : 'StLauncher_Hello',
-	#superclass : 'StashScript',
+	#superclass : 'StLauncherScript',
 	#category : 'st_launcher-Scripts'
 }
 
 { #category : 'script execution' }
-StLauncher_Hello >> executeScript [
+StLauncher_Hello >> postExecute [
 
-	opts
-		at: 'help'
-    ifAbsent: [
-			self stdout
-				nextPutAll: 'hello world';
-				lf;
-				yourself
-		] 
-    ifPresent: [ ^ self usage ]
-]
-
-{ #category : 'script execution' }
-StLauncher_Hello >> scriptOptions [
-	^ {
-			#('help' $h #'none').
-	}
+	self stdout
+		nextPutAll: 'hello world';
+		lf;
+		yourself
 ]
 
 { #category : 'usage' }
