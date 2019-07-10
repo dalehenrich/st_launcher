@@ -3,7 +3,6 @@
 # Args:
 # 	<stash-file-path> [ [<image-name> [ <vm-args> ] ] -- ] [ <script-args> ]
 #
-set -x
 
 . $HOME/.st_launcher/st_launcher_default.env
 
@@ -16,7 +15,6 @@ debugCommandError="false"
 
 interpArgs="$*"
 
-echo "$interpArgs :: $@ :: $*"
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
