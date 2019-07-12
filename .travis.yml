@@ -10,6 +10,11 @@ before_script:
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone/products
     - unzip -q -d "$ST_LAUNCHER_HOME/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
+    - curl  -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/extent0.admin_gs_350.dbf.zip"
+    - ls -altr 
+    - ls -altr $ST_LAUNCHER_HOME/platforms/gemstone/images/admin_gs_350/snapshots
+    - unzip -q -d $ST_LAUNCHER_HOME/platforms/gemstone/images/admin_gs_350/snapshots extent0.admin_gs_350.dbf.zip
+    - ls -altr $ST_LAUNCHER_HOME/platforms/gemstone/images/admin_gs_350/snapshots
 
 script:
 - bash travis_tests/st_launcher_tests.sh
