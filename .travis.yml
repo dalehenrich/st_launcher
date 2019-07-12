@@ -5,7 +5,7 @@ before_script:
     - ls -altr .
     - ls -altr shunit2-2.1.7/
     - ls -altrd shunit2-2.1.7/*
-    - ls -altr shunit2-2.1.7/sunit
+    - ls -altr shunit2-2.1.7/sunit2
 
 script:
 - bash travis_tests/sample_script_tests.sh
