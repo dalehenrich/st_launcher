@@ -8,9 +8,10 @@ before_script:
     - git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
     - ls -altr travis_tests
     - curl  -O -s -S "https://downloads.gemtalksystems.com/pub/GemStone64/3.5.0/GemStone64Bit3.5.0-x86_64.Linux.zip"
-    - ls -altr travis_tests
+    - ls -altr 
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone/products
+    - ls -altr "$ST_LAUNCHER_HOME/platforms/gemstone/products"
     - unzip -q "$ST_LAUNCHER_HOME/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
     - ls -altr "$ST_LAUNCHER_HOME/platforms/gemstone/products"
     - ls -altr travis_tests
