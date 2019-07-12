@@ -4,4 +4,4 @@ before_script:
     - curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx
 
 script:
-- bash tests/sample_script_tests.sh
+- bash travis_tests/sample_script_tests.sh
