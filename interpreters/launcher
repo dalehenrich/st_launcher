@@ -28,11 +28,10 @@ for argument in $@ ; do
 done
 
 debugCommandError="false"
-myVmArgs="-lq"
 for argument in $launcherVmArgs ; do
 	case "$argument" in
 		-D) debugCommandError="true" ;;
-		-V) set -x; myVmArgs="-l";;
+		-V) set -x;;
 		*);;
 	esac
 done
@@ -60,7 +59,7 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 exit 
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz $myVmArgs -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1

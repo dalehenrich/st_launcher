@@ -108,13 +108,16 @@ StLauncherPlatform >> generateVmScriptLaunchCommandLineFrom:  launcherVmOptions 
 	idx > 0
 		ifTrue: [
 			1 to: idx -1 do: [:i |
-				| arg |
-				arg := tokens at: i.
-				(arg findString: '-' startingAt: 1) = 1
-					ifTrue: [ vmArgs := vmArgs, ' ', arg ]
+				| token |
+				token := tokens at: i.
+				(token findString: '-' startingAt: 1) = 1
+					ifTrue: [
+						launcherArgMap
+							at: token
+							ifAbsent: [ vmArgs := vmArgs, ' ', token ] ]
 					ifFalse: [
 						i = 1 
-							ifTrue: [ imageName := arg ] ] ] ].
+							ifTrue: [ imageName := token ] ] ] ].
 	vmArgs isEmpty ifTrue: [ vmArgs := ' -lq' ].
 	
 	imagePath := (StLauncherPlatform 
