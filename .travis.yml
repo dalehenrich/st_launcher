@@ -2,10 +2,16 @@ language: bash
 
 env:
   - ROWAN_PROJECTS_HOME="$TRAVIS_BUILD_DIR"
+  - ST_LAUNCHER_HOME="$TRAVIS_BUILD_DIR"
 
 before_script:
     - curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx -C $TRAVIS_BUILD_DIR/travis_tests
     - git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
+    - ls -altr travis_tests
+    - ls -altr "$ST_LAUNCHER_HOME/platforms/gemstone/products"
+    - curl -L "https://downloads.gemtalksystems.com/pub/GemStone64/3.5.0/GemStone64Bit3.5.0-x86_64.Linux.zip"
+    - unzip -q "$ST_LAUNCHER_HOME/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
+    - ls -altr "$ST_LAUNCHER_HOME/platforms/gemstone/products"
     - ls -altr travis_tests
 
 script:
