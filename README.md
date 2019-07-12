@@ -1,4 +1,4 @@
-# st_launcher
+# st_launcher [![Build Status](https://travis-ci.org/dalehenrich/st_launcher.svg?branch=masterV0.0](https://travis-ci.org/dalehenrich/st_launcher)
 
 ## Installation/Bootstrap
 ### Using GsDevKit_home and stash
