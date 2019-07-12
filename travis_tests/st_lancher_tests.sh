@@ -13,4 +13,4 @@ testSampleScriptParameters() {
   assertTrue 'Check that DEMO_ARRAY is not empty' "[ ${#DEMO_ARRAY[@]} -ne 0 ]"
 }
 
-. shunit2-2.1.7/shunit2
+. travis_tests/shunit2-2.1.7/shunit2
