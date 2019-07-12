@@ -1,25 +1,40 @@
 #!/usr/bin/env bash
 #
-# Args:
-# 	<stash-file-path> [ [<image-name> [ <vm-args> ] ] -- ] [ <script-args> ]
+# launcher [launcher/vm args] scriptName [launcher/vm args] [--] [script args]
 #
+#		The launcher/vm args may not use positional arguments. The scriptName is the
+#			first positional parameter on a command line.
+#		If the same argument is provided in each set of [launcher/vm args], the last 
+#			version should override any previous versions.
+#		If the script requires an argument of '--', the optional '--' delimer must 
+#			be specified to ensure the launcher does the right thing
 
 . $HOME/.st_launcher/st_launcher_default.env
 
 stashFile=`realpath $1`
 shift
 scriptArgs=""
-debugCommandError="false"
+launcherVmArgs=""
 
 interpArgs="$*"
 
 for argument in $@ ; do
 	if [ "$argument" = "--" ] ; then
-		startScript="true"
+		launcherVmArgs=$scriptArgs
 		scriptArgs=""
 	else
 		scriptArgs+=" $argument"
 	fi
+done
+
+debugCommandError="false"
+myVmArgs="-lq"
+for argument in $launcherVmArgs ; do
+	case "$argument" in
+		-D) debugCommandError="true" ;;
+		-V) set -x; myVmArgs="-l";;
+		*);;
+	esac
 done
 
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
@@ -35,12 +50,17 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	login
 
 	run
-	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs'
+	| launcherArgMap |
+	launcherArgMap := Dictionary new
+		at: '-D' put: #none;	"debug StashCommandErrors"
+		at: '-V' put: #none;	"list script execution"
+		yourself.
+	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap
 %
 exit 
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+	scriptCmdLine=`$GEMSTONE/bin/topaz $myVmArgs -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1

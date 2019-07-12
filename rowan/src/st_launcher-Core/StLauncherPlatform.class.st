@@ -23,11 +23,18 @@ StLauncherPlatform class >> download: productVersionString platform: platformNam
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions [
+StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions launcherArgMap: launcherArgMap [
 
 	"fabricate a platform-specific command line for executing the stashFile"
+	
+	"
+	<launcherArgMap> is a dictionary whose keys are launcher options and values:
+		#none		- no argument
+		#required	- required argement
+		#optional	- optional argument
+	"
 
-	^ self new generateVmScriptLaunchCommandLineFrom:  interpreterOptions
+	^ self new generateVmScriptLaunchCommandLineFrom:  interpreterOptions launcherArgMap: launcherArgMap
 ]
 
 { #category : 'images' }
@@ -71,16 +78,32 @@ StLauncherPlatform >> download: productVersionString alternateFtpDir: alternameF
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions [
+StLauncherPlatform >> generateVmScriptLaunchCommandLineFrom:  launcherVmOptions launcherArgMap: launcherArgMap [
 
 	"fabricate a platform-specific command line for executing the stashFile"
+
+	"
+	<launcherArgMap> is a dictionary whose keys are launcher options and values:
+		#none		- no argument
+		#required	- required argement
+		#optional	- optional argument
+
+	Options in <launcherArgMap> are not to be added to <vmArgs>
+	"
+
+	"
+	The launcher/vm args may not use positional arguments. The scriptName is the
+		first positional parameter on a command line.
+	If the same argument is provided in each set of [launcher/vm args], the last 
+		version should override any previous versions.
+	"
 
 	| imagePath imageName imageProperties idx tokens vmArgs |
 
 	vmArgs := ''.
 	imageName := self structureProperties defaultImageName.
 
-	tokens := interpreterOptions subStrings.
+	tokens := launcherVmOptions subStrings.
 	idx := tokens indexOf: '--'.
 	idx > 0
 		ifTrue: [
@@ -90,14 +113,15 @@ StLauncherPlatform >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions
 				(arg findString: '-' startingAt: 1) = 1
 					ifTrue: [ vmArgs := vmArgs, ' ', arg ]
 					ifFalse: [
-						i = 1 ifTrue: [ imageName := arg ] ] ] ].
+						i = 1 
+							ifTrue: [ imageName := arg ] ] ] ].
 	vmArgs isEmpty ifTrue: [ vmArgs := ' -lq' ].
 	
 	imagePath := (StLauncherPlatform 
 		imageNamed: imageName 
 		ifAbsent: [ self error: 'No image named ', imageName printString, ' found ' ]) asFileReference.
 	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
-	^ imageProperties generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs
+	^ imageProperties generateVmScriptLaunchCommandLineFrom: vmArgs
 ]
 
 { #category : 'images' }

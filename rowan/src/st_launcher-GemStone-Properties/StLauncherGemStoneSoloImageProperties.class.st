@@ -14,7 +14,7 @@ StLauncherGemStoneSoloImageProperties class >> platformName [
 ]
 
 { #category : 'launcher' }
-StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs [
+StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs [
 
 	"fabricate a topaz command line for executing the stashFile using a solo extent"
 

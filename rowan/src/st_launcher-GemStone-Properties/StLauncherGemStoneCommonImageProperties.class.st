@@ -74,7 +74,7 @@ StLauncherGemStoneCommonImageProperties >> gemstoneVersion: aGemStoneVersionStri
 ]
 
 { #category : 'launcher' }
-StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions vmArgs: vmArgs [
+StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs [
 
 	"fabricate a topaz command line for executing the stashFile using a solo extent"
 
