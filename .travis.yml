@@ -12,7 +12,7 @@ before_script:
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone/products
     - ls -altr "$ST_LAUNCHER_HOME/platforms/gemstone/products"
-    - unzip -q "$ST_LAUNCHER_HOME/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
+    - unzip -q -d "$ST_LAUNCHER_HOME/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
     - ls -altr "$ST_LAUNCHER_HOME/platforms/gemstone/products"
     - ls -altr travis_tests
 
