@@ -2,6 +2,7 @@ language: bash
 
 before_script:
     - curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx
+    - ls -altr .
 
 script:
 - bash travis_tests/sample_script_tests.sh
