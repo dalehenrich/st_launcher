@@ -4,9 +4,9 @@ before_script:
     - curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx
     - git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
     - ls -altr travis_tests
-    - echo "$HOME"
+    - echo "$TRAVIS_BUILD_DIR"
     - ls -altr
-    - ls -altr $HOME
+    - ls -altr $TRAVIS_BUILD_DIR
 
 script:
 - bash travis_tests/st_launcher_tests.sh
