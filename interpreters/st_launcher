@@ -117,6 +117,8 @@ interpArgs="$*"
 for argument in $@ ; do
 	if [ "$argument" = "--" ] ; then
 		launcherVmArgs=$scriptArgs
+		args=($launcherVmArgs)
+		imageName=${args[0]}
 		scriptArgs=""
 	else
 		scriptArgs+=" $argument"
@@ -184,7 +186,7 @@ cat - > $file << EOF
 		StashScript
 			loadAndExecuteScriptClassFile: '$stashFile'
 			stashArgs: '$scriptArgs'
-			topazArgs: ''	"not used"
+			topazArgs: '$imageName'
 			workingDir: '$pwd'
 			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'

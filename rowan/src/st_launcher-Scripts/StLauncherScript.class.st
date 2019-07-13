@@ -8,6 +8,13 @@ Class {
 	#category : 'st_launcher-Scripts'
 }
 
+{ #category : 'accessing' }
+StLauncherScript >> currentImageName [
+	"short term hack"
+
+	^ self topazArgString
+]
+
 { #category : 'script execution' }
 StLauncherScript >> executeScript [
 
