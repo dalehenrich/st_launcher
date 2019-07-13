@@ -34,24 +34,24 @@ StLauncher_GemStone_Backup_Script >> postExecute [
 
 	| theBackupPath sessId result |
 	theBackupPath :=  self _backupDirectory.
-	GsFile stdout nextPutall: 'Waiting for vote to complete...'; lf.
+	GsFile stderr nextPutAll: 'Waiting for vote to complete...'; lf.
 	System waitForVoteStateIdle.
 	sessId := System sessionIdHoldingGcLock.
 	sessId ~~ 0
 		ifTrue: [ 
 			self
-				error:
+				commandError:
 					'System has completed voting, but the gc lock is still being held by session with id '
 						, sessId printString , '.' ].
-	GsFile stdout nextPutall: 'Vote complete.'; lf.
-	GsFile stdout nextPutall: '---Starting backup to ' , theBackupPath printString , ' (';
-		nextPutall: DateAndTime now asString;
-		nextPutall: ')';
+	GsFile stderr nextPutAll: 'Vote complete.'; lf.
+	GsFile stderr nextPutAll: '---Starting backup to ' , theBackupPath printString , ' (';
+		nextPutAll: DateAndTime now asString;
+		nextPutAll: ')';
 		lf.
 	result := SystemRepository fullBackupTo: theBackupPath.
 	result == true
-		ifFalse: [ ^ self error: 'Could not complete the backup: ' , result ].
-	GsFile stdout nextPutall: '---Finished backup '; lf
+		ifFalse: [ ^ self commandError: 'Could not complete the backup: ' , result ].
+	GsFile stderr nextPutAll: '---Finished backup '; lf
 ]
 
 { #category : 'options' }
