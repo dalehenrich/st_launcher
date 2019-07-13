@@ -16,6 +16,8 @@ before_script:
     - ls -altr "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots"
     - unzip -q -d "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots" extent0.admin_gs_350.dbf.zip
     - ls -altr "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots"
+    - sudo mkdir /usr/local/bin/smalltalk
+    - sudo mkdir /usr/local/bin/smalltalk/gemstone
     - sudo ln -s $TRAVIS_BUILD_DIR/interpreters/launcher /usr/local/bin/smalltalk/gemstone/launcher 
 
 script:
