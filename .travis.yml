@@ -1,4 +1,5 @@
 language: bash
+sudo: true
 
 env:
   - ROWAN_PROJECTS_HOME="$TRAVIS_BUILD_DIR/travis_tests" ST_LAUNCHER_HOME="$TRAVIS_BUILD_DIR/home" SHUNIT_COLOR='always'
@@ -15,6 +16,7 @@ before_script:
     - ls -altr "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots"
     - unzip -q -d "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots" extent0.admin_gs_350.dbf.zip
     - ls -altr "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots"
+    - sudo ln -s $TRAVIS_BUILD_DIR/interpreters/launcher /usr/local/bin/smalltalk/gemstone/launcher 
 
 script:
 - bash travis_tests/st_launcher_tests.sh
