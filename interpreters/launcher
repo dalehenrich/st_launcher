@@ -2,6 +2,8 @@
 #
 #
 
+set -x 
+
 usage() {
   cat <<HELP
 USAGE: $(basename $0) scriptPath [ imageName [-H] [-D] [-V] [topaz vm args] -- ] [script args]
