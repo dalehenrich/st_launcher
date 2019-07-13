@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 
-# Demo sample_script.sh tests
-
-set -x
-
-. travis_tests/shunit2-2.1.7/shunit2_test_helpers
-
 if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 	export ST_LAUNCHER_HOME="`pwd`/home"
 fi
 
 testHello() {
 	# execute without error
-  bin/hello.st admin_gs_350 -V -- >${stdoutF} 2>${stderrF}
-	rtrn=$?
-	th_assertTrueWithNoOutput ${rtrn} "${stdoutF}" "${stderrF}"
+  result=`bin/hello.st`
+	status=$?
+	assertEquals "testHello: exit status" \
+		'0' "$status"
+	assertEquals "testHello: wrong output" \
+		'hello world' "$result"
 }
 
 oneTimeSetUp() {
@@ -24,5 +21,6 @@ oneTimeSetUp() {
   stderrF="${outputDir}/stderr"
 }
 
+. travis_tests/shunit2-2.1.7/shunit2_test_helpers
 . travis_tests/shunit2-2.1.7/shunit2
 
