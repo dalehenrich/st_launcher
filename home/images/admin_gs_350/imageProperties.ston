@@ -1,11 +1,11 @@
 StLauncherGemStoneSoloImageProperties {
 	#binPath : 'bin',
 	#gemstoneVersion : '3.5.0',
-	#imagePath : '/home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/home/images/admin_gs_350',
+	#imagePath : '$ST_LAUNCHER_HOME/images/admin_gs_350',
 	#logsPath : 'logs',
 	#name : 'admin_gs_350',
-	#productPath : '/home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/home/platforms/gemstone/products/GemStone64Bit3.5.0-x86_64.Linux',
+	#productPath : '$ST_LAUNCHER_HOME/platforms/gemstone/products/GemStone64Bit3.5.0-x86_64.Linux',
 	#snapshotsPath : 'snapshots',
-	#soloSnapshot : '/home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/home/images/admin_gs_350/snapshots/extent0.admin_gs_350.dbf',
+	#soloSnapshot : '$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots/extent0.admin_gs_350.dbf',
 	#structureName : 'st_launcher_home'
 }

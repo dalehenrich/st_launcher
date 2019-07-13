@@ -133,6 +133,10 @@ for argument in $launcherVmArgs ; do
 	esac
 done
 
+if [ "${ST_LAUNCHER_HOME}x" = "x" ] ; then
+	export ST_LAUNCHER_HOME="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/../.."
+fi
+
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
