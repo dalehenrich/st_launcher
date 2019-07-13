@@ -1,7 +1,7 @@
 language: bash
 
 env:
-  - ROWAN_PROJECTS_HOME="$TRAVIS_BUILD_DIR/travis_tests" ST_LAUNCHER_HOME="$TRAVIS_BUILD_DIR/home"
+  - ROWAN_PROJECTS_HOME="$TRAVIS_BUILD_DIR/travis_tests" ST_LAUNCHER_HOME="$TRAVIS_BUILD_DIR/home" SHUNIT_COLOR='always'
 
 before_script:
     - curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx -C $TRAVIS_BUILD_DIR/travis_tests
