@@ -1,4 +1,4 @@
-#!/usr/local/bin/smalltalk/gemstone/launcher
+#!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
 a Stash Script
 "
