@@ -23,7 +23,7 @@ before_script:
     - ls -altr "$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots"
     - sudo mkdir /usr/local/bin/smalltalk
     - sudo mkdir /usr/local/bin/smalltalk/gemstone
-    - sudo ln -s $TRAVIS_BUILD_DIR/interpreters/launcher /usr/local/bin/smalltalk/gemstone/launcher 
+    - sudo ln -s $TRAVIS_BUILD_DIR/interpreters/st_launcher /usr/local/bin/smalltalk/gemstone/st_launcher 
 
 script:
 - bash travis_tests/st_launcher_tests.sh
