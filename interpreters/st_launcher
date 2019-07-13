@@ -124,9 +124,13 @@ for argument in $@ ; do
 done
 
 debugCommandError="false"
+topazDebugIfError="iferr 1 exit 1"
 for argument in $launcherVmArgs ; do
 	case "$argument" in
-		-D) debugCommandError="true" ;;
+		-D) 
+			debugCommandError="true"
+			topazDebugIfError="iferr 1 stk"
+			;;
 		-H) usage; exit 0;;
 		-V) set -x;;
 		*);;
@@ -154,7 +158,7 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 		yourself.
 	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap
 %
-exit 
+EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
 	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
@@ -169,11 +173,12 @@ fi
 file=`mktemp`
 cat - > $file << EOF
 
-	iferr 1 stk
+	$topazDebugIfError
 
 	set solologin on
 	login
 
+	expectvalue true
 	run
 	[
 		StashScript
@@ -183,8 +188,9 @@ cat - > $file << EOF
 			workingDir: '$pwd'
 			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
-			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__' ]
-		on: StashCommandError
+			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__'.
+		true	]
+		on: StashCommandError, Error
 		do: [:ex |
 			$debugCommandError
 				ifTrue: [ ex pass ]
@@ -192,8 +198,10 @@ cat - > $file << EOF
 					StashScript 
 						ansiRedOn: GsFile stdout 
 						during: [ GsFile stdout nextPutAll: ex description ].
-					GsFile stdout lf	] ]
+					GsFile stdout lf.
+					false ] ].
 %
+EXITIFNOERROR
 EOF
 
 $scriptCmdLine -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -S $file
