@@ -14,8 +14,8 @@ before_script:
     - curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/st_launcher_default.env"
     - curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/st_launcher_home.ston"
     - curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/extent0.admin_gs_350.dbf.zip"
-    - echo "HOME: $HOME"
-    - ls -altr $HOME
+    -  sudo echo "HOME: $HOME"
+    - sudo ls -altr $HOME
     - sudo mkdir $HOME/.st_launcher
     - sudo mv st_launcher_default.env st_launcher_home.ston $HOME/.st_launcher
     - ls -altr 
