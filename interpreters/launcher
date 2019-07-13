@@ -2,8 +2,6 @@
 #
 #
 
-set -x 
-
 usage() {
   cat <<HELP
 USAGE: $(basename $0) scriptPath [ imageName [-H] [-D] [-V] [topaz vm args] -- ] [script args]
@@ -73,9 +71,6 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 
 	iferr 1 stk
 
-	set user SystemUser
-	set password swordfish
-
 	set solologin on
 	login
 
@@ -90,7 +85,7 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 exit 
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1
@@ -101,9 +96,10 @@ fi
 
 file=`mktemp`
 cat - > $file << EOF
+
 	iferr 1 stk
 
-	$solo
+	set solologin on
 	login
 
 	run
@@ -128,4 +124,4 @@ cat - > $file << EOF
 %
 EOF
 
-$scriptCmdLine -S $file
+$scriptCmdLine -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -S $file
