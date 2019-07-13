@@ -81,6 +81,7 @@ StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
 		nextPutAll: vmArgs;
+		nextPutAll: ' -I ', self imageDirectory pathString, '/.topazini ';
 		lf;
 		yourself.
 ]

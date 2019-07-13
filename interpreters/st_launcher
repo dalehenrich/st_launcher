@@ -163,7 +163,7 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1
@@ -206,5 +206,5 @@ cat - > $file << EOF
 EXITIFNOERROR
 EOF
 
-$scriptCmdLine -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -S $file
+$scriptCmdLine -S $file
 

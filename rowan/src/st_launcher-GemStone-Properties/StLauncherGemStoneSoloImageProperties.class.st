@@ -23,6 +23,7 @@ StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: 
 		nextPutAll: vmArgs, ' -C "GEM_SOLO_EXTENT=';
 		nextPutAll: self soloSnapshot;
 		nextPutAll: '"';
+		nextPutAll: ' -I ', self imageDirectory pathString, '/.topazini ';
 		lf;
 		yourself.
 ]
