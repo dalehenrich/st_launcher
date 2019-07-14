@@ -39,3 +39,13 @@ StLauncherGemStoneSoloImageProperties >> soloSnapshot: aStringOrFileRef [
 
 	soloSnapshot := aStringOrFileRef asFileReference resolve pathString	"resolve any env vars that may be present in path"
 ]
+
+{ #category : 'actions' }
+StLauncherGemStoneSoloImageProperties >> writeTopaziniFileEntries: fileStream [
+
+	super writeTopaziniFileEntries: fileStream.
+	fileStream 
+		nextPutAll: 'set solologin true';
+		lf;
+		yourself
+]

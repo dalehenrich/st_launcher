@@ -177,7 +177,6 @@ cat - > $file << EOF
 
 	$topazDebugIfError
 
-	set solologin on
 	login
 
 	expectvalue true

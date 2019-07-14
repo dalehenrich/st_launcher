@@ -21,10 +21,8 @@ StLauncherProductProperties class >> _deleteStructure [
 			launcherProperties platforms children 
 				do: [:ent | 
 					ent isDirectory
-						ifTrue: [ ent ensureDeleteAll ] ] ].
-	launcherProperties productMap: nil.
-
-	launcherProperties export.
+						ifTrue: [ 
+							ent hasChildren ifFalse: [ ent ensureDeleteAll ] ] ] ].
 ]
 
 { #category : 'accessing' }

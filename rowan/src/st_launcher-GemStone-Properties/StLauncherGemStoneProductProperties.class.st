@@ -17,17 +17,24 @@ StLauncherGemStoneProductProperties class >> _deleteStructure [
 	| launcherProperties |
 	launcherProperties := StLauncherProperties defaultPropertyFile.
 
-	(launcherProperties gemstone / 'products') exists
-		ifTrue: [ StLauncherGemStoneSystem chmod: ' +w -R ', (launcherProperties gemstone / 'products') pathString ].
 	(launcherProperties gemstone) exists
 		ifTrue: [ 
 			launcherProperties gemstone children 
 				do: [:ent | 
 					ent isDirectory
-						ifTrue: [ ent ensureDeleteAll ] ] ].
-	launcherProperties productMap removeKey: self platformName ifAbsent: [].
-
+						ifTrue: [ 
+							(self permanentProducts includes: ent basename)
+								ifFalse: [
+									StLauncherGemStoneSystem chmod: ' +w -R ', (launcherProperties gemstone / 'products') pathString ].
+									ent ensureDeleteAll.
+									(launcherProperties at: self platformName ) removeKey: ent basename ifAbsent: [] ] ] ].
 	launcherProperties export.
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties class >> permanentProducts [
+
+	#( 'GemStone64Bit3.5.0-x86_64.Linux' )
 ]
 
 { #category : 'accessing' }

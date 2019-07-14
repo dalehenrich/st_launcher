@@ -46,6 +46,14 @@ StLauncherGemStoneCommonImageProperties >> createStandardStructure [
  	self logsDirectory exists ifFalse: [ self logsDirectory ensureCreateDirectory ].
 	self binDirectory exists ifFalse: [ self binDirectory ensureCreateDirectory ].
 	self snapshotsDirectory exists ifFalse: [ self snapshotsDirectory ensureCreateDirectory ].
+	self topaziniFile exists ifFalse: [ self createTopaziniFile ]
+]
+
+{ #category : 'actions' }
+StLauncherGemStoneCommonImageProperties >> createTopaziniFile [
+
+	self topazIniFile writeStreamDo: [:fileStream |
+		self writeTopaziniFileEntries: fileStream ]
 ]
 
 { #category : 'exporting' }
@@ -141,7 +149,26 @@ StLauncherGemStoneCommonImageProperties >> snapshotsPath: aString [
 ]
 
 { #category : 'accessing' }
+StLauncherGemStoneCommonImageProperties >> topaziniFile [
+
+	^ self imageDirectory / '.topazini'
+]
+
+{ #category : 'accessing' }
 StLauncherGemStoneCommonImageProperties >> version [
 
 	^ RwGemStoneVersionNumber fromString: self gemstoneVersion
+]
+
+{ #category : 'actions' }
+StLauncherGemStoneCommonImageProperties >> writeTopaziniFileEntries: fileStream [
+
+	fileStream 
+		nextPutAll: 'set GEMSTONE ', self name;	"shouldn't be needed, but seems to be required for 3.5.0"
+		lf;
+		nextPutAll: 'set user SystemUser';
+		lf;
+		nextPutAll: 'set password swordfish';
+		lf;
+		yourself
 ]

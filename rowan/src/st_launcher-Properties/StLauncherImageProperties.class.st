@@ -17,8 +17,11 @@ StLauncherImageProperties class >> _deleteStructure [
 	launcherProperties images children 
 		do: [:ent | 
 			ent isDirectory
-				ifTrue: [ ent ensureDeleteAll ] ].
-	launcherProperties imageMap: nil.
+				ifTrue: [ 
+					(self permanentImageNames includes: ent basename)
+						ifFalse: [ 
+							launcherProperties imageMap removeKey: ent basename ifFabsent: [].
+							ent ensureDeleteAll ] ] ].
 
 	launcherProperties export.
 ]
@@ -27,6 +30,12 @@ StLauncherImageProperties class >> _deleteStructure [
 StLauncherImageProperties class >> defaultPropertyFilename [
 
 	^ 'imageProperties.ston'
+]
+
+{ #category : 'accessing' }
+StLauncherImageProperties class >> permanentImageNames [
+
+	^#( 'admin_gs_350')
 ]
 
 { #category : 'accessing' }
