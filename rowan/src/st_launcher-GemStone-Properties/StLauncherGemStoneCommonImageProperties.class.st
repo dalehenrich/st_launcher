@@ -52,7 +52,7 @@ StLauncherGemStoneCommonImageProperties >> createStandardStructure [
 { #category : 'actions' }
 StLauncherGemStoneCommonImageProperties >> createTopaziniFile [
 
-	self topazIniFile writeStreamDo: [:fileStream |
+	self topaziniFile writeStreamDo: [:fileStream |
 		self writeTopaziniFileEntries: fileStream ]
 ]
 

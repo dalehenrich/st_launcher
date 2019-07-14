@@ -77,6 +77,10 @@ StLauncherStructureProperties >> export [
 					stream
 						nextPutAll: 'export ST_LAUNCHER_DEFAULT_PLATFORM=', defaultImageProperties platformName;
 						lf;
+						nextPutAll: 'export ST_LAUNCHER_DEFAULT_IMAGE_NAME=', defaultImageProperties name;
+						lf;
+						nextPutAll: 'export ST_LAUNCHER_DEFAULT_IMAGE_PATH=', defaultImageProperties imagePath;
+						lf;
 						nextPutAll: 'export ST_LAUNCHER_DEFAULT_PRODUCT_PATH="', defaultImageProperties productPath, '"';
 						lf;
 						nextPutAll: 'export ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH="', defaultImageProperties soloSnapshot, '"';

@@ -20,7 +20,7 @@ StLauncherImageProperties class >> _deleteStructure [
 				ifTrue: [ 
 					(self permanentImageNames includes: ent basename)
 						ifFalse: [ 
-							launcherProperties imageMap removeKey: ent basename ifFabsent: [].
+							launcherProperties imageMap removeKey: ent basename ifAbsent: [].
 							ent ensureDeleteAll ] ] ].
 
 	launcherProperties export.

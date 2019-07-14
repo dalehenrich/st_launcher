@@ -19,22 +19,44 @@ StLauncherGemStoneProductProperties class >> _deleteStructure [
 
 	(launcherProperties gemstone) exists
 		ifTrue: [ 
-			launcherProperties gemstone children 
-				do: [:ent | 
-					ent isDirectory
-						ifTrue: [ 
-							(self permanentProducts includes: ent basename)
-								ifFalse: [
-									StLauncherGemStoneSystem chmod: ' +w -R ', (launcherProperties gemstone / 'products') pathString ].
-									ent ensureDeleteAll.
-									(launcherProperties at: self platformName ) removeKey: ent basename ifAbsent: [] ] ] ].
+			(launcherProperties gemstone/ 'products') hasChildren
+				ifTrue: [
+		 			(launcherProperties gemstone / 'products') children 
+						do: [:productTree | 
+							productTree isDirectory
+								ifTrue: [
+									(self permanentProductTrees includesValue: productTree basename)
+										ifFalse: [
+											StLauncherGemStoneSystem chmod: ' +w -R ', productTree pathString.
+											productTree ensureDeleteAll.
+											(launcherProperties productsMap
+												at: self platformName) 
+												removeKey: (self permanentProductTrees keyAtValue: productTree basename)
+												ifAbsent: [] ] ] ] ].
+			(launcherProperties gemstone/ 'downloads') hasChildren
+				ifTrue: [
+					(launcherProperties gemstone / 'downloads') children 
+						do: [:ent | 
+							ent isDirectory
+								ifTrue: [
+									ent children do: [:productDownload |
+										(self permanentProductDownloads includesValue: productDownload basename)
+												ifFalse: [ productDownload ensureDelete ] ] ] ] ] ].
 	launcherProperties export.
 ]
 
 { #category : 'accessing' }
-StLauncherGemStoneProductProperties class >> permanentProducts [
+StLauncherGemStoneProductProperties class >> permanentProductDownloads [
 
-	#( 'GemStone64Bit3.5.0-x86_64.Linux' )
+	^ #( 'GemStone64Bit3.5.0-x86_64.Linux.zip' )
+]
+
+{ #category : 'accessing' }
+StLauncherGemStoneProductProperties class >> permanentProductTrees [
+
+	^ Dictionary new
+			at: '3.5.0' put: 'GemStone64Bit3.5.0-x86_64.Linux';
+			yourself
 ]
 
 { #category : 'accessing' }
