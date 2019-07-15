@@ -19,7 +19,7 @@ StLauncher_GemStone_Backup_Script >> _backupDirectory [
 	| structureProperties imageProperties |
 	backupDirectory ifNotNil: [ ^ backupDirectory ].
 	structureProperties := StLauncherProperties defaultPropertyFile.
-	imageProperties := structureProperties propertiesForImageNamed: self currentImageName.	backupDirectory := 
+	imageProperties := structureProperties propertiesForImageNamed: self currentImageName.
 	backupDirectory :=  imageProperties backupsDirectory.
 	^ backupDirectory
 ]
@@ -33,7 +33,10 @@ StLauncher_GemStone_Backup_Script >> backupFile: aString [
 { #category : 'private' }
 StLauncher_GemStone_Backup_Script >> _backupFile [
 
-	^ backupFile ifNil: [ self args at: 1 ]
+	^ backupFile 
+		ifNil: [ 
+			self args size > 0 ifFalse: [ self error: 'Required positional arg <backup-file-name> is missing' ].
+			self args at: 1 ]
 ]
 
 { #category : 'actions' }
@@ -71,7 +74,7 @@ StLauncher_GemStone_Backup_Script >> postExecute [
 					'System has completed voting, but the gc lock is still being held by session with id '
 						, sessId printString , '.' ].
 	GsFile stderr nextPutAll: 'Vote complete.'; lf.
-	GsFile stderr nextPutAll: '---Starting backup to ' , theBackupPath printString , ' (';
+	GsFile stderr nextPutAll: '---Starting backup to ' , theBackupPath pathString printString , ' (';
 		nextPutAll: DateAndTime now asString;
 		nextPutAll: ')';
 		lf.
@@ -121,7 +124,7 @@ EXAMPLES
 	./backup.gs.st --help
 	./backup.gs.st gs_350 -- extent0.st_launcher.dbf
 	./backup.gs.st --dir=snapshots extent0.st_launcher.dbf
-	./backup.gs.st --commit --dir=snapshots extent0.st_launcher.dbf
+	./backup.gs.st --commit --dir=/home/me/backups extent0.st_launcher.dbf
 
 ') printString, dashes
 ]

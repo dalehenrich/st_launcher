@@ -231,7 +231,7 @@ cat - > $file << EOF
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
 					StashScript 
-						ansiRedOn: GsFile sterr 
+						ansiRedOn: GsFile stderr 
 						during: [ GsFile stderr nextPutAll: ex description ].
 					GsFile stderr lf.
 					false ] ].
