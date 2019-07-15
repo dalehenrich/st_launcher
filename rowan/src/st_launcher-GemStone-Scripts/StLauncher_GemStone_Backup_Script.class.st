@@ -6,13 +6,34 @@ Class {
 	#name : 'StLauncher_GemStone_Backup_Script',
 	#superclass : 'StLauncherScript',
 	#instVars : [
-		'backupDirectory'
+		'backupDirectory',
+		'shouldCommit',
+		'backupFile'
 	],
 	#category : 'st_launcher-GemStone-Scripts'
 }
 
 { #category : 'private' }
 StLauncher_GemStone_Backup_Script >> _backupDirectory [
+
+	| structureProperties imageProperties |
+	backupDirectory ifNotNil: [ ^ backupDirectory ].
+	structureProperties := StLauncherProperties defaultPropertyFile.
+	imageProperties := structureProperties propertiesForImageNamed: self currentImageName.	backupDirectory := 
+	backupDirectory :=  imageProperties backupsDirectory.
+	^ backupDirectory
+]
+
+{ #category : 'actions' }
+StLauncher_GemStone_Backup_Script >> backupFile: aString [
+
+	backupFile := aString
+]
+
+{ #category : 'private' }
+StLauncher_GemStone_Backup_Script >> _backupFile [
+
+	^ backupFile ifNil: [ self args at: 1 ]
 ]
 
 { #category : 'actions' }
@@ -27,6 +48,12 @@ StLauncher_GemStone_Backup_Script >> backupPath: fullOrRelativePath [
 	structureProperties := StLauncherProperties defaultPropertyFile.
 	imageProperties := structureProperties propertiesForImageNamed: self currentImageName.
 	backupDirectory :=  imageProperties imageDirectory / fileRef
+]
+
+{ #category : 'actions' }
+StLauncher_GemStone_Backup_Script >> shouldCommit [
+
+	shouldCommit := true.
 ]
 
 { #category : 'script execution' }
@@ -48,7 +75,8 @@ StLauncher_GemStone_Backup_Script >> postExecute [
 		nextPutAll: DateAndTime now asString;
 		nextPutAll: ')';
 		lf.
-	result := SystemRepository fullBackupTo: theBackupPath.
+	shouldCommit == true ifTrue: [ self commit ].
+	result := SystemRepository fullBackupTo: (theBackupPath / self _backupFile) pathString.
 	result == true
 		ifFalse: [ ^ self commandError: 'Could not complete the backup: ' , result ].
 	GsFile stderr nextPutAll: '---Finished backup '; lf
@@ -59,6 +87,7 @@ StLauncher_GemStone_Backup_Script >> scriptMethodOptions [
 	^ {
 			#('help' $h #'none' #usage).
 			#('dir' nil #'required' #backupPath:).
+			#('commit' nil #'none' #shouldCommit).
 	}
 ]
 
@@ -74,7 +103,8 @@ StLauncher_GemStone_Backup_Script >> usage [
 'NAME
 	backup.gs.st - do a GemStone backup of the current image
 SYNOPSIS
-	backup.gs.st [ <image-name> [ <vm-arguments> ] -- ] [ --dir=<backup-directory> ] <backup-filename> 
+	backup.gs.st [ <image-name> [ <vm-arguments> ] -- ] [ --dir=<backup-directory> ] \
+		[ --commit ] <backup-filename> 
 
 DESCRIPTION
 	Default <backup-directory> is $ST_LAUNCHER_HOME/images/<image-name>/backups.
@@ -84,10 +114,14 @@ DESCRIPTION
 	Default <image-name> is defined by the #defaultImageName field in 
 	$HOME/.st_launcher/st_launcher_home.ston.
 
+	With the --commit option specified a commit will be performed immediately before the 
+	backup is run.
+
 EXAMPLES
 	./backup.gs.st --help
 	./backup.gs.st gs_350 -- extent0.st_launcher.dbf
-	./backup.gs.st  --dir=snapshots extent0.st_launcher.dbf
+	./backup.gs.st --dir=snapshots extent0.st_launcher.dbf
+	./backup.gs.st --commit --dir=snapshots extent0.st_launcher.dbf
 
 ') printString, dashes
 ]
