@@ -23,9 +23,9 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 			opts at: 'version' ifPresent: [:version |
 				"smalltalk platform version string, used with several other options"
 				platformVersionString := version ].
-			opts at: 'sourceImage' ifPresent: [:imageName |
+			opts at: 'sourceImage' ifPresent: [:theImageName |
 				"name of smalltalk platform image, used with several other options"
-				sourceImageName := imageName ].
+				sourceImageName := theImageName ].
 			opts at: 'download' ifPresent: [:version |
 				"download and create a product tree"
 				StLauncherPlatform 
@@ -33,19 +33,19 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 					platform: 'gemstone'
 			].
 			opts at: 'createSolo' 
-				ifPresent: [:imageName |
+				ifPresent: [:theImageName |
 					| snapshotPath sourceImageProperties  |
 					sourceImageProperties := launcherProperties propertiesForImageNamed: sourceImageName.
 					snapshotPath := sourceImageProperties snapshotsDirectory / ('extent0.', sourceImageName, '.dbf'). 
 					imageProperties := StLauncherGemStonePlatform 
-						createSoloImageNamed: (imageName ifNil: [ launcherProperties defaultImageName ])
+						createSoloImageNamed: (theImageName ifNil: [ launcherProperties defaultImageName ])
 						version: sourceImageProperties gemstoneVersion
 						sourceSnapshotFile: snapshotPath.
 				].
 			opts at: 'create' 
-				ifPresent: [:imageName |
+				ifPresent: [:theImageName |
 					imageProperties := StLauncherPlatform 
-						createImageNamed: (imageName ifNil: [ launcherProperties defaultImageName ])
+						createImageNamed: (theImageName ifNil: [ launcherProperties defaultImageName ])
 						platform: 'gemstone'
 						version: platformVersionString.
 				].

@@ -48,7 +48,7 @@ StLauncher_GemStone_UTILITY_NEW_Script >> create: imageName [
 ]
 
 { #category : 'actions' }
-StLauncher_GemStone_UTILITY_NEW_Script >> createSolo: imageName [
+StLauncher_GemStone_UTILITY_NEW_Script >> createSolo: theImageName [
 
 	"create a solo image using the snapshot from sourceImage"
 
@@ -57,7 +57,7 @@ StLauncher_GemStone_UTILITY_NEW_Script >> createSolo: imageName [
 	sourceImageProperties := self _launcherProperties propertiesForImageNamed: sourceImageName.
 	snapshotPath := sourceImageProperties snapshotsDirectory / ('extent0.', sourceImageName, '.dbf'). 
 	imageProperties := StLauncherGemStonePlatform 
-		createSoloImageNamed: (imageName ifNil: [ self _launcherProperties defaultImageName ])
+		createSoloImageNamed: (theImageName ifNil: [ self _launcherProperties defaultImageName ])
 		version: sourceImageProperties gemstoneVersion
 		sourceSnapshotFile: snapshotPath.
 ]
@@ -111,11 +111,11 @@ StLauncher_GemStone_UTILITY_NEW_Script >> snapshot [
 ]
 
 { #category : 'actions' }
-StLauncher_GemStone_UTILITY_NEW_Script >> sourceImage: imageName [
+StLauncher_GemStone_UTILITY_NEW_Script >> sourceImage: theImageName [
 
 	"name of smalltalk platform image, used with several other options"
 
-	sourceImageName := imageName
+	sourceImageName := theImageName
 ]
 
 { #category : 'usage' }
