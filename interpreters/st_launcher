@@ -176,10 +176,27 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
-	status=$?
-	if [ "$status" != "0" ]; then
-		exit $status
+	if [ "$debugCommandError" = "false" ] ; then
+		scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+		status=$?
+		if [ "$status" != "0" ]; then
+			exit $status
+		fi
+	else
+		# expecting to interactively debug topaz
+		stdoutF=`mktemp`
+		>&2 echo "--"
+		>&2 echo "-- starting session topaz in debug mode (-D)."
+	 	>&2 echo "-- Use \"exit 1\" to exit topaz and terminate execution of script"
+		>&2 echo "--"
+		$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile | tee $stdoutF
+		status="${PIPESTATUS[0]}"
+		if [ "$status" != "0" ]; then
+			echo "-- debug session in topaz exited with a non-zero exit status"
+			exit $status
+		fi
+		>&2 echo "-- debug session ended, continuing execution"
+		scriptCmdLine=`cat $stdoutF`
 	fi
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
