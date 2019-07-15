@@ -28,7 +28,7 @@ StLauncher_GemStone_Snapshot_Script >> executeScript [
 			opts at: 'resume' ifPresent: [
 				"resume snapshots, if they have already been suspended and the timeout hasn't expired yet"
 				self resumeCheckpoints.
-				GsFile stdout nextPutAll: 'Checkpoints resumed.'; lf.
+				GsFile stderr nextPutAll: 'Checkpoints resumed.'; lf.
 				"allow --resume to be included on snapahot command line"
 				args size < 1 ifTrue: [ ^ self ] ].
 			args size < 1

@@ -18,14 +18,13 @@ testHello_defaultImage() {
 	th_validateHello "testHello_defaultImage" "$status" "$result"
 }
 
-# leave uncommented until this runs locally :)
-#testHello_invalidImageName() {
-#	# execute without error
-#  result=`bin/hello.st foobar --`
-#	status=$?
-#	assertEquals "testHello_invalidImageName: invalid image name error" \
-#		'1' "$status"
-#}
+testHello_invalidImageName() {
+# execute without error
+  result=`bin/hello.st foobar --`
+	status=$?
+	assertEquals "testHello_invalidImageName: invalid image name error" \
+		'1' "$status"
+}
 
 testHello_invalidOption() {
 	# execute without error

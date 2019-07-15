@@ -11,6 +11,12 @@ StLauncherCommon class >> _deleteStructure [
 	StLauncherProductProperties _deleteStructure.
 ]
 
+{ #category : 'error handling' }
+StLauncherCommon >> error: aString [
+
+	^ StashCommandError signal: aString
+]
+
 { #category : 'properties' }
 StLauncherCommon >> structureProperties [
 

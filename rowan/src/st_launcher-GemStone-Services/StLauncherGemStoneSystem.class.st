@@ -26,13 +26,9 @@ StLauncherGemStoneSystem class >> copydbf: sourceFile to: destFile args: args [
 		_execute: cmd
 		input: nil.
 	GsFile stdout 
-		lf; 
-		nextPutAll: 'STDOUT:';
-		lf; 
 		nextPutAll: (ar at: 1);
-		lf;
-		nextPutAll: 'STDERR:';
-		lf; 
+		yourself.
+	GsFile stderr
 		nextPutAll: (ar at: 2);
 		yourself.
 	^ ar at: 1	"stdout"
@@ -53,13 +49,9 @@ StLauncherGemStoneSystem class >> downloadHttps: httpsUrl  to:  filePath [
 		input: nil.
 false ifTrue: [
 	GsFile stdout 
-		lf; 
-		nextPutAll: 'STDOUT:';
-		lf; 
 		nextPutAll: (ar at: 1);
-		lf;
-		nextPutAll: 'STDERR:';
-		lf; 
+		yourself.
+	GsFile stderr
 		nextPutAll: (ar at: 2);
 		yourself.
 ].
@@ -80,13 +72,9 @@ StLauncherGemStoneSystem class >> uname [
 		input: (ar at: 1).
 false ifTrue: [
 	GsFile stdout 
-		lf; 
-		nextPutAll: 'STDOUT:';
-		lf; 
 		nextPutAll: (ar at: 1);
-		lf;
-		nextPutAll: 'STDERR:';
-		lf; 
+		yourself.
+	GsFile stderr
 		nextPutAll: (ar at: 2);
 		yourself.
 ].
@@ -104,13 +92,9 @@ StLauncherGemStoneSystem class >> unzip: zipFile to: directory [
 		_execute: cmd
 		input: nil.
 	GsFile stdout 
-		lf; 
-		nextPutAll: 'STDOUT:';
-		lf; 
 		nextPutAll: (ar at: 1);
-		lf;
-		nextPutAll: 'STDERR:';
-		lf; 
+		yourself.
+	GsFile stderr
 		nextPutAll: (ar at: 2);
 		yourself.
 	^ ar at: 1	"stdout"
@@ -132,11 +116,4 @@ StLauncherGemStoneSystem class >> which: filename [
 StLauncherGemStoneSystem >> copydbf: sourceFile to: destFile args: args [
 
 	self class copydbf: sourceFile to: destFile args: args
-]
-
-{ #category : 'io' }
-StLauncherGemStoneSystem >> stdout: aString [
-	"Write aString to stdout with a trailing lf"
-
-	GsFile stdout nextPutAll: aString; lf.
 ]

@@ -132,10 +132,3 @@ ifFalse: [
 	productProperties structureProperties export.
 	self structureProperties: nil.
 ]
-
-{ #category : 'io' }
-StLauncherGemStonePlatform >> stdout: aString [
-	"Write aString to stdout with a trailing lf"
-
-	GsFile stdout nextPutAll: aString; lf.
-]

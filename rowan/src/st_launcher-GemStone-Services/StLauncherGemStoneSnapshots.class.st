@@ -81,7 +81,7 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension compression: com
 											snapshotFileRef extensions last ~= 'gz'
 												ifTrue: [ snapshotFileRef := snapshotFileRef , 'gz' ].	".gz extension required for gzip compression" ]
 												ifFalse: [ self error: 'Unknown compression type: ', compressionSymbol asString ] ] ].
-					GsFile stdout nextPutAll:
+					GsFile stderr nextPutAll:
 							'---Starting snapshot to ' , (extentPath , ' ' , snapshotFileRef pathString) printString
 								, '(' , DateAndTime now asString , ')';
 						lf.
@@ -89,7 +89,7 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension compression: com
 						ifTrue: [ snapshotFileRef delete ].
 					self copydbf: extent to: snapshotFileRef args: compressionArgs.	"use gzip compression"
 					snapshots add: snapshotFileRef.
-					GsFile stdout
+					GsFile stderr
 						nextPutAll:
 								'---Finishing snapshot ' , DateAndTime now asString , ' -- ' , snapshotFileRef pathString;
 						lf ] ].

@@ -147,28 +147,45 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
 
-	iferr 1 stk
+	$topazDebugIfError
 
 	set solologin on
 	login
 
+	expectvalue true
 	run
-	| launcherArgMap |
-	launcherArgMap := Dictionary new
-		at: '-D' put: #none;	"debug StashCommandErrors"
-		at: '-V' put: #none;	"list script execution"
-		yourself.
-	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap
+	[
+		| launcherArgMap |
+		launcherArgMap := Dictionary new
+			at: '-D' put: #none;	"debug StashCommandErrors"
+			at: '-V' put: #none;	"list script execution"
+			yourself.
+		StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap.
+		true ]
+		on: StashCommandError, Error
+		do: [:ex |
+			$debugCommandError
+				ifTrue: [ ex pass ]
+				ifFalse: [ 
+						StashScript 
+						ansiRedOn: GsFile stderr 
+						during: [ GsFile stderr nextPutAll: ex description ].
+					GsFile stderr lf.
+				false ] ].
 %
 EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
 	scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+	status=$?
+	if [ "$status" != "0" ]; then
+		exit $status
+	fi
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then
 	echo "PHARO not supported ... yet"
 	exit 1
 else
-	echo "\$ST_LAUNCHER_DEFAULT_PLATFORM not defined"
+	echo "Unsupported platform: \$ST_LAUNCHER_DEFAULT_PLATFORM"
 	exit 1
 fi
 
@@ -197,9 +214,9 @@ cat - > $file << EOF
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
 					StashScript 
-						ansiRedOn: GsFile stdout 
-						during: [ GsFile stdout nextPutAll: ex description ].
-					GsFile stdout lf.
+						ansiRedOn: GsFile sterr 
+						during: [ GsFile stderr nextPutAll: ex description ].
+					GsFile stderr lf.
 					false ] ].
 %
 EXITIFNOERROR
