@@ -1,0 +1,33 @@
+#!/usr/local/bin/smalltalk/gemstone/st_topaz_launcher
+#
+# topaz test script, meant to validate the argument handling for st_topaz_launcher
+# 	specifically this script echos to stdout the script args:
+#
+# 		test_args.tpz [ <image-name> ] -- [ <topaz-args> ] [ -- [ <script-args> ] [ -- [ <non-option-script-args> ] ] ]
+#
+
+login
+
+display oops
+level 1
+run
+
+| cmdLineArgs options scriptArgsIndex |
+cmdLineArgs := System commandLineArguments.
+scriptArgsIndex := cmdLineArgs indexOf: '--'.
+
+(cmdLineArgs size = scriptArgsIndex)
+	ifTrue: [ GsFile stdout nextPutAll: 'EMPTY ARGS'; lf. ^true ].
+
+options := Dictionary new.
+scriptArgsIndex + 1 to: cmdLineArgs size do: [:i |
+	| arg index |
+	arg := (cmdLineArgs at: i).
+	index := arg findString: '-' startingAt: 1 caseSensitive: true.
+	index = 0
+		ifTrue: [ GsFile stdout nextPutAll: 'lonearg:', arg; lf. ^true ] ]. 
+true
+%
+
+exit
+

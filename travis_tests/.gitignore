@@ -1,3 +1,4 @@
 *
 !.gitignore
 !st_launcher_tests.sh
+!test_args.tpz
