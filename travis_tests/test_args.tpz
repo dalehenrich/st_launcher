@@ -12,20 +12,36 @@ display oops
 level 1
 run
 
-| cmdLineArgs options scriptArgsIndex |
+| cmdLineArgs scriptArgsIndex openOption option |
 cmdLineArgs := System commandLineArguments.
 scriptArgsIndex := cmdLineArgs indexOf: '--'.
 
 (cmdLineArgs size = scriptArgsIndex)
 	ifTrue: [ GsFile stdout nextPutAll: 'EMPTY ARGS'; lf. ^true ].
 
-options := Dictionary new.
+openOption:= false.
 scriptArgsIndex + 1 to: cmdLineArgs size do: [:i |
 	| arg index |
 	arg := (cmdLineArgs at: i).
 	index := arg findString: '-' startingAt: 1 caseSensitive: true.
-	index = 0
-		ifTrue: [ GsFile stdout nextPutAll: 'lonearg:', arg; lf. ^true ] ]. 
+	(index = 0 or: [ index > 1 ])
+		ifTrue: [ 
+			openOption
+				ifTrue: [
+ 					GsFile stdout nextPutAll: 'option:', option, ':arg:',arg; lf. ^true ]
+				ifFalse: [ GsFile stdout nextPutAll: 'lonearg:', arg; lf. ^true ] ].
+	"leading -"
+	index := arg findString: '-' startingAt: 2.
+	index > 0
+		ifTrue: [ GsFile stdout nextPutAll: 'illegalArg:',arg; lf. ^false ].
+	option := arg copyFrom: index + 1 to: arg size.
+	openOption := true
+	]. 
+openOption 
+	ifTrue: [ 
+		option = '-e'
+			ifTrue: [ self error: 'forced error' ].
+		GsFile stdout nextPutAll: 'option:', option; lf. ^true ].
 true
 %
 

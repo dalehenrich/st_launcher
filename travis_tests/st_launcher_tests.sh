@@ -11,10 +11,47 @@ testTopaz_empty_args() {
 		"EMPTY ARGS" "$result"
 }
 
-testTopaz_lone_arg() {
+testTopaz_lone_arg1() {
 	result=`bin/test_args.tpz admin_gs_350 -- -lq -- LONE`
-	assertEquals "testTopaz lone_arg" \
+	assertEquals "testTopaz lone_arg1" \
 		"lonearg:LONE" "$result"
+}
+
+testTopaz_lone_arg2() {
+	result=`bin/test_args.tpz admin_gs_350 -- -lq -- L-ONE`
+	assertEquals "testTopaz lone_arg2" \
+		"lonearg:L-ONE" "$result"
+}
+
+testTopaz_option() {
+	result=`bin/test_args.tpz admin_gs_350 -- -lq -- -l`
+	assertEquals "testTopaz option" \
+		"option:-l" "$result"
+}
+
+testTopaz_option_arg1() {
+	result=`bin/test_args.tpz admin_gs_350 -- -lq -- -l hello`
+	status=$?
+	assertEquals "testTopaz option_arg1" \
+		"option:-l:arg:hello" "$result"
+	assertEquals "testTopaz option_arg1_status" \
+		'0' $status
+}
+
+testTopaz_option_arg2() {
+	result=`bin/test_args.tpz admin_gs_350 -- -lq -- -l he-llo`
+	assertEquals "testTopaz option_arg2" \
+		"option:-l:arg:he-llo" "$result"
+}
+
+testTopaz_error() {
+	file=mktmp
+	bin/test_args.tpz admin_gs_350 -- -lq -- -e > $file  << EOF
+exit
+EOF
+	status=$?
+	assertEquals "testTopaz error_status" \
+		'1' $status
 }
 
 testHello_explicitmage() {

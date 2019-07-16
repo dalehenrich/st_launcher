@@ -1,0 +1,6 @@
+-----------------------------------------------------
+GemStone: Error         Nonfatal
+a UserDefinedError occurred (error 2318), reason:halt, forced error
+Error Category: 231169 [GemStone] Number: 2318  Arg Count: 1 Context : 89239553 exception : 89236993
+Arg 1: [20 sz:0 cls: 76289 UndefinedObject] nil
+Stopping at line 46 of /home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/travis_tests/test_args.tpz
