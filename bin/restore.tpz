@@ -1,0 +1,18 @@
+#!/usr/local/bin/smalltalk/gemstone/st_topaz_launcher
+#
+# Perform a Gemstone restore from backup
+#
+
+login
+
+display oops
+level 1
+run
+
+GsFile stderr nextPutAll: 'Command line args:'; lf.
+System commandLineArguments do: [:arg | GsFile stderr nextPutAll: arg; lf ]
+
+%
+
+exit
+
