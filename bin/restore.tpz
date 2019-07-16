@@ -10,7 +10,7 @@
 
 iferr 1 stk
 # comment out following line to debug interactively
-#iferr 2 exit 
+iferr 2 exit 
 
 login
 

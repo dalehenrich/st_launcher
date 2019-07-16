@@ -1,0 +1,48 @@
+#!/usr/local/bin/smalltalk/gemstone/st_topaz_launcher
+#
+# Shrink extents ... should perform a backup/restore before shrinking.
+#  SYNOPSIS
+# 	shrink.tpz <image-name> -- [ <topaz-args> ]
+#
+#  EXAMPLES
+#  	shrink.tpz gs_350 -- -lq
+#
+
+iferr 1 stk
+# comment out following line to debug interactively
+iferr 2 exit 
+
+login
+expectvalue true
+run
+System waitForAllGcGemsToStartForUpToSeconds: 60.
+%
+expectvalue true
+run
+SystemRepository objectAudit.
+%
+! release Gem/s temporary pages
+logout
+
+login
+
+expectvalue true
+run
+GsFile stderr 
+	nextPutAll: '=====Pre-Shrink extent sizes'; lf;
+	nextPutAll: SystemRepository fileSizeReport; lf;
+	nextPutAll: '============================';
+	yourself.
+[SystemRepository shrinkExtents] on: Deprecated do: [:ex | ex resume].
+SystemRepository reclaimAll.
+GsFile stderr 
+	nextPutAll: '=====Post-Shrink extent sizes'; lf;
+	nextPutAll: SystemRepository fileSizeReport; lf;
+	nextPutAll: '============================';
+	lf;
+	yourself.
+true
+%
+
+exit
+
