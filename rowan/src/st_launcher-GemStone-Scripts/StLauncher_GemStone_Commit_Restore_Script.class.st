@@ -13,7 +13,7 @@ Class {
 { #category : 'script execution' }
 StLauncher_GemStone_Commit_Restore_Script >> postExecute [
 
-| status index |
+	| status index |
 	status := SystemRepository restoreStatus.
 	index := status 
 			findString: 'Restoring from transaction log files' 

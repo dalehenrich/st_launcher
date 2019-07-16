@@ -156,14 +156,31 @@ if [ "${ST_LAUNCHER_HOME}x" = "x" ] ; then
 fi
 
 if [ "$imageName" = "$ST_LAUNCHER_DEFAULT_IMAGE_NAME" ] ; then
-	# using default image name .. launch topaz now
+	# use default image parameters
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $topazScript -- $scriptArgs
+	topaziniPath="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini"
+	soloExtentArg="-C \"GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH\""
+	$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $topazScript -- $scriptArgs
 else
-	# using non-default image name ... need to do lookup of the particulars
-echo "imageName:${imageName}|"
-echo "topazArgs:${topazArgs}|"
-echo "scriptArgs:${scriptArgs}|"
-	echo "using non-default image name NOT YET IMPLEMENTED"
-	exit 1
+	# non-default image name, need to generate the command line, since it is based on params associated with the image 
+
+	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
+	topaziniPath="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini"
+	soloExtentArg="-C \"GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH\""
+	generateCommandLineFile=`mktemp`
+
+	cat - > $generateCommandLineFile << EOF
+	set solologin on
+	login
+
+	expectvalue true
+	run
+	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: Dictionary new debugCommandError: $debugCommandError.
+%
+EXITIFNOERROR
+EOF
+	$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $generateCommandLineFile
 fi
+
+
+

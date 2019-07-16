@@ -45,7 +45,7 @@ testTopaz_option_arg2() {
 }
 
 testTopaz_error() {
-	file=mktmp
+	file=`mktemp`
 	bin/test_args.tpz admin_gs_350 -- -lq -- -e > $file  << EOF
 exit
 EOF

@@ -37,6 +37,43 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  interpreterO
 	^ self new generateVmScriptLaunchCommandLineFrom:  interpreterOptions launcherArgMap: launcherArgMap
 ]
 
+{ #category : 'launcher' }
+StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  launcherVmOptions launcherArgMap: launcherArgMap debugCommandError: debugCommandErrorBool [
+	"fabricate a platform-specific command line for executing the stashFile"
+
+	"
+	<launcherArgMap> is a dictionary whose keys are launcher options and values:
+		#none		- no argument
+		#required	- required argement
+		#optional	- optional argument
+
+	Options in <launcherArgMap> are not to be added to <vmArgs>
+	"
+
+	"
+	The launcher/vm args may not use positional arguments. The scriptName is the
+		first positional parameter on a command line.
+	If the same argument is provided in each set of [launcher/vm args], the last 
+		version should override any previous versions.
+	"
+
+	"return true if the command line was successfully written on stdot, otherwise return false"
+
+	[
+		self generateVmScriptLaunchCommandLineFrom: launcherVmOptions launcherArgMap: launcherArgMap.
+		^ true ]
+		on: StashCommandError, Error
+		do: [:ex |
+			debugCommandErrorBool
+				ifTrue: [ ex pass ]
+				ifFalse: [ 
+						StashScript 
+						ansiRedOn: GsFile stderr 
+						during: [ GsFile stderr nextPutAll: ex description ].
+					GsFile stderr lf.
+				^ false ] ].
+]
+
 { #category : 'images' }
 StLauncherPlatform class >> imageNamed: aString ifAbsent: absentBlock [
 

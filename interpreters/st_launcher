@@ -154,24 +154,12 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 
 	expectvalue true
 	run
-	[
-		| launcherArgMap |
-		launcherArgMap := Dictionary new
-			at: '-D' put: #none;	"debug StashCommandErrors"
-			at: '-V' put: #none;	"list script execution"
-			yourself.
-		StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap.
-		true ]
-		on: StashCommandError, Error
-		do: [:ex |
-			$debugCommandError
-				ifTrue: [ ex pass ]
-				ifFalse: [ 
-						StashScript 
-						ansiRedOn: GsFile stderr 
-						during: [ GsFile stderr nextPutAll: ex description ].
-					GsFile stderr lf.
-				false ] ].
+	| launcherArgMap |
+	launcherArgMap := Dictionary new
+		at: '-D' put: #none;	"debug StashCommandErrors"
+		at: '-V' put: #none;	"list script execution"
+		yourself.
+	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap debugCommandError: $debugCommandError.
 %
 EXITIFNOERROR
 EOF
