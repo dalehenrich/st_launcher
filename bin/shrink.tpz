@@ -31,15 +31,14 @@ run
 GsFile stderr 
 	nextPutAll: '=====Pre-Shrink extent sizes'; lf;
 	nextPutAll: SystemRepository fileSizeReport; lf;
-	nextPutAll: '============================';
+	nextPutAll: '============================'; lf;
 	yourself.
 [SystemRepository shrinkExtents] on: Deprecated do: [:ex | ex resume].
 SystemRepository reclaimAll.
 GsFile stderr 
 	nextPutAll: '=====Post-Shrink extent sizes'; lf;
 	nextPutAll: SystemRepository fileSizeReport; lf;
-	nextPutAll: '============================';
-	lf;
+	nextPutAll: '============================'; lf;
 	yourself.
 true
 %

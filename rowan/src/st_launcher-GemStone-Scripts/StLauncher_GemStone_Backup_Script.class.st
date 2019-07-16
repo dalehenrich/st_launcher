@@ -92,6 +92,11 @@ StLauncher_GemStone_Backup_Script >> postExecute [
 				ifTrue: [ ^ self commandError: 'The backup file ', backup pathString printString ].
 			backup delete ].
 	shouldCommit == true ifTrue: [ self commit ].
+	GsFile stderr 
+		nextPutAll: '=====Pre-backup extent sizes'; lf;
+		nextPutAll: SystemRepository fileSizeReport; lf;
+		nextPutAll: '============================'; lf;
+		yourself.
 	result := SystemRepository fullBackupTo: backup pathString.
 	result == true
 		ifFalse: [ ^ self commandError: 'Could not complete the backup: ' , result ].
