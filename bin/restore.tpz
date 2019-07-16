@@ -8,7 +8,9 @@
 #  	restore.tpz gs_350 -- -lq -- ./backups/extent0.st_launcher.dbf
 #
 
-iferr 1 exit 
+iferr 1 stk
+# comment out following line to debug interactively
+#iferr 2 exit 
 
 login
 
@@ -23,6 +25,9 @@ run
 		ifTrue: [ GsFile stderr nextPutAll: 'backup file path must be specified'; lf. ^false ].
 
 	backupPath := cmdLineArgs at: scriptArgsIndex + 1.
+
+	(GsFile existsOnServer: backupPath)
+		ifFalse: [ GsFile stderr nextPutAll: 'The backup file ', backupPath printString, ' does not exist.'; lf. ^ false ].
 
 	status := SystemRepository restoreStatus.
 	status = 'Restore is not active.'

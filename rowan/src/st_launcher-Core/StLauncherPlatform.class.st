@@ -23,7 +23,7 @@ StLauncherPlatform class >> download: productVersionString platform: platformNam
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  interpreterOptions launcherArgMap: launcherArgMap [
+StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName launcherArgs: launcherArgs launcherArgMap: launcherArgMap [
 
 	"fabricate a platform-specific command line for executing the stashFile"
 	
@@ -34,11 +34,11 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  interpreterO
 		#optional	- optional argument
 	"
 
-	^ self new generateVmScriptLaunchCommandLineFrom:  interpreterOptions launcherArgMap: launcherArgMap
+	^ self new generateVmScriptLaunchCommandLineFor: imageName launcherArgs:  launcherArgs launcherArgMap: launcherArgMap
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  launcherVmOptions launcherArgMap: launcherArgMap debugCommandError: debugCommandErrorBool [
+StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap debugCommandError: debugCommandErrorBool [
 	"fabricate a platform-specific command line for executing the stashFile"
 
 	"
@@ -60,7 +60,7 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFrom:  launcherVmOp
 	"return true if the command line was successfully written on stdot, otherwise return false"
 
 	[
-		self generateVmScriptLaunchCommandLineFrom: launcherVmOptions launcherArgMap: launcherArgMap.
+		self generateVmScriptLaunchCommandLineFor: imageName launcherArgs: launcherVmOptions launcherArgMap: launcherArgMap.
 		^ true ]
 		on: StashCommandError, Error
 		do: [:ex |
@@ -115,7 +115,7 @@ StLauncherPlatform >> download: productVersionString alternateFtpDir: alternameF
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform >> generateVmScriptLaunchCommandLineFrom:  launcherVmOptions launcherArgMap: launcherArgMap [
+StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap [
 
 	"fabricate a platform-specific command line for executing the stashFile"
 
@@ -138,7 +138,7 @@ StLauncherPlatform >> generateVmScriptLaunchCommandLineFrom:  launcherVmOptions 
 	| imagePath imageName imageProperties idx tokens vmArgs |
 
 	vmArgs := ''.
-	imageName := self structureProperties defaultImageName.
+	imageName := defaultImageName.
 
 	tokens := launcherVmOptions subStrings.
 	idx := tokens indexOf: '--'.

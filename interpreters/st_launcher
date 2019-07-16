@@ -111,6 +111,7 @@ stashFile=`realpath $1`
 shift
 scriptArgs=""
 launcherVmArgs=""
+imageName="$ST_LAUNCHER_DEFAULT_IMAGE_NAME"
 
 interpArgs="$*"
 
@@ -159,7 +160,11 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 		at: '-D' put: #none;	"debug StashCommandErrors"
 		at: '-V' put: #none;	"list script execution"
 		yourself.
-	StLauncherPlatform generateVmScriptLaunchCommandLineFrom: '$interpArgs' launcherArgMap: launcherArgMap debugCommandError: $debugCommandError.
+	StLauncherPlatform 
+		generateVmScriptLaunchCommandLineFor: '$imageName'
+		launcherArgs: '$interpArgs' 
+		launcherArgMap: launcherArgMap 
+		debugCommandError: $debugCommandError.
 %
 EXITIFNOERROR
 EOF
