@@ -4,6 +4,19 @@ if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 	export ST_LAUNCHER_HOME="`pwd`/home"
 fi
 
+
+testTopaz_empty_args() {
+	result=`bin/test_args.tpz admin_gs_350 -- -lq --`
+	assertEquals "testTopaz_empty_args" \
+		"EMPTY ARGS" "$result"
+}
+
+testTopaz_lone_arg() {
+	result=`bin/test_args.tpz admin_gs_350 -- -lq -- LONE`
+	assertEquals "testTopaz lone_arg" \
+		"lonearg:LONE" "$result"
+}
+
 testHello_explicitmage() {
 	# execute without error
   result=`bin/hello.st admin_gs_350 --`

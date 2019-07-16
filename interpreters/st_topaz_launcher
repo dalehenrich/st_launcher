@@ -90,6 +90,9 @@ shift
 if [ "$imageName" = "--" ] ; then
 	phase="topaz-args"
 	imageName="$ST_LAUNCHER_DEFAULT_IMAGE_NAME"
+elif [ "$imageName" = "" ] ; then
+	phase="topaz-args"
+	imageName="$ST_LAUNCHER_DEFAULT_IMAGE_NAME"
 else
 	phase="image-name"
 fi
@@ -155,12 +158,12 @@ fi
 if [ "$imageName" = "$ST_LAUNCHER_DEFAULT_IMAGE_NAME" ] ; then
 	# using default image name .. launch topaz now
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
-	$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $topazScript
+	$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $topazScript -- $scriptArgs
 else
 	# using non-default image name ... need to do lookup of the particulars
-echo "imageName: $imageName"
-echo "topazArgs: $topazArgs"
-echo "scriptArgs: $scriptArgs"
+echo "imageName:${imageName}|"
+echo "topazArgs:${topazArgs}|"
+echo "scriptArgs:${scriptArgs}|"
 	echo "using non-default image name NOT YET IMPLEMENTED"
 	exit 1
 fi
