@@ -16,4 +16,5 @@ before_script:
     - ls -altr /usr/local/bin/smalltalk/gemstone
 
 script:
+- bin/hello.st
 - bash travis_tests/st_launcher_tests.sh
