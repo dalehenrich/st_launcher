@@ -33,7 +33,7 @@ pushd $HOME
  		$TRAVIS_SUDO curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_home.ston"
 		if [ "${TRAVIS_SUDO}x" != "x" ] ; then
 			# need to make the .st_launcher dir readable
-			$TRAVIS_SUDO chmod -R +r $HOME/.st_launcher
+			$TRAVIS_SUDO chmod -R a+r $HOME/.st_launcher
 		fi
 	fi
 popd
