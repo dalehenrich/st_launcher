@@ -29,7 +29,8 @@ RwComponentLoadConfiguration{
 			'core' : {
 				#packageNames : [
 					'st_launcher-GemStone-Core',
-					'st_launcher-GemStone-Services'
+					'st_launcher-GemStone-Services',
+					'st_launcher-GemStone-Kernel'
 				]
 			}
 		}
@@ -37,6 +38,9 @@ RwComponentLoadConfiguration{
 	#conditionalPackageMapSpecs : {
 		'gemstone' : {
 			'SystemUser' : {
+				#packageNameToPlatformPropertiesMap : {
+					'st_launcher-GemStone-Kernel' : { 'symbolDictName' : 'Globals' }
+				}
 			}
 		}
 	}
