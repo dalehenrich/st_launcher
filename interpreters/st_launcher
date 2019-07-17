@@ -168,7 +168,7 @@ display oops
 		generateVmScriptLaunchCommandLineFor: '$imageName'
 		launcherArgs: '$interpArgs' 
 		launcherArgMap: launcherArgMap 
-		debugCommandError: "$debugCommandError" false.
+		debugCommandError: "$debugCommandError" true.
 %
 EXITIFNOERROR
 EOF

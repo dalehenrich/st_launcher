@@ -66,12 +66,10 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName laun
 		do: [:ex |
 			debugCommandErrorBool
 				ifTrue: [ ex pass ]
-				ifFalse: [ | stream |
-						stream := WriteStream on: String new.
-						StashScript 
-						ansiRedOn: stream 
-						during: [ stream nextPutAll: ex description ].
-					GsFile stderr nextPutAll: stream contents asString.
+				ifFalse: [
+					StashScript 
+						ansiRedOn: GsFile stderr 
+						during: [ GsFile stderr nextPutAll: ex description ].
 					GsFile stderr lf.
 				^ false ] ].
 ]
