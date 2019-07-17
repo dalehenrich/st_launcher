@@ -11,7 +11,7 @@ before_script:
     - ls -altr home/platforms/gemstone/downloads
     - ls -altr home/platforms/gemstone/products
     - ls -altr travis_tests
-    - sudo ls -altr $HOME/.st_launcher
+    - ls -altr $HOME/.st_launcher
     - ls -altr /usr/local/bin/smalltalk/gemstone
 
 script:
