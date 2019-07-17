@@ -161,7 +161,7 @@ display oops
 	| path |
 	path := '$HOME/.st_launcher/st_launcher_home.ston'.
 	GsFile stderr nextPutAll: path, '-->'; nextPutAll: (GsFile existsOnServer: path) printString; nextPutAll: '::', path asFileReference exists printString; lf.
-	%
+%
 	expectvalue true
 	run
 	| launcherArgMap |
