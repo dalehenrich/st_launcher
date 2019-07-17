@@ -203,6 +203,9 @@ file=`mktemp`
 cat - > $file << EOF
 
 	$topazDebugIfError
+	
+	iferr 1 stk
+	iferr 2 stack
 
 	login
 
