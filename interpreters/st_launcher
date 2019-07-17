@@ -150,18 +150,14 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	cat - > $inputFile << EOF
 # debugging only
 iferr 1 stack
-iferr 2 exit 150
+iferr 2 exit 1
 #	$topazDebugIfError
 
 	set solologin on
 	login
 
-	run
-GsFile stderr nextPutAll: 'BEFORE'; lf
-%
 	expectvalue true
 	run
-[
 	| launcherArgMap |
 	launcherArgMap := Dictionary new
 		at: '-D' put: #none;	"debug StashCommandErrors"
@@ -171,8 +167,7 @@ GsFile stderr nextPutAll: 'BEFORE'; lf
 		generateVmScriptLaunchCommandLineFor: '$imageName'
 		launcherArgs: '$interpArgs' 
 		launcherArgMap: launcherArgMap 
-		debugCommandError: $debugCommandError.
-] on: FileDoesNotExistException do: [:ex | GsFile stderr nextPutAll: 'hello'; lf. ^false ].
+		debugCommandError: "$debugCommandError" false.
 %
 EXITIFNOERROR
 EOF
