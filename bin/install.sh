@@ -7,9 +7,13 @@
 
 set -x # so you can see what's going on 
 
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+cd ..
+st_launcher_HOME=`pwd`
+
 st_launcherVersion="v0.0.1"
 
-curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx -C travis_tests
+curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx -C $st_launcher_HOME/travis_tests
 git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
 pushd home
 	cd platforms
@@ -18,7 +22,7 @@ pushd home
 	mkdir downloads products
 	cd downloads
 	curl  -O -s -S "https://downloads.gemtalksystems.com/pub/GemStone64/3.5.0/GemStone64Bit3.5.0-x86_64.Linux.zip"
-  unzip -q -d "../products" GemStone64Bit3.5.0-x86_64.Linux.zip
+  unzip -q -d "$st_launcher_HOME/home/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
 popd
 pushd $HOME
 	# \$TRAVIS_SDO is needed for travis-ci, since normally you don't have write permission in \$HOME
@@ -35,5 +39,5 @@ pushd home/images/admin_gs_350/snapshots
 popd
 sudo mkdir /usr/local/bin/smalltalk
 sudo mkdir /usr/local/bin/smalltalk/gemstone
-sudo ln -s interpreters/st_launcher /usr/local/bin/smalltalk/gemstone/st_launcher 
-sudo ln -s interpreters/st_topaz_launcher /usr/local/bin/smalltalk/gemstone/st_topaz_launcher 
+sudo ln -s $st_launcher_HOME/interpreters/st_launcher /usr/local/bin/smalltalk/gemstone/st_launcher 
+sudo ln -s $st_launcher_HOME/interpreters/st_topaz_launcher /usr/local/bin/smalltalk/gemstone/st_topaz_launcher 
