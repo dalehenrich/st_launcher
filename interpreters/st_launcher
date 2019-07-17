@@ -153,6 +153,9 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	set solologin on
 	login
 
+	run
+GsFile stderr nextPutAll: 'BEFORE'; lf
+%
 	expectvalue true
 	run
 [
