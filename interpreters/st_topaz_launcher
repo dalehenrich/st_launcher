@@ -159,7 +159,9 @@ topaziniPath="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini"
 soloExtentArg="-C \"GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH\""
 if [ "$imageName" = "$ST_LAUNCHER_DEFAULT_IMAGE_NAME" ] ; then
 	# use default image parameters ... not necessary to generate a command line
-	$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $topazScript -- $scriptArgs
+
+>&2 echo "1--->$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $topazScript -- $scriptArgs"
+$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $topazScript -- $scriptArgs
 else
 	# non-default image name, need to generate the command line, since it is based on params associated with the image 
 
@@ -181,7 +183,9 @@ else
 %
 EXITIFNOERROR
 EOF
+>&2 echo "1--->$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $generateCommandLineFile"
 	scriptCommandLine=`$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $generateCommandLineFile`
+>&2 echo "2--->$scriptCommandLine -S $topazScript -- $scriptArgs"
 	$scriptCommandLine -S $topazScript -- $scriptArgs
 fi
 
