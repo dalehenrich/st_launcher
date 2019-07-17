@@ -151,6 +151,7 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 # debugging only
 iferr 1 stack
 iferr 2 exit 1
+display oops
 #	$topazDebugIfError
 
 	set solologin on
