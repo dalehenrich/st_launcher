@@ -1,1 +1,0 @@
-../../rowan/src/st_launcher-GemStone-Scripts/StLauncher_GemStone_Snapshot_Script.class.st
