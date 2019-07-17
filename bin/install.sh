@@ -29,14 +29,11 @@ pushd $HOME
 	if [ ! -d "$HOME/.st_launcher" ] ; then
 		$TRAVIS_SUDO mkdir $HOME/.st_launcher
 		cd $HOME/.st_launcher
-		$TRAVIS_SUDO curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
- 		$TRAVIS_SUDO curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_home.ston"
-		if [ "${TRAVIS_SUDO}x" != "x" ] ; then
-			# need to make the .st_launcher dir readable
-			$TRAVIS_SUDO chmod -R a+r $HOME/.st_launcher
-		fi
 	fi
 popd
+curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
+curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_home.ston"
+$TRAVIS_SUDO mv st_launcher_default.env st_launcher_home.ston $HOME/.st_launcher
 pushd home/images/admin_gs_350/snapshots
 	curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/extent0.admin_gs_350.dbf.zip"
 	unzip -q  extent0.admin_gs_350.dbf.zip
