@@ -170,6 +170,7 @@ EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
 	if [ "$debugCommandError" = "false" ] ; then
+cat $inputFile >&2
 >&2 echo "1--->$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile"
 		scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 		status=$?
@@ -224,7 +225,7 @@ cat - > $file << EOF
 			$debugCommandError
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
-					StashScript 
+					StashScript
 						ansiRedOn: GsFile stderr 
 						during: [ GsFile stderr nextPutAll: ex description, ' ', ex messageText ].
 					GsFile stderr lf.
@@ -232,6 +233,7 @@ cat - > $file << EOF
 %
 EXITIFNOERROR
 EOF
+cat $file >&2
 >&2 echo "2--->$scriptCmdLine"
 $scriptCmdLine -S $file
 
