@@ -221,8 +221,10 @@ cat - > $file << EOF
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
 			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__'.
 		true	]
-		on: StashCommandError, Error
+		on: StashCommandError, Error, FileDoesNotExistException
 		do: [:ex |
+			(ex isKindOf: FileDoesNotExistException)
+					ifTrue: [ GsFile stderr nextPutAll: ex messageText; lf. ex pass ].
 			$debugCommandError
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
