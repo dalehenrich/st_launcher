@@ -155,16 +155,18 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 
 	expectvalue true
 	run
+[
 	| launcherArgMap |
 	launcherArgMap := Dictionary new
 		at: '-D' put: #none;	"debug StashCommandErrors"
 		at: '-V' put: #none;	"list script execution"
 		yourself.
-	StLauncherPlatform 
+	^ StLauncherPlatform 
 		generateVmScriptLaunchCommandLineFor: '$imageName'
 		launcherArgs: '$interpArgs' 
 		launcherArgMap: launcherArgMap 
 		debugCommandError: $debugCommandError.
+] on: FileDoesNotExistException do: [:ex | GsFile stderr nextPutAll: ex messageText; lf. ex pass ].
 %
 EXITIFNOERROR
 EOF
