@@ -69,8 +69,6 @@ testHello_defaultImage() {
 	th_validateHello "testHello_defaultImage" "$status" "$result"
 }
 
-bin/hello.st foobar $verbose --
-
 testHello_invalidImageName() {
 # execute without error
   result=`bin/hello.st foobar $verbose --`

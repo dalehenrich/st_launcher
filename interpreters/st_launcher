@@ -160,11 +160,16 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 		at: '-D' put: #none;	"debug StashCommandErrors"
 		at: '-V' put: #none;	"list script execution"
 		yourself.
+	[
 	StLauncherPlatform 
 		generateVmScriptLaunchCommandLineFor: '$imageName'
 		launcherArgs: '$interpArgs' 
 		launcherArgMap: launcherArgMap 
 		debugCommandError: $debugCommandError.
+	] on: do: [:ex | FileDoesNotExistException
+				(ex isKindOf: FileDoesNotExistException)
+					ifTrue: [ GsFile stderr nextPutAll: ex messageText; lf. ex pass ].
+				false].
 %
 EXITIFNOERROR
 EOF
