@@ -4,8 +4,6 @@ if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 	export ST_LAUNCHER_HOME="`pwd`/home"
 fi
 
-verbose="-V"
-
 testTopaz_empty_args() {
 	result=`bin/test_args.tpz admin_gs_350 -- -lq --`
 	assertEquals "testTopaz_empty_args" \
@@ -71,7 +69,7 @@ testHello_defaultImage() {
 
 testHello_invalidImageName() {
 # execute without error
-  result=`bin/hello.st foobar $verbose --`
+  result=`bin/hello.st foobar --`
 	status=$?
 	assertEquals "testHello_invalidImageName: invalid image name error" \
 		'1' "$status"
