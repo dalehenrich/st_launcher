@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 	export ST_LAUNCHER_HOME="`pwd`/home"
 fi
