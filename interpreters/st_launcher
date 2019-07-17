@@ -166,7 +166,7 @@ if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 		launcherArgs: '$interpArgs' 
 		launcherArgMap: launcherArgMap 
 		debugCommandError: $debugCommandError.
-	] on: FileDoesNotExistException
+	] on: Error
 		do: [:ex | 
 				(ex isKindOf: FileDoesNotExistException)
 					ifTrue: [ GsFile stderr nextPutAll: ex messageText; lf. ex pass ].
@@ -236,7 +236,7 @@ cat - > $file << EOF
 				ifFalse: [ 
 					StashScript 
 						ansiRedOn: GsFile stderr 
-						during: [ GsFile stderr nextPutAll: ex description ].
+						during: [ GsFile stderr nextPutAll: ex description, ' ', ex messageText ].
 					GsFile stderr lf.
 					false ] ].
 %

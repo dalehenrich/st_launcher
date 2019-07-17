@@ -6,6 +6,12 @@ env:
 
 before_script:
     - bin/install.sh 
+    - ls -altr
+    - ls -altr home/images/admin_gs_350/snapshots
+    - ls -altr home/platforms/gemstone/downloads/*
+    - ls -altr home/platforms/gemstone/products/*
+    - sudo ls -altr $HOME/.st_launcher
+    - ls -altr /usr/local/bin/smalltalk/gemstone/
 
 script:
 - bash travis_tests/st_launcher_tests.sh
