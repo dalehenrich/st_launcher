@@ -9,8 +9,10 @@ before_script:
     - git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
     - curl  -O -s -S "https://downloads.gemtalksystems.com/pub/GemStone64/3.5.0/GemStone64Bit3.5.0-x86_64.Linux.zip"
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone
+    - mkdir $ST_LAUNCHER_HOME/platforms/gemstone/downloads
     - mkdir $ST_LAUNCHER_HOME/platforms/gemstone/products
     - unzip -q -d "$ST_LAUNCHER_HOME/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
+    - mv GemStone64Bit3.5.0-x86_64.Linux.zip $ST_LAUNCHER_HOME/platforms/gemstone/downloads
     - curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/st_launcher_default.env"
     - curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/st_launcher_home.ston"
     - curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/v0.0.1/extent0.admin_gs_350.dbf.zip"
