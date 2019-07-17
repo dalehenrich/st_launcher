@@ -13,7 +13,7 @@ argument following the <scriptPath>.
 The $(basename $0) options may be interspersed with the topz vm args as of
 GemStone 3.5.0.
 
-If the script expects to use '--' to terminate it's argument parsing, then a 
+If the scriptdefault.envto use '--' to terminate it's argument parsing, then a 
 '--' must precede the script arguments on the command line.
 
 OPTIONS
@@ -175,7 +175,6 @@ EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
 	if [ "$debugCommandError" = "false" ] ; then
-cat $inputFile >&2
 >&2 echo "1--->$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile"
 		scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 		status=$?
@@ -238,7 +237,6 @@ cat - > $file << EOF
 %
 EXITIFNOERROR
 EOF
-cat $file >&2
 >&2 echo "2--->$scriptCmdLine"
 $scriptCmdLine -S $file
 
