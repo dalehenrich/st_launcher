@@ -13,6 +13,8 @@ before_script:
     - ls -altr home/platforms/gemstone/products
     - ls -altr travis_tests
     - sudo ls -altr $HOME/.st_launcher
+    - sudo cat $HOME/.st_launcher/st_launcher_home.ston
+    - sudo cat $HOME/.st_launcher/st_launcher_default.env
     - ls -altr /usr/local/bin/smalltalk/gemstone
 
 script:
