@@ -140,7 +140,6 @@ for argument in $launcherVmArgs ; do
 	esac
 done
 
-set -x 
 if [ "${ST_LAUNCHER_HOME}x" = "x" ] ; then
 	export ST_LAUNCHER_HOME="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/../.."
 fi
@@ -157,11 +156,6 @@ display oops
 	set solologin on
 	login
 
-	run
-	| path |
-	path := '$HOME/.st_launcher/st_launcher_home.ston'.
-	GsFile stderr nextPutAll: path, '-->'; nextPutAll: (GsFile existsOnServer: path) printString; nextPutAll: '::', path asFileReference exists printString; lf.
-%
 	expectvalue true
 	run
 	| launcherArgMap |
@@ -173,14 +167,12 @@ display oops
 		generateVmScriptLaunchCommandLineFor: '$imageName'
 		launcherArgs: '$interpArgs' 
 		launcherArgMap: launcherArgMap 
-		debugCommandError: "$debugCommandError" true.
+		debugCommandError: $debugCommandError.
 %
 EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
 	if [ "$debugCommandError" = "false" ] ; then
-cat $inputFile >&2
->&2 echo "1--->$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile"
 		scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
 		status=$?
 		if [ "$status" != "0" ]; then
@@ -209,8 +201,6 @@ else
 	echo "Unsupported platform: \$ST_LAUNCHER_DEFAULT_PLATFORM"
 	exit 1
 fi
-
-set +x
 
 file=`mktemp`
 cat - > $file << EOF
@@ -244,6 +234,5 @@ cat - > $file << EOF
 %
 EXITIFNOERROR
 EOF
->&2 echo "2--->$scriptCmdLine"
 $scriptCmdLine -S $file
 
