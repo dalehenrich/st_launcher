@@ -3,7 +3,6 @@ sudo: true
 
 env:
   - INSTALL_SCRIPT="bin/install.sh" ROWAN_PROJECTS_HOME="$TRAVIS_BUILD_DIR/travis_tests" ST_LAUNCHER_HOME="$TRAVIS_BUILD_DIR/home" SHUNIT_COLOR='always' TRAVIS_SUDO=sudo
-  - INSTALL_SCRIPT="bin/install_old.sh" ROWAN_PROJECTS_HOME="$TRAVIS_BUILD_DIR/travis_tests" ST_LAUNCHER_HOME="$TRAVIS_BUILD_DIR/home" SHUNIT_COLOR='always' TRAVIS_SUDO=sudo
 
 before_script:
     - $INSTALL_SCRIPT 
