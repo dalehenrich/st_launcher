@@ -21,6 +21,7 @@ BaselineOfSt_launcher >> baseline: spec [
 				package: #'st_launcher-GemStone-Core' with: [ spec requires: #('st_launcher-Core') ];
 				package: #'st_launcher-GemStone-Properties' with: [ spec requires: #('st_launcher-Properties') ];
 				package: #'st_launcher-Pharo-Properties' with: [ spec requires: #('st_launcher-Core') ];
+				package: #'st_launcher-Stash' with: [ spec requires: #('st_launcher-Core') ];
 				yourself ].
 	spec for: #scripts do: [
 			spec

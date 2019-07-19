@@ -6,7 +6,7 @@ Class {
 		'scriptOptionsMap',
 		'orderedOptions'
 	],
-	#category : 'st_launcher-Scripts'
+	#category : 'st_launcher-Stash'
 }
 
 { #category : 'script launching' }

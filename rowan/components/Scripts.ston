@@ -11,7 +11,8 @@ RwComponentLoadConfiguration {
 		] : {
 			'core' : {
 				#packageNames : [
-					'st_launcher-Scripts'
+					'st_launcher-Scripts',
+					'st_launcher-Stash'
 				]
 			},
 			'tests' : {
