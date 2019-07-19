@@ -24,6 +24,14 @@ pushd home
 	curl  -O -s -S "https://downloads.gemtalksystems.com/pub/GemStone64/3.5.0/GemStone64Bit3.5.0-x86_64.Linux.zip"
   unzip -q -d "$st_launcher_HOME/home/platforms/gemstone/products" GemStone64Bit3.5.0-x86_64.Linux.zip
 popd
+pushd home
+	cd platforms
+	mkdir pharo
+	cd pharo
+	mkdir 70-64
+	cd 70-64
+	curl https://get.pharo.org/64/stable+vm | bash
+popd
 pushd $HOME
 	# \$TRAVIS_SDO is needed for travis-ci, since normally you don't have write permission in \$HOME
 	if [ ! -d "$HOME/.st_launcher" ] ; then
@@ -37,6 +45,11 @@ $TRAVIS_SUDO mv st_launcher_default.env st_launcher_home.ston $HOME/.st_launcher
 pushd home/images/admin_gs_350/snapshots
 	curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/extent0.admin_gs_350.dbf.zip"
 	unzip -q  extent0.admin_gs_350.dbf.zip
+popd
+pushd home/images/admin_pharo_70
+	curl -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/admin_pharo_70.zip"
+	unzip -q admin_pharo_70.zip
+	rm admin_pharo_70.zip
 popd
 sudo mkdir /usr/local/bin/smalltalk
 sudo mkdir /usr/local/bin/smalltalk/gemstone

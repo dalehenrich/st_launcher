@@ -35,7 +35,7 @@ StLauncherImageProperties class >> defaultPropertyFilename [
 { #category : 'accessing' }
 StLauncherImageProperties class >> permanentImageNames [
 
-	^#( 'admin_gs_350')
+	^#( 'admin_gs_350' 'admin_pharo_70')
 ]
 
 { #category : 'accessing' }
