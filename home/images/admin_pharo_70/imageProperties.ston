@@ -1,0 +1,7 @@
+StLauncherPHaroImageProperties {
+	#imagePath : '$ST_LAUNCHER_HOME/images/admin_pharo_70',
+	#pharoVarsion : '7.0.3',
+	#name : 'admin_pharo_350',
+	#productPath : '$ST_LAUNCHER_HOME/platforms/pharo/70-64',
+	#structureName : 'st_launcher_home'
+}

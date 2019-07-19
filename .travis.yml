@@ -10,6 +10,9 @@ before_script:
     - ls -altr home/images/admin_gs_350/snapshots
     - ls -altr home/platforms/gemstone/downloads
     - ls -altr home/platforms/gemstone/products
+    - ls -altr home/images/admin_pharo_70
+    - ls -altr home/platforms/pharo/products
+    - ls -altr home/platforms/pharo/products/*
     - ls -altr travis_tests
     - ls -altr $HOME
     - ls -altr $HOME/.st_launcher
