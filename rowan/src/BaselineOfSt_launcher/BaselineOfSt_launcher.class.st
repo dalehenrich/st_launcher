@@ -13,7 +13,8 @@ BaselineOfSt_launcher >> baseline: spec [
 			spec
 				project: 'Stash'
 				with: [ spec
-					repository: 'tonel:////home/dhenrich/rogue/_homes/rogue/_home/shared/repos/stash/rowan/src' ].
+					repository: 'tonel:////home/dhenrich/rogue/_homes/rogue/_home/shared/repos/stash/rowan/src';
+					loads: 'ALL' ].
 			spec
 				package: #'st_launcher-Core';
 				package: #'st_launcher-Properties' with: [ spec requires: #('st_launcher-Core') ];
