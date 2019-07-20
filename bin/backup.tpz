@@ -17,6 +17,9 @@ login
 
 run
 	| theBackupPath sessId result cmdLineArgs scriptArgsIndex |
+
+	GsFile stderr nextPutAll: 'Starting backup.tpz at ', DateAndTime now asString, '.'; lf.
+
 	cmdLineArgs := System commandLineArguments.
 	scriptArgsIndex := cmdLineArgs indexOf: '--'.
 

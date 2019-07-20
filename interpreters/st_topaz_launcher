@@ -176,14 +176,15 @@ else
 	run
 	StLauncherPlatform 
 		generateVmScriptLaunchCommandLineFor: '$imageName'
-		launcherArgs: '$interpArgs' 
-		launcherArgMap: Dictionary new 
-		debugCommandError: $debugCommandError.
+			vmScriptPath: '$topazScript'
+			launcherArgs: '$interpArgs' 
+			launcherArgMap: Dictionary new 
+			debugCommandError: $debugCommandError.
 %
 EXITIFNOERROR
 EOF
 	scriptCommandLine=`$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $generateCommandLineFile`
-	$scriptCommandLine -S $topazScript -- $scriptArgs
+	$scriptCommandLine -- $scriptArgs
 fi
 
 
