@@ -235,5 +235,6 @@ cat - > $vmScriptFile << EOF
 %
 EXITIFNOERROR
 EOF
+
 $scriptCmdLine
 

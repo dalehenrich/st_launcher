@@ -26,13 +26,13 @@ StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs 
 	theVmArgs := vmArgs isEmpty
 		ifTrue: [
 			debugCommandErrorBool
-				ifTrue: [ ' ' ]
-				ifFalse: [ ' --nodisplay ' ] ]
+				ifTrue: [ '' ]
+				ifFalse: [ ' --nodisplay' ] ]
 		ifFalse: [ vmArgs ].
 	GsFile stdout 
-		nextPutAll: self productDirectory / 'pharo-vm' / 'pharo';
+		nextPutAll: (self productDirectory / 'pharo-vm' / 'pharo') pathString;
 		nextPutAll: ' ', theVmArgs ;
-		nextPutAll: '  ', self imageDirectory pathString, '/Pharo.image ';
+		nextPutAll: '  ', (self imageDirectory / 'Pharo.image') pathString;
 		lf;
 		yourself.
 ]

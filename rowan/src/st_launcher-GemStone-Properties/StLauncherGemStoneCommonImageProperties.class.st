@@ -88,12 +88,12 @@ StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom
 
 	| theVmArgs |
 	theVmArgs := vmArgs isEmpty 
-		ifTrue: [ ' -lq' ]
+		ifTrue: [ '-lq' ]
 		ifFalse: [ vmArgs ].
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: theVmArgs;
-		nextPutAll: ' -I ', self imageDirectory pathString, '/.topazini ';
+		nextPutAll: ' ', theVmArgs;
+		nextPutAll: ' -I ', (self imageDirectory / '.topazini') pathString;
 		nextPutAll: ' -S ', scriptFilePath;
 		lf;
 		yourself.
