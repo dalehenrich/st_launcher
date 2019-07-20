@@ -127,15 +127,11 @@ for argument in $@ ; do
 done
 
 debugCommandError="false"
-topazDebugIfError="iferr 1 exit 1"
 for argument in $launcherVmArgs ; do
 	case "$argument" in
-		-D) 
-			debugCommandError="true"
-			topazDebugIfError="iferr 1 stk"
-			;;
-		-H) usage; exit 0;;
-		-V) set -x;;
+		-D) debugCommandError="true" ;;
+		-H) usage; exit 0 ;;
+		-V) set -x ;;
 		*);;
 	esac
 done
@@ -151,12 +147,6 @@ fi
 vmScriptFile=`mktemp`
 cat - > $vmScriptFile << EOF
 
-	$topazDebugIfError
-	
-	login
-
-	expectvalue true
-	run
 	[
 		StLauncherScript
 			loadAndExecuteScriptClassFile: '$stashFile'
@@ -177,12 +167,11 @@ cat - > $vmScriptFile << EOF
 						during: [ GsFile stderr nextPutAll: ex description, ' ', ex messageText ].
 					GsFile stderr lf.
 					false ] ].
-%
-EXITIFNOERROR
 EOF
 
 #
 # code used to launch the vm associated with the default image, that generates the \$scriptCmdLine
+#
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
@@ -203,8 +192,8 @@ display oops
 		at: '-V' put: #none;	"list script execution"
 		yourself.
 	^ StLauncherPlatform 
-			generateVmScriptLaunchCommandLineFor: '$imageName'
-			vmScriptPath: '$vmScriptFile'
+			generateSmalltalkScriptLaunchCommandLineFor: '$imageName'
+			launchScriptPath: '$vmScriptFile'
 			launcherArgs: '$interpArgs' 
 			launcherArgMap: launcherArgMap 
 			debugCommandError: $debugCommandError.

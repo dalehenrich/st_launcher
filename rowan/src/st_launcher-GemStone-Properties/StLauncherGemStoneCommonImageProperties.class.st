@@ -82,6 +82,26 @@ StLauncherGemStoneCommonImageProperties >> gemstoneVersion: aGemStoneVersionStri
 ]
 
 { #category : 'launcher' }
+StLauncherGemStoneCommonImageProperties >> generateLaunchScriptFrom: scriptFilePath  debugCommandError: debugCommandErrorBool [
+
+	| scriptFile script |
+	scriptFile := scriptFilePath asFileReference.
+	scriptFile readStreamDo: [:fileStream |
+		script := fileStream contents ].
+	scriptFile writeStreamDo: [:fileStream |
+		debugCommandErrorBool
+			ifTrue: [ fileStream nextPutAll: 'iferr 1 stk'; lf ]
+			ifFalse: [ fileStream nextPutAll: 'iferr 1 exit 1'; lf ].
+		fileStream
+			nextPutAll: 'login'; lf;
+			nextPutAll: 'expectvalue true'; lf;
+			nextPutAll: 'run'; lf;
+			nextPutAll: script; lf;
+			nextPutAll: '%'; lf;
+			nextPutAll: 'EXITIFNOERROR'; lf ].
+]
+
+{ #category : 'launcher' }
 StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs vmScriptPath: scriptFilePath debugCommandError: debugCommandErrorBool [
 
 	"fabricate a topaz command line for executing the stashFile using a solo extent"

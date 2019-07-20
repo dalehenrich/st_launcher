@@ -84,6 +84,14 @@ StLauncherImageProperties >> exportToStream: aStream [
 	super exportToStream: aStream
 ]
 
+{ #category : 'launcher' }
+StLauncherImageProperties >> generateLaunchScriptFrom: scriptFilePath debugCommandError: debugCommandErrorBool [
+
+	"The scriptFilePath file contains the smalltalk code to launch a smalltalk script ... 
+		in general nothing needs to be done to the script. Override if the vm
+		needs to handle smalltalk execution differently"
+]
+
 { #category : 'accessing' }
 StLauncherImageProperties >> imageDirectory [
 
