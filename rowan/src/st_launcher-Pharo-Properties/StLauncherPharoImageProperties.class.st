@@ -18,17 +18,20 @@ StLauncherPharoImageProperties class >> named: nameString version: pharoVersionS
 ]
 
 { #category : 'launcher' }
-StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmOptions debugCommandError: debugCommandErrorBool [
+StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs vmScriptPath: scriptFilePath debugCommandError: debugCommandErrorBool [
 
 	"fabricate a pharo command line for executing the stashFile using a headless vm (headful for debugging)"
 
-	| vmExec |
-	vmExec := debugCommandErrorBool
-		ifTrue: [ 'pharo-ui ' ]
-		ifFalse: [ 'pharo ' ].
+	| theVmArgs |
+	theVmArgs := vmArgs isEmpty
+		ifTrue: [
+			debugCommandErrorBool
+				ifTrue: [ ' ' ]
+				ifFalse: [ ' --nodisplay ' ] ]
+		ifFalse: [ vmArgs ].
 	GsFile stdout 
-		nextPutAll: self imageDirectory pathString, '/', vmExec;
-		nextPutAll: ' ', vmOptions, ' ' ;
+		nextPutAll: self productDirectory / 'pharo-vm' / 'pharo';
+		nextPutAll: ' ', theVmArgs ;
 		nextPutAll: '  ', self imageDirectory pathString, '/Pharo.image ';
 		lf;
 		yourself.
@@ -44,6 +47,12 @@ StLauncherPharoImageProperties >> pharoVersion [
 StLauncherPharoImageProperties >> pharoVersion: aPharoVersionString [
 
 	pharoVersion := aPharoVersionString
+]
+
+{ #category : 'accessing' }
+StLauncherPharoImageProperties >> productDirectory [
+
+	^ self productPath asFileReference
 ]
 
 { #category : 'accessing' }

@@ -144,6 +144,7 @@ if [ "${ST_LAUNCHER_HOME}x" = "x" ] ; then
 	export ST_LAUNCHER_HOME="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/../.."
 fi
 
+vmScriptFile=`mktemp`
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
@@ -164,10 +165,11 @@ display oops
 		at: '-V' put: #none;	"list script execution"
 		yourself.
 	^ StLauncherPlatform 
-		generateVmScriptLaunchCommandLineFor: '$imageName'
-		launcherArgs: '$interpArgs' 
-		launcherArgMap: launcherArgMap 
-		debugCommandError: $debugCommandError.
+			generateVmScriptLaunchCommandLineFor: '$imageName'
+			vmScriptPath: '$vmScriptFile'
+			launcherArgs: '$interpArgs' 
+			launcherArgMap: launcherArgMap 
+			debugCommandError: $debugCommandError.
 %
 EXITIFNOERROR
 EOF
@@ -202,8 +204,7 @@ else
 	exit 1
 fi
 
-file=`mktemp`
-cat - > $file << EOF
+cat - > $vmScriptFile << EOF
 
 	$topazDebugIfError
 	
@@ -234,5 +235,5 @@ cat - > $file << EOF
 %
 EXITIFNOERROR
 EOF
-$scriptCmdLine -S $file
+$scriptCmdLine
 

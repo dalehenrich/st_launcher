@@ -23,7 +23,7 @@ StLauncherPlatform class >> download: productVersionString platform: platformNam
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap debugCommandError: debugCommandErrorBool [
+StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName vmScriptPath: scriptFilePath launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap debugCommandError: debugCommandErrorBool [
 	"fabricate a platform-specific command line for executing the stashFile"
 
 	"
@@ -46,7 +46,8 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName laun
 
 	[
 		self new 
-			generateVmScriptLaunchCommandLineFor: imageName 
+			generateVmScriptLaunchCommandLineFor: imageName
+				vmScriptPath: scriptFilePath
 				launcherArgs:  launcherVmOptions 
 				launcherArgMap: launcherArgMap 
 				debugCommandError: debugCommandErrorBool.
@@ -104,7 +105,7 @@ StLauncherPlatform >> download: productVersionString alternateFtpDir: alternameF
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap  debugCommandError: debugCommandErrorBool [
+StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName vmScriptPath: scriptFilePath launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap  debugCommandError: debugCommandErrorBool [
 
 	"fabricate a platform-specific command line for executing the stashFile"
 
@@ -149,7 +150,10 @@ StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName lau
 		imageNamed: imageName 
 		ifAbsent: [ self error: 'No image named ', imageName printString, ' found ' ]) asFileReference.
 	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
-	^ imageProperties generateVmScriptLaunchCommandLineFrom: vmArgs debugCommandError: debugCommandErrorBool
+	^ imageProperties 
+		generateVmScriptLaunchCommandLineFrom: vmArgs 
+			vmScriptPath: scriptFilePath
+			debugCommandError: debugCommandErrorBool
 ]
 
 { #category : 'images' }
