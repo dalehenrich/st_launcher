@@ -23,21 +23,6 @@ StLauncherPlatform class >> download: productVersionString platform: platformNam
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName launcherArgs: launcherArgs launcherArgMap: launcherArgMap [
-
-	"fabricate a platform-specific command line for executing the stashFile"
-	
-	"
-	<launcherArgMap> is a dictionary whose keys are launcher options and values:
-		#none		- no argument
-		#required	- required argement
-		#optional	- optional argument
-	"
-
-	^ self new generateVmScriptLaunchCommandLineFor: imageName launcherArgs:  launcherArgs launcherArgMap: launcherArgMap
-]
-
-{ #category : 'launcher' }
 StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap debugCommandError: debugCommandErrorBool [
 	"fabricate a platform-specific command line for executing the stashFile"
 
@@ -60,7 +45,11 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName laun
 	"return true if the command line was successfully written on stdot, otherwise return false"
 
 	[
-		self generateVmScriptLaunchCommandLineFor: imageName launcherArgs: launcherVmOptions launcherArgMap: launcherArgMap.
+		self new 
+			generateVmScriptLaunchCommandLineFor: imageName 
+				launcherArgs:  launcherVmOptions 
+				launcherArgMap: launcherArgMap 
+				debugCommandError: debugCommandErrorBool.
 		^ true ]
 		on: StashCommandError, Error
 		do: [:ex |
@@ -115,7 +104,7 @@ StLauncherPlatform >> download: productVersionString alternateFtpDir: alternameF
 ]
 
 { #category : 'launcher' }
-StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap [
+StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName launcherArgs:  launcherVmOptions launcherArgMap: launcherArgMap  debugCommandError: debugCommandErrorBool [
 
 	"fabricate a platform-specific command line for executing the stashFile"
 
@@ -155,13 +144,12 @@ StLauncherPlatform >> generateVmScriptLaunchCommandLineFor: defaultImageName lau
 					ifFalse: [
 						i = 1 
 							ifTrue: [ imageName := token ] ] ] ].
-	vmArgs isEmpty ifTrue: [ vmArgs := ' -lq' ].
 	
 	imagePath := (StLauncherPlatform 
 		imageNamed: imageName 
 		ifAbsent: [ self error: 'No image named ', imageName printString, ' found ' ]) asFileReference.
 	imageProperties := StLauncherProperties propertyFile: imagePath / StLauncherImageProperties defaultPropertyFilename.
-	^ imageProperties generateVmScriptLaunchCommandLineFrom: vmArgs
+	^ imageProperties generateVmScriptLaunchCommandLineFrom: vmArgs debugCommandError: debugCommandErrorBool
 ]
 
 { #category : 'images' }

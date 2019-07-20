@@ -1,10 +1,6 @@
 Class {
 	#name : 'StLauncherPharoProductProperties',
 	#superclass : 'StLauncherProductProperties',
-	#instVars : [
-		'productPath',
-		'pharoVersion'
-	],
 	#category : 'st_launcher-Pharo-Properties'
 }
 

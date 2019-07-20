@@ -82,13 +82,17 @@ StLauncherGemStoneCommonImageProperties >> gemstoneVersion: aGemStoneVersionStri
 ]
 
 { #category : 'launcher' }
-StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs [
+StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs debugCommandError: debugCommandErrorBool [
 
 	"fabricate a topaz command line for executing the stashFile using a solo extent"
 
+	| theVmArges |
+	theVmArges := vmArgs isEmpty 
+		ifTrue: [ ' -lq' ]
+		ifFalse: [ vmArgs ].
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: vmArgs;
+		nextPutAll: theVmArges;
 		nextPutAll: ' -I ', self imageDirectory pathString, '/.topazini ';
 		lf;
 		yourself.

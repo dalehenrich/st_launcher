@@ -14,13 +14,17 @@ StLauncherGemStoneSoloImageProperties class >> platformName [
 ]
 
 { #category : 'launcher' }
-StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs [
+StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs debugCommandError: debugCommandErrorBool [
 
 	"fabricate a topaz command line for executing the stashFile using a solo extent"
 
+	| theVmArges |
+	theVmArges := vmArgs isEmpty 
+		ifTrue: [ ' -lq'  ]
+		ifFalse: [ vmArgs ].
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: vmArgs, ' -C "GEM_SOLO_EXTENT=';
+		nextPutAll: theVmArges, ' -C "GEM_SOLO_EXTENT=';
 		nextPutAll: self soloSnapshot;
 		nextPutAll: '"';
 		nextPutAll: ' -I ', self imageDirectory pathString, '/.topazini ';

@@ -1,18 +1,34 @@
-#!/usr/local/bin/smalltalk/gemstone/topaz
+#!/usr/local/bin/smalltalk/gemstone/st_topaz_launcher
 #
 # Perform a Gemstone backup
+# #
+#  SYNOPSIS
+# 	backup.tpz <image-name> -- [ <topaz-args> ] -- <backup-file-path>
+#
+#  EXAMPLES
+#  	backup.tpz gs_350 -- -lq -- ./backups/extent0.st_launcher.dbf
 #
 
 iferr 1 stk
-
-set u SystemUser p swordfish
+# comment out following line to debug interactively
+iferr 2 exit 
 
 login
 
 run
-	| theBackupPath sessId result |
-	theBackupPath := ''.
-	GsFile stdout nextPutall: 'Waiting for vote to complete...'; lf.
+	| theBackupPath sessId result cmdLineArgs scriptArgsIndex |
+	cmdLineArgs := System commandLineArguments.
+	scriptArgsIndex := cmdLineArgs indexOf: '--'.
+
+	(cmdLineArgs size = scriptArgsIndex)
+		ifTrue: [ GsFile stderr nextPutAll: 'backup file path must be specified'; lf. ^false ].
+
+	theBackupPath := cmdLineArgs at: scriptArgsIndex + 1.
+	theBackupPath asFileReference exists ifTrue: [ 
+		GsFile stderr nextPutAll: 'Deleting existing backup file ', theBackupPath printString; lf.
+		theBackupPath asFileReference delete ]. 
+
+	GsFile stderr nextPutAll: 'Waiting for vote to complete...'; lf.
 	System waitForVoteStateIdle.
 	sessId := System sessionIdHoldingGcLock.
 	sessId ~~ 0
@@ -21,14 +37,14 @@ run
 				error:
 					'System has completed voting, but the gc lock is still being held by session with id '
 						, sessId printString , '.' ].
-	GsFile stdout nextPutall: 'Vote complete.'; lf.
-	GsFile stdout nextPutall: '---Starting backup to ' , theBackupPath printString , ' (';
-		nextPutall: TimeStamp now asString;
-		nextPutall: ')';
+	GsFile stderr nextPutAll: 'Vote complete.'; lf.
+	GsFile stderr nextPutAll: '---Starting backup to ' , theBackupPath printString , ' (';
+		nextPutAll: DateAndTime now asString;
+		nextPutAll: ')';
 		lf.
 	result := SystemRepository fullBackupTo: theBackupPath.
 	result == true
 		ifFalse: [ ^ self error: 'Could not complete the backup: ' , result ].
-	GsFile stdout nextPutall: '---Finished backup '; lf
+	GsFile stderr nextPutAll: '---Finished backup '; lf
 %
 exit
