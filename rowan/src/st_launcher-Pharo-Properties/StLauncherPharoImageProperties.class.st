@@ -33,6 +33,7 @@ StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs 
 		nextPutAll: (self productDirectory / 'pharo-vm' / 'pharo') pathString;
 		nextPutAll: ' ', theVmArgs ;
 		nextPutAll: '  ', (self imageDirectory / 'Pharo.image') pathString;
+		nextPutAll: '  st ', scriptFilePath asFileReference pathString; 
 		lf;
 		yourself.
 ]
