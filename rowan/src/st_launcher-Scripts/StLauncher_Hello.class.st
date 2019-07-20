@@ -22,7 +22,7 @@ StLauncher_Hello >> usage [
 	| dashes |
 	dashes := '----------------------------------------------------
 '.
-  GsFile stdout nextPutAll: dashes,
+  self stdout nextPutAll: dashes,
 		(self manPageClass
           fromString:
 'NAME

@@ -1,4 +1,6 @@
 *
+!launch.st
+!updateImages
 !pharo-ui
 !pharo
 !.gitignore

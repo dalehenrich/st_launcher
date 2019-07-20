@@ -210,10 +210,6 @@ EOF
 	else
 		# expecting to interactively debug topaz
 		stdoutF=`mktemp`
-		>&2 echo "--"
-		>&2 echo "-- starting session topaz in debug mode (-D)."
-	 	>&2 echo "-- Use \"exit 1\" to exit topaz and terminate execution of script"
-		>&2 echo "--"
 		$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile | tee $stdoutF
 		status="${PIPESTATUS[0]}"
 		if [ "$status" != "0" ]; then

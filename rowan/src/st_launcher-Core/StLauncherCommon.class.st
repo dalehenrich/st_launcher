@@ -17,6 +17,18 @@ StLauncherCommon >> error: aString [
 	^ StashCommandError signal: aString
 ]
 
+{ #category : 'io' }
+StLauncherCommon >> stderr [
+
+	^ self class stderr
+]
+
+{ #category : 'io' }
+StLauncherCommon >> stdout [
+
+	^ self class stdout
+]
+
 { #category : 'properties' }
 StLauncherCommon >> structureProperties [
 

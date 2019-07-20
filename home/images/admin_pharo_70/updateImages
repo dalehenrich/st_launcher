@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# temporary, private script to make it easy for me to update images
+#
+./pharo Pharo.image metacello install tonel:///home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/rowan/src BaselineOfSt_launcher
+
+./pharo Pharo.dev.image metacello install tonel:///home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/rowan/src BaselineOfSt_launcher

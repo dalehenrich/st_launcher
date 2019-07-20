@@ -22,18 +22,21 @@ StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs 
 
 	"fabricate a pharo command line for executing the stashFile using a headless vm (headful for debugging)"
 
-	| theVmArgs |
+	| theVmArgs  stArg |
 	theVmArgs := vmArgs isEmpty
 		ifTrue: [
 			debugCommandErrorBool
 				ifTrue: [ '' ]
 				ifFalse: [ ' --nodisplay' ] ]
 		ifFalse: [ vmArgs ].
+	stArg := debugCommandErrorBool
+		ifTrue: [ '' ]
+		ifFalse: [ ' --quit ' ].
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'pharo-vm' / 'pharo') pathString;
 		nextPutAll: ' ', theVmArgs ;
 		nextPutAll: '  ', (self imageDirectory / 'Pharo.image') pathString;
-		nextPutAll: '  st ', scriptFilePath asFileReference pathString; 
+		nextPutAll: '  st ', stArg, scriptFilePath asFileReference pathString; 
 		lf;
 		yourself.
 ]

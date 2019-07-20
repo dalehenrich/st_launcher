@@ -64,6 +64,18 @@ StLauncherScript class >> stashFilePath: stashFilePath imageName: theImageName s
 		yourself
 ]
 
+{ #category : 'io' }
+StLauncherScript class >> stderr [
+
+	^StLauncherCommon stderr
+]
+
+{ #category : 'io' }
+StLauncherScript class >> stdout [
+
+	^StLauncherCommon stdout
+]
+
 { #category : 'accessing' }
 StLauncherScript >> currentImageName [
 
@@ -132,4 +144,16 @@ StLauncherScript >> scriptOptions [
 StLauncherScript >> scriptOptionsMap [
 
 	^ scriptOptionsMap ifNil: [ scriptOptionsMap := Dictionary new ]
+]
+
+{ #category : 'script utilities' }
+StLauncherScript >> stderr [
+
+	^ self class stderr
+]
+
+{ #category : 'script utilities' }
+StLauncherScript >> stdout [
+
+	^ self class stdout
 ]
