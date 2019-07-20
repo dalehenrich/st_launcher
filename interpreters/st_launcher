@@ -144,7 +144,45 @@ if [ "${ST_LAUNCHER_HOME}x" = "x" ] ; then
 	export ST_LAUNCHER_HOME="$ST_LAUNCHER_DEFAULT_IMAGE_PATH/../.."
 fi
 
+#
+#	this is the smalltalk code executed by the vm aasociated with the \$imageName image
+# 	it is fed to the vm launched by the \$scriptCmdLine
+#
 vmScriptFile=`mktemp`
+cat - > $vmScriptFile << EOF
+
+	$topazDebugIfError
+	
+	login
+
+	expectvalue true
+	run
+	[
+		StLauncherScript
+			loadAndExecuteScriptClassFile: '$stashFile'
+			stashArgs: '$scriptArgs'
+			imageName: '$imageName'
+			workingDir: '$pwd'
+			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
+			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
+			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__'.
+		true	]
+		on: StashCommandError", Error, FileDoesNotExistException"
+		do: [:ex |
+			$debugCommandError
+				ifTrue: [ ex pass ]
+				ifFalse: [ 
+					StashScript
+						ansiRedOn: GsFile stderr 
+						during: [ GsFile stderr nextPutAll: ex description, ' ', ex messageText ].
+					GsFile stderr lf.
+					false ] ].
+%
+EXITIFNOERROR
+EOF
+
+#
+# code used to launch the vm associated with the default image, that generates the \$scriptCmdLine
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
@@ -203,38 +241,6 @@ else
 	echo "Unsupported platform: \$ST_LAUNCHER_DEFAULT_PLATFORM"
 	exit 1
 fi
-
-cat - > $vmScriptFile << EOF
-
-	$topazDebugIfError
-	
-	login
-
-	expectvalue true
-	run
-	[
-		StLauncherScript
-			loadAndExecuteScriptClassFile: '$stashFile'
-			stashArgs: '$scriptArgs'
-			imageName: '$imageName'
-			workingDir: '$pwd'
-			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
-			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
-			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__'.
-		true	]
-		on: StashCommandError", Error, FileDoesNotExistException"
-		do: [:ex |
-			$debugCommandError
-				ifTrue: [ ex pass ]
-				ifFalse: [ 
-					StashScript
-						ansiRedOn: GsFile stderr 
-						during: [ GsFile stderr nextPutAll: ex description, ' ', ex messageText ].
-					GsFile stderr lf.
-					false ] ].
-%
-EXITIFNOERROR
-EOF
 
 $scriptCmdLine
 
