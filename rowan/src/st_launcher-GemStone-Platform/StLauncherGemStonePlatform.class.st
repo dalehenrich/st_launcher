@@ -1,7 +1,7 @@
 Class {
 	#name : 'StLauncherGemStonePlatform',
 	#superclass : 'StLauncherPlatform',
-	#category : 'st_launcher-GemStone-Core'
+	#category : 'st_launcher-GemStone-Platform'
 }
 
 { #category : 'instance creation' }
