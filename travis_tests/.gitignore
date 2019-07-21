@@ -1,4 +1,5 @@
 *
 !.gitignore
 !st_launcher_tests.sh
+!st_launcher_pharo_tests.sh
 !test_args.tpz
