@@ -67,11 +67,18 @@ testHello_explicitmage_pharo_2() {
 	th_validateHello "testHello_exlicitImage_pharo_2" "$status" "$result"
 }
 
-testHello_explicitmage() {
+testHello_explicitmage_gs_1() {
 	# execute without error
   result=`bin/hello.st admin_gs_350 --`
 	status=$?
-	th_validateHello "testHello_exlicitImage" "$status" "$result"
+	th_validateHello "testHello_exlicitImage_gs_1" "$status" "$result"
+}
+
+testHello_explicitmage_gs_2() {
+	# execute without error
+  result=`bin/hello.st admin_gs_350`
+	status=$?
+	th_validateHello "testHello_exlicitImage_gs_2" "$status" "$result"
 }
 
 testHello_defaultImage() {
