@@ -66,7 +66,7 @@ StLauncherScript >> executeScript [
 { #category : 'accessing' }
 StLauncherScript >> orderedOptions [
 
-	^ orderedOptions ifNil: [ orderedOptions := {} ]
+	^ orderedOptions ifNil: [ orderedOptions := OrderedCollection new ]
 ]
 
 { #category : 'script execution' }
