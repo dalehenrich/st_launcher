@@ -1,1 +1,1 @@
-Package { #name : 'st_launcher-Stash-Pharo' }
+Package { #name : #'st_launcher-Stash-Pharo' }
