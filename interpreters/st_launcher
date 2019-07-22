@@ -144,7 +144,7 @@ fi
 #	this is the smalltalk code executed by the vm aasociated with the \$imageName image
 # 	it is fed to the vm launched by the \$scriptCmdLine
 #
-vmScriptFile=`mktemp`
+vmScriptFile=`mktemp -p /tmp tmp.XXXXXXXXXX.st`
 cat - > $vmScriptFile << EOF
 
 	[
@@ -160,9 +160,9 @@ cat - > $vmScriptFile << EOF
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
 					StashScript
-						ansiRedOn: GsFile stderr 
-						during: [ GsFile stderr nextPutAll: ex description, ' ', ex messageText ].
-					GsFile stderr lf.
+						ansiRedOn: StLauncherCommon stderr 
+						during: [ StLauncherCommon stderr nextPutAll: ex description, ' ', ex messageText ].
+					StLauncherCommon stderr lf.
 					false ] ].
 EOF
 
@@ -224,5 +224,6 @@ else
 	exit 1
 fi
 
+>&2 echo "$scriptCmdLine"
 $scriptCmdLine
 

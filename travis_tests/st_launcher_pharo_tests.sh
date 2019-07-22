@@ -11,13 +11,6 @@ testHello_explicitmage_1() {
 	th_validateHello "testHello_exlicitImage" "$status" "$result"
 }
 
-testHello_explicitmage_2() {
-	# execute without error
-  result=`bin/hello.st admin_pharo_70`
-	status=$?
-	th_validateHello "testHello_exlicitImage" "$status" "$result"
-}
-
 th_validateHello() {
 	testName="$1"
 	status="$2"
