@@ -224,6 +224,6 @@ else
 	exit 1
 fi
 
->&2 echo "$scriptCmdLine"
+# >&2 echo "$scriptCmdLine"
 $scriptCmdLine
 
