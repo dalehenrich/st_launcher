@@ -11,7 +11,7 @@ Class {
 { #category : 'accessing' }
 StLauncherProperties class >> defaultPropertiesDirectory [
 
-	^ '$HOME' asFileReference / '.st_launcher'
+	^ '$HOME' asFileReference / '.config' / 'st_launcher'
 ]
 
 { #category : 'instance creation' }
@@ -123,7 +123,7 @@ StLauncherProperties >> stonOn: stonWriter [
 ]
 
 { #category : 'accessing' }
-StLauncherImageProperties >> structureProperties [
+StLauncherProperties >> structureProperties [
 
 	^ structureProperties ifNil: [ structureProperties := super structureProperties ]
 ]
