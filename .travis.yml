@@ -14,6 +14,7 @@ before_script:
     - ls -altr home/platforms/pharo
     - ls -altr home/platforms/pharo/*
     - ls -altr travis_tests
+    - ls -altr $HOME/.config
     - ls -altr $HOME
     - ls -altr $HOME/.st_launcher
     - ls -altr /usr/local/bin/smalltalk/gemstone
