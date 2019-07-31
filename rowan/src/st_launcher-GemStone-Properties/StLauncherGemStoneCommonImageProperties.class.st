@@ -94,11 +94,27 @@ StLauncherGemStoneCommonImageProperties >> generateLaunchScriptFrom: scriptFileP
 			ifFalse: [ fileStream nextPutAll: 'iferr 1 exit 1'; lf ].
 		fileStream
 			nextPutAll: 'login'; lf;
+			yourself.
+false ifTrue: [
+		"see https://github.com/dalehenrich/st_launcher/issues/4 ... affects exit status and cleanliness of output"
+		fileStream
 			nextPutAll: 'expectvalue true'; lf;
+			yourself .
+].
+		fileStream
 			nextPutAll: 'run'; lf;
 			nextPutAll: script; lf;
 			nextPutAll: '%'; lf;
-			nextPutAll: 'EXITIFNOERROR'; lf ].
+			yourself.
+		debugCommandErrorBool 
+			ifTrue: [ 
+				fileStream
+					nextPutAll: 'EXITIFNOERROR'; lf;
+					yourself ]
+			ifFalse: [ 
+				fileStream
+					nextPutAll: 'EXIT'; lf;
+					yourself ] ].
 ]
 
 { #category : 'launcher' }

@@ -4,8 +4,8 @@
 
 usage() {
   cat <<HELP
-USAGE: $(basename $0) scriptPath [ imageName [-H] [-D] [-V] [topaz vm args] -- ] [script args]
-       $(basename $0) scriptPath [ imageName [-H] [-D] [-V] [topaz vm args] --   [script args] -- [non-option script args] 
+USAGE: $(basename $0) scriptPath [ [ imageName ] [-H] [-D] [-V] [topaz vm args] -- ] [script args]
+       $(basename $0) scriptPath [ [ imageName ] [-H] [-D] [-V] [topaz vm args] --   [script args] -- [non-option script args] 
 
 If topaz arguments are specified the <imageName> is required to be the first 
 argument following the <scriptPath>.
@@ -119,7 +119,12 @@ for argument in $@ ; do
 	if [ "$argument" = "--" ] ; then
 		launcherVmArgs=$scriptArgs
 		args=($launcherVmArgs)
-		imageName=${args[0]}
+		case ${args[0]} in
+			-*) # allow imageName to be optional first argument
+				;;
+			*) imageName=${args[0]} ;;
+		esac
+		
 		scriptArgs=""
 	else
 		scriptArgs+=" $argument"
@@ -145,6 +150,7 @@ fi
 # 	it is fed to the vm launched by the \$scriptCmdLine
 #
 vmScriptFile=`mktemp -p /tmp tmp.XXXXXXXXXX.st`
+pwd=`pwd`
 cat - > $vmScriptFile << EOF
 
 	[
@@ -154,14 +160,14 @@ cat - > $vmScriptFile << EOF
 			imageName: '$imageName'
 			workingDir: '$pwd'.
 		true	]
-		on: StashCommandError", Error, FileDoesNotExistException"
+		on: StashCommandError, Error
 		do: [:ex |
 			$debugCommandError
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
 					StashScript
 						ansiRedOn: StLauncherCommon stderr 
-						during: [ StLauncherCommon stderr nextPutAll: ex description, ' ', ex messageText ].
+						during: [ StLauncherCommon stderr nextPutAll: ex description ].
 					StLauncherCommon stderr lf.
 					false ] ].
 EOF
@@ -172,11 +178,10 @@ EOF
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
-# debugging only
+# st_launcher debugging only
 iferr 1 stack
 iferr 2 exit 1
 display oops
-#	$topazDebugIfError
 
 	set solologin on
 	login
@@ -185,6 +190,7 @@ display oops
 	run
 	| launcherArgMap |
 	launcherArgMap := Dictionary new
+		at: '-H' put: #none;	"debug StashCommandErrors"
 		at: '-D' put: #none;	"debug StashCommandErrors"
 		at: '-V' put: #none;	"list script execution"
 		yourself.

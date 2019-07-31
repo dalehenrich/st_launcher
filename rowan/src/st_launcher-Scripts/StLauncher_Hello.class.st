@@ -29,6 +29,8 @@ StLauncher_Hello >> usage [
 	hello.st - hello world.
 
 SYNOPSIS
+  hello.st [ imageName [-H] [-D] [-V] [st vm args] -- ]  [script args]
+
   hello.st [--help]
 
 DESCRIPTION
