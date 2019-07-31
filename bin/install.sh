@@ -13,6 +13,20 @@ st_launcher_HOME=`pwd`
 
 st_launcherVersion="v0.0.1"
 
+pushd $HOME
+	if [ ! -d "$HOME/.config" ] ; then
+		$TRAVIS_SUDO_COMMAND mkdir $HOME/.config
+		$TRAVIS_SUDO_COMMAND chmod og-rwx $HOME/.config
+		$TRAVIS_SUDO_COMMAND chmod u+rwx $HOME/.config
+		$TRAVIS_SUDO_COMMAND chown $USER $HOME/.config
+		ls -altrd  $HOME/.config
+	fi
+	if [ ! -d "$HOME/.config/st_launcher" ] ; then
+		$TRAVIS_SUDO_COMMAND mkdir $HOME/.config/st_launcher
+		cd $HOME/.config/st_launcher
+	fi
+popd
+
 curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx -C $st_launcher_HOME/travis_tests
 git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
 pushd home
@@ -32,18 +46,7 @@ pushd home
 	cd 70-64
 	curl https://get.pharo.org/64/stable+vm | bash
 popd
-pushd $HOME
-	if [ ! -d "$HOME/.config" ] ; then
-		$TRAVIS_SUDO mkdir $HOME/.config
-		$TRAVIS_SUDO chmod og-rwx $HOME/.config
-		$TRAVIS_SUDO chmod u+rwx $HOME/.config
-		ls -altrd  $HOME/.config
-	fi
-	if [ ! -d "$HOME/.config/st_launcher" ] ; then
-		$TRAVIS_SUDO mkdir $HOME/.config/st_launcher
-		cd $HOME/.config/st_launcher
-	fi
-popd
+
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_home.ston"
 mv st_launcher_default.env st_launcher_home.ston $HOME/.config/st_launcher
