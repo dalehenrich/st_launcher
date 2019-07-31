@@ -37,8 +37,7 @@ pushd $HOME
 		$TRAVIS_SUDO mkdir $HOME/.config
 		$TRAVIS_SUDO chmod og-rwx $HOME/.config
 		$TRAVIS_SUDO chmod u+rwx $HOME/.config
-		ls -altrd 
-
+		ls -altrd  $HOME/.config
 	fi
 	if [ ! -d "$HOME/.config/st_launcher" ] ; then
 		$TRAVIS_SUDO mkdir $HOME/.config/st_launcher
