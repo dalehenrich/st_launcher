@@ -33,8 +33,15 @@ pushd home
 	curl https://get.pharo.org/64/stable+vm | bash
 popd
 pushd $HOME
+	if [ ! -d "$HOME/.config" ] ; then
+		$TRAVIS_SUDO mkdir $HOME/.config
+		$TRAVIS_SUDO chmod og-rwx $HOME/.config
+		$TRAVIS_SUDO chmod u+rwx $HOME/.config
+		ls -altrd 
+
+	fi
 	if [ ! -d "$HOME/.config/st_launcher" ] ; then
-		mkdir $HOME/.config/st_launcher
+		$TRAVIS_SUDO mkdir $HOME/.config/st_launcher
 		cd $HOME/.config/st_launcher
 	fi
 popd
