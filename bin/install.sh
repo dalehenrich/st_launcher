@@ -45,6 +45,11 @@ pushd home
 	mkdir 70-64
 	cd 70-64
 	curl https://get.pharo.org/64/stable+vm | bash
+	# avoid pthread warnings from pharo vms
+	cat <<END | sudo tee /etc/security/limits.d/pharo.conf
+*      hard    rtprio  2
+*      soft    rtprio  2
+END
 popd
 
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
