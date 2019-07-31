@@ -23,7 +23,7 @@ pushd $HOME
 	fi
 	if [ ! -d "$HOME/.config/st_launcher" ] ; then
 		$TRAVIS_SUDO_COMMAND mkdir $HOME/.config/st_launcher
-		cd $HOME/.config/st_launcher
+		$TRAVIS_SUDO_COMMAND chown $USER $HOME/.config/st_launcher
 	fi
 popd
 
