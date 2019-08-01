@@ -4,11 +4,19 @@ if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 	export ST_LAUNCHER_HOME="`pwd`/home"
 fi
 
-testHello_explicitmage_1() {
+testHello_explicitmage_pharo_1() {
 	# execute without error
   result=`bin/hello.st admin_pharo_70 --`
 	status=$?
 	th_validateHello "testHello_exlicitImage" "$status" "$result"
+}
+
+testHello_invalidOption_pharo() {
+	# execute without error
+  result=`bin/hello.st admin_pharo_70 -- -x`
+	status=$?
+	assertEquals "testHello_invalidOption: invalid option error" \
+	'1' "$status"
 }
 
 th_validateHello() {

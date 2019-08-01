@@ -149,7 +149,7 @@ fi
 #	this is the smalltalk code executed by the vm aasociated with the \$imageName image
 # 	it is fed to the vm launched by the \$scriptCmdLine
 #
-vmScriptFile=`mktemp -p /tmp tmp.XXXXXXXXXX.st`
+vmScriptFile=`mktemp -p /tmp tmp.XXXXXXXXXX.stash`
 pwd=`pwd`
 cat - > $vmScriptFile << EOF
 
