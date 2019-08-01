@@ -1,12 +1,13 @@
 Extension { #name : 'StLauncherScript' }
 
 { #category : '*st_launcher-stash-rowan' }
-StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName workingDir: working_dir [ 
+StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName scriptName: theScriptName workingDir: working_dir [ 
 
 	^ self 
 		loadAndExecuteScriptClassFile: script_file 
 			stashArgs: stash_args 
 			imageName: theImageName 
+			scriptName: theScriptName
 			workingDir: working_dir 
 			projectName: '__EXECUTE_STASH_SCRIPT_PROJECT__'
 			packageName: '__EXECUTE_STASH_SCRIPT_PACKAGE__'
@@ -14,7 +15,7 @@ StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: 
 ]
 
 { #category : '*st_launcher-stash-rowan' }
-StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName workingDir: working_dir projectName: projectName packageName: packageName symDictName: symbolDictName [
+StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName scriptName: theScriptName workingDir: working_dir projectName: projectName packageName: packageName symDictName: symbolDictName [
 
 	| projectDefinition scriptClassDefinition stash |
 	self _createScriptExecutionSymbolDictionaryNamed: symbolDictName.
@@ -31,6 +32,7 @@ StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: 
 		workingDir: working_dir)
 			projectName: projectName;
 			packageName: packageName;
+			scriptName: theScriptName;
 			yourself.
 	^ stash setupAndExecuteScript
 ]

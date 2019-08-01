@@ -108,6 +108,7 @@ _canonicalize_file_path() {
 . $HOME/.config/st_launcher/st_launcher_default.env
 
 stashFile=`realpath $1`
+scriptName="$(basename -- $1)"
 shift
 scriptArgs=""
 launcherVmArgs=""
@@ -158,6 +159,7 @@ cat - > $vmScriptFile << EOF
 			loadAndExecuteScriptClassFile: '$stashFile'
 			stashArgs: '$scriptArgs'
 			imageName: '$imageName'
+			scriptName: '$scriptName'
 			workingDir: '$pwd'.
 		true	]
 		on: StashCommandError, Error

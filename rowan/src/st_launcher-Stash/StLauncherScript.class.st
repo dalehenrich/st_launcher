@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'currentImageName',
 		'scriptOptionsMap',
-		'orderedOptions'
+		'orderedOptions',
+		'scriptname'
 	],
 	#category : 'st_launcher-Stash'
 }
@@ -82,6 +83,18 @@ StLauncherScript >> scriptMethodOptions [
 	^ {
 			#('help' $h  #none #usage).
 	}
+]
+
+{ #category : 'accessing' }
+StLauncherScript >> scriptName [
+
+	^ scriptname
+]
+
+{ #category : 'accessing' }
+StLauncherScript >> scriptName: aString [
+
+	scriptname := aString
 ]
 
 { #category : 'script execution' }
