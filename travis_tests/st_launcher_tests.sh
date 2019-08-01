@@ -5,31 +5,31 @@ if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 fi
 
 testTopaz_empty_args() {
-	result=`bin/test_args.tpz admin_gs_350 -- -lq --`
+	result=`bin/test_args.tpz gemstone -- -lq --`
 	assertEquals "testTopaz_empty_args" \
 		"EMPTY ARGS" "$result"
 }
 
 testTopaz_lone_arg1() {
-	result=`bin/test_args.tpz admin_gs_350 -- -lq -- LONE`
+	result=`bin/test_args.tpz gemstone -- -lq -- LONE`
 	assertEquals "testTopaz lone_arg1" \
 		"lonearg:LONE" "$result"
 }
 
 testTopaz_lone_arg2() {
-	result=`bin/test_args.tpz admin_gs_350 -- -lq -- L-ONE`
+	result=`bin/test_args.tpz gemstone -- -lq -- L-ONE`
 	assertEquals "testTopaz lone_arg2" \
 		"lonearg:L-ONE" "$result"
 }
 
 testTopaz_option() {
-	result=`bin/test_args.tpz admin_gs_350 -- -lq -- -l`
+	result=`bin/test_args.tpz gemstone -- -lq -- -l`
 	assertEquals "testTopaz option" \
 		"option:-l" "$result"
 }
 
 testTopaz_option_arg1() {
-	result=`bin/test_args.tpz admin_gs_350 -- -lq -- -l hello`
+	result=`bin/test_args.tpz gemstone -- -lq -- -l hello`
 	status=$?
 	assertEquals "testTopaz option_arg1" \
 		"option:-l:arg:hello" "$result"
@@ -38,14 +38,14 @@ testTopaz_option_arg1() {
 }
 
 testTopaz_option_arg2() {
-	result=`bin/test_args.tpz admin_gs_350 -- -lq -- -l he-llo`
+	result=`bin/test_args.tpz gemstone -- -lq -- -l he-llo`
 	assertEquals "testTopaz option_arg2" \
 		"option:-l:arg:he-llo" "$result"
 }
 
 testTopaz_error() {
 	file=`mktemp`
-	bin/test_args.tpz admin_gs_350 -- -lq -- -e > $file  << EOF
+	bin/test_args.tpz gemstone -- -lq -- -e > $file  << EOF
 exit
 EOF
 	status=$?
@@ -55,14 +55,14 @@ EOF
 
 testHello_explicitmage_pharo_1() {
 	# execute without error
-  result=`bin/hello.st admin_pharo_70 --`
+  result=`bin/hello.st pharo --`
 	status=$?
 	th_validateHello "testHello_exlicitImage_pharo_1" "$status" "$result"
 }
 
 testHello_explicitmage_gs_1() {
 	# execute without error
-  result=`bin/hello.st admin_gs_350 --`
+  result=`bin/hello.st gemstone --`
 	status=$?
 	th_validateHello "testHello_exlicitImage_gs_1" "$status" "$result"
 }

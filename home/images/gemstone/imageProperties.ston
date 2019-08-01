@@ -1,11 +1,11 @@
 StLauncherGemStoneSoloImageProperties {
 	#binPath : 'bin',
 	#gemstoneVersion : '3.5.0',
-	#imagePath : '$ST_LAUNCHER_HOME/images/admin_gs_350',
+	#imagePath : '$ST_LAUNCHER_HOME/images/gemstone',
 	#logsPath : 'logs',
-	#name : 'admin_gs_350',
+	#name : 'gemstone',
 	#productPath : '$ST_LAUNCHER_HOME/platforms/gemstone/products/GemStone64Bit3.5.0-x86_64.Linux',
 	#snapshotsPath : 'snapshots',
-	#soloSnapshot : '$ST_LAUNCHER_HOME/images/admin_gs_350/snapshots/extent0.admin_gs_350.dbf',
+	#soloSnapshot : '$ST_LAUNCHER_HOME/images/gemstone/snapshots/extent0.gemstone.dbf',
 	#structureName : 'st_launcher_home'
 }

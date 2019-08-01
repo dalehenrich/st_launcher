@@ -55,14 +55,14 @@ popd
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_home.ston"
 mv st_launcher_default.env st_launcher_home.ston $HOME/.config/st_launcher
-pushd home/images/admin_gs_350/snapshots
-	curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/extent0.admin_gs_350.dbf.zip"
-	unzip -q  extent0.admin_gs_350.dbf.zip
+pushd home/images/gemstone/snapshots
+	curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/extent0.gemstone.dbf.zip"
+	unzip -q  extent0.gemstone.dbf.zip
 popd
-pushd home/images/admin_pharo_70
-	curl -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/admin_pharo_70.zip"
-	unzip -q admin_pharo_70.zip
-	rm admin_pharo_70.zip
+pushd home/images/pharo
+	curl -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/pharo.zip"
+	unzip -q pharo.zip
+	rm pharo.zip
 popd
 sudo mkdir /usr/local/bin/smalltalk
 sudo mkdir /usr/local/bin/smalltalk/gemstone

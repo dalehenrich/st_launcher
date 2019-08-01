@@ -6,14 +6,14 @@ fi
 
 testHello_explicitmage_pharo_1() {
 	# execute without error
-  result=`bin/hello.st admin_pharo_70 --`
+  result=`bin/hello.st pharo --`
 	status=$?
 	th_validateHello "testHello_exlicitImage" "$status" "$result"
 }
 
 testHello_invalidOption_pharo() {
 	# execute without error
-  result=`bin/hello.st admin_pharo_70 -- -x`
+  result=`bin/hello.st pharo -- -x`
 	status=$?
 	assertEquals "testHello_invalidOption: invalid option error" \
 	'1' "$status"
