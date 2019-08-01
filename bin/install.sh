@@ -28,7 +28,6 @@ pushd $HOME
 popd
 
 curl -L "https://github.com/kward/shunit2/archive/v2.1.7.tar.gz" | tar zx -C $st_launcher_HOME/travis_tests
-git clone https://github.com/GemTalk/Rowan.git travis_tests/Rowan
 pushd home
 	cd platforms
 	mkdir gemstone
