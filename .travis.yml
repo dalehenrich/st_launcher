@@ -7,10 +7,10 @@ env:
 before_script:
     - $INSTALL_SCRIPT 
     - ls -altr
-    - ls -altr home/images/admin_gs_350/snapshots
+    - ls -altr home/images/gemstone/snapshots
     - ls -altr home/platforms/gemstone/downloads
     - ls -altr home/platforms/gemstone/products
-    - ls -altr home/images/admin_pharo_70
+    - ls -altr home/images/gemstone
     - ls -altr home/platforms/pharo
     - ls -altr home/platforms/pharo/*
     - ls -altr travis_tests

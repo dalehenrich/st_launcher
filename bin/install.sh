@@ -11,7 +11,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 cd ..
 st_launcher_HOME=`pwd`
 
-st_launcherVersion="v0.0.1"
+st_launcherVersion="v0.1.0"
 
 pushd $HOME
 	if [ ! -d "$HOME/.config" ] ; then
