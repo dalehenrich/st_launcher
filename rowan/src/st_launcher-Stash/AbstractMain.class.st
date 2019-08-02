@@ -3,7 +3,8 @@ Class {
 	#superclass : 'StLauncherScript',
 	#instVars : [
 		'objIn',
-		'objOut'
+		'objOut',
+		'sentinelObject'
 	],
 	#category : 'st_launcher-Stash'
 }
@@ -57,7 +58,14 @@ AbstractMain >> postExecute [
 
 	| object |
 	object := self main.
-	self objOut nextPut: object
+	object ~~ self sentinelObject ifTrue: [ self objOut nextPut: object ]
+]
+
+{ #category : 'accessing' }
+AbstractMain >> sentinelObject [
+	"unique instance that is used to indicate that the stream of objects being processed is complete"
+
+	sentinelObject ifNil: [ sentinelObject := Object new ]
 ]
 
 { #category : 'usage' }

@@ -25,12 +25,6 @@ StLauncher_GemStone_Backup_Script >> _backupDirectory [
 	^ backupDirectory
 ]
 
-{ #category : 'actions' }
-StLauncher_GemStone_Backup_Script >> backupFile: aString [
-
-	backupFile := aString
-]
-
 { #category : 'private' }
 StLauncher_GemStone_Backup_Script >> _backupFile [
 
@@ -38,6 +32,12 @@ StLauncher_GemStone_Backup_Script >> _backupFile [
 		ifNil: [ 
 			self args size > 0 ifFalse: [ self error: 'Required positional arg <backup-file-name> is missing' ].
 			self args at: 1 ]
+]
+
+{ #category : 'actions' }
+StLauncher_GemStone_Backup_Script >> backupFile: aString [
+
+	backupFile := aString
 ]
 
 { #category : 'actions' }
@@ -52,18 +52,6 @@ StLauncher_GemStone_Backup_Script >> backupPath: fullOrRelativePath [
 	structureProperties := StLauncherProperties defaultPropertyFile.
 	imageProperties := structureProperties propertiesForImageNamed: self currentImageName.
 	backupDirectory :=  imageProperties imageDirectory / fileRef
-]
-
-{ #category : 'actions' }
-StLauncher_GemStone_Backup_Script >> safely [
-
-	safely := true.
-]
-
-{ #category : 'actions' }
-StLauncher_GemStone_Backup_Script >> shouldCommit [
-
-	shouldCommit := true.
 ]
 
 { #category : 'script execution' }
@@ -103,6 +91,12 @@ StLauncher_GemStone_Backup_Script >> postExecute [
 	GsFile stderr nextPutAll: '---Finished backup '; lf
 ]
 
+{ #category : 'actions' }
+StLauncher_GemStone_Backup_Script >> safely [
+
+	safely := true.
+]
+
 { #category : 'options' }
 StLauncher_GemStone_Backup_Script >> scriptMethodOptions [
 	^ {
@@ -111,6 +105,12 @@ StLauncher_GemStone_Backup_Script >> scriptMethodOptions [
 			#('safely' nil #'none' #safely).
 			#('commit' nil #'none' #shouldCommit).
 	}
+]
+
+{ #category : 'actions' }
+StLauncher_GemStone_Backup_Script >> shouldCommit [
+
+	shouldCommit := true.
 ]
 
 { #category : 'usage' }

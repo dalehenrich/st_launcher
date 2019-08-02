@@ -1,6 +1,6 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
-Simple script to demonstrate use of objOut
+Simple cross platform script to demonstrate use of objIn and objOut
 "
 Class {
 	#name : 'StL_ObjOut',
@@ -14,35 +14,35 @@ Class {
 { #category : 'script execution' }
 StL_ObjOut >> main [
 
+	(args includes: '-') 
+		ifTrue: [ 
+			"read objects from stdin"
+			self stdin peek. "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
+			[ self objIn atEnd ]
+				whileFalse: [
+					| obj |
+					obj := self objIn next.
+					self objOut nextPut: obj ].
+			^ self sentinelObject ].
 	^ self resultObject
 ]
 
 { #category : 'accessing' }
 StL_ObjOut >> resultObject [
 
-	(args includes: '-') 
-		ifTrue: [ "read an object from stdin" ].
 	^ resultObject ifNil: [ { 7 } ]
 ]
 
 { #category : 'options' }
 StL_ObjOut >> scriptMethodOptions [
 	^ {
-			#('help' $h  #none #usage).
-	}
-]
-
-{ #category : 'script options' }
-StL_ObjOut >> scriptOptions [
-	"specify the command line options"
-	^ {
-			#('help' $h #none).
+			#('help' $h  #none).
 			#('info' nil #none).
 	}
 ]
 
 { #category : 'usage' }
-StL_ObjOut >> usage: scriptName shortDescription: shortDescription description: description [
+StL_ObjOut >> usage: scriptName shortDescription: ignored description: description [
 	| dashes |
 	dashes := '----------------------------------------------------
 '.
@@ -50,20 +50,28 @@ StL_ObjOut >> usage: scriptName shortDescription: shortDescription description: 
 		(self manPageClass
           fromString:
 'NAME
-	', scriptName, ' - ', shortDescription, '.
+	', scriptName, ' - ', description, '.
 
 SYNOPSIS
   ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
 ----------
-  ', scriptName, ' [ -h | --help ] [ --info ]
+  ', scriptName, ' [ -h | --help ] [ --info ] [ - ]
 
 DESCRIPTION
-	', description, '
+	This script writes objects to stdout.
+
+	If `-` is specified, objects will be read from stdin and written to stdout without
+	further processing.
+
+	By default, the Array `{ 7 }` will be written to stdout.
 
 EXAMPLES
 	', scriptName, ' -h
 	', scriptName, ' --help
+	', scriptName, ' --info
 
 	', scriptName, '
+	', scriptName, ' > object.ston
+	', scriptName, ' - < object.ston
 ') printString, dashes
 ]

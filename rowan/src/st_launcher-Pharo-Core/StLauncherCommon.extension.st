@@ -7,6 +7,12 @@ StLauncherCommon class >> stderr [
 ]
 
 { #category : #'*st_launcher-pharo-core' }
+StLauncherCommon class >> stdin [
+
+	^ Stdio stdin
+]
+
+{ #category : #'*st_launcher-pharo-core' }
 StLauncherCommon class >> stdout [
 
 	^ Stdio stdout

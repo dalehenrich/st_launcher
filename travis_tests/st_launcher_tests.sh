@@ -54,28 +54,24 @@ EOF
 }
 
 testHello_explicitmage_pharo_1() {
-	# execute without error
   result=`bin/hello.st pharo --`
 	status=$?
 	th_validateHello "testHello_exlicitImage_pharo_1" "$status" "$result"
 }
 
 testHello_explicitmage_gs_1() {
-	# execute without error
   result=`bin/hello.st gemstone --`
 	status=$?
 	th_validateHello "testHello_exlicitImage_gs_1" "$status" "$result"
 }
 
 testHello_defaultImage() {
-	# execute without error
   result=`bin/hello.st`
 	status=$?
 	th_validateHello "testHello_defaultImage" "$status" "$result"
 }
 
 testHello_invalidImageName() {
-# execute without error
   result=`bin/hello.st foobar --`
 	status=$?
 	assertEquals "testHello_invalidImageName: invalid image name error" \
@@ -83,7 +79,6 @@ testHello_invalidImageName() {
 }
 
 testHello_invalidOption() {
-	# execute without error
   result=`bin/hello.st -x`
 	status=$?
 # see https://github.com/dalehenrich/st_launcher/issues/4
@@ -91,6 +86,40 @@ testHello_invalidOption() {
 #	'1' "$status"
 	assertEquals "testHello_invalidOption: invalid option error" \
 	'0' "$status"
+}
+
+testSimpleArrayInOut_default() {
+	result=`bin/objInOut.st - < travis_tests/simpleArray.ston`
+	status=$?
+	th_validateSimpleArray "testSimpleArrayInOut: <default>" "$status" "$result"
+}
+
+testSimpleArrayInOut_gemstone() {
+	th_testSimpleArrayInOut "gemstone"
+}
+
+testSimpleArrayInOut_pharo() {
+	th_testSimpleArrayInOut "pharo"
+}
+
+th_testSimpleArrayInOut() {
+	imageName="$1"
+	result=`bin/objInOut.st $imageName -- - < travis_tests/simpleArray.ston`
+	status=$?
+	th_validateSimpleArray "testSimpleArrayInOut: <${imageName}>" "$status" "$result"
+}
+
+th_validateSimpleArray() {
+	testName="$1"
+	status="$2"
+	result="$3"
+	assertEquals "$testName: exit status" \
+		'0' "$status"
+	assertEquals "$testName: wrong output" \
+		'[
+	8
+]' \
+		"$result"
 }
 
 th_validateHello() {

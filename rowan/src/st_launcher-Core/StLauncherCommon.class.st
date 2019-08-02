@@ -24,6 +24,12 @@ StLauncherCommon >> stderr [
 ]
 
 { #category : 'io' }
+StLauncherCommon >> stdin [
+
+	^ self class stdin
+]
+
+{ #category : 'io' }
 StLauncherCommon >> stdout [
 
 	^ self class stdout

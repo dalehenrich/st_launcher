@@ -177,7 +177,6 @@ EOF
 #
 # code used to launch the vm associated with the default image, that generates the \$scriptCmdLine
 #
-set -x
 
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`

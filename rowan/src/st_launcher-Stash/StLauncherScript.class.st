@@ -28,6 +28,12 @@ StLauncherScript class >> stderr [
 ]
 
 { #category : 'io' }
+StLauncherScript class >> stdin [
+
+	^StLauncherCommon stdin
+]
+
+{ #category : 'io' }
 StLauncherScript class >> stdout [
 
 	^StLauncherCommon stdout
@@ -119,6 +125,12 @@ StLauncherScript >> scriptOptionsMap [
 StLauncherScript >> stderr [
 
 	^ self class stderr
+]
+
+{ #category : 'script utilities' }
+StLauncherScript >> stdin [
+
+	^ self class stdin
 ]
 
 { #category : 'script utilities' }

@@ -23,16 +23,16 @@ StLauncher_GemStone_Restore_Script >> _backupDirectory [
 	^ backupDirectory
 ]
 
-{ #category : 'actions' }
-StLauncher_GemStone_Restore_Script >> backupFile: aString [
-
-	backupFile := aString
-]
-
 { #category : 'private' }
 StLauncher_GemStone_Restore_Script >> _backupFile [
 
 	^ backupFile ifNil: [ self args at: 1 ]
+]
+
+{ #category : 'actions' }
+StLauncher_GemStone_Restore_Script >> backupFile: aString [
+
+	backupFile := aString
 ]
 
 { #category : 'actions' }

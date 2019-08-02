@@ -7,6 +7,12 @@ StLauncherCommon class >> stderr [
 ]
 
 { #category : '*st_launcher-gemstone-core' }
+StLauncherCommon class >> stdin [
+
+	^ GsFile stdin
+]
+
+{ #category : '*st_launcher-gemstone-core' }
 StLauncherCommon class >> stdout [
 
 	^ GsFile stdout

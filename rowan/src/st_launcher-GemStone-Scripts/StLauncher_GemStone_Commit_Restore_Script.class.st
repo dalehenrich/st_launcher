@@ -5,8 +5,6 @@ a Stash Script
 Class {
 	#name : 'StLauncher_GemStone_Commit_Restore_Script',
 	#superclass : 'StLauncherScript',
-	#instVars : [
-	],
 	#category : 'st_launcher-GemStone-Scripts'
 }
 
