@@ -177,6 +177,8 @@ EOF
 #
 # code used to launch the vm associated with the default image, that generates the \$scriptCmdLine
 #
+set -x
+
 if [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "gemstone" ] ; then
 	inputFile=`mktemp`
 	cat - > $inputFile << EOF
@@ -215,13 +217,13 @@ EOF
 	else
 		# expecting to interactively debug topaz
 		stdoutF=`mktemp`
-		$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile | tee $stdoutF
+		$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile | tee $stdoutF >&2
 		status="${PIPESTATUS[0]}"
 		if [ "$status" != "0" ]; then
 			echo "-- debug session in topaz exited with a non-zero exit status"
 			exit $status
 		fi
-		>&2 echo "-- debug session ended, continuing execution"
+#		>&2 echo "-- debug session ended, continuing execution"
 		scriptCmdLine=`cat $stdoutF`
 	fi
 elif [ "$ST_LAUNCHER_DEFAULT_PLATFORM" = "pharo" ] ; then

@@ -20,6 +20,8 @@ StL_ObjOut >> main [
 { #category : 'accessing' }
 StL_ObjOut >> resultObject [
 
+	(args includes: '-') 
+		ifTrue: [ "read an object from stdin" ].
 	^ resultObject ifNil: [ { 7 } ]
 ]
 
@@ -35,7 +37,7 @@ StL_ObjOut >> scriptOptions [
 	"specify the command line options"
 	^ {
 			#('help' $h #none).
-			#('skip' nil #none #skipError).
+			#('info' nil #none).
 	}
 ]
 

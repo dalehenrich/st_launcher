@@ -36,6 +36,7 @@ AbstractMain >> info [
 
 	self stderr
 		nextPutAll: self systemInfo;
+		lf;
 		yourself
 ]
 
