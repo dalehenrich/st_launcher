@@ -1,7 +1,11 @@
 Extension { #name : #AbstractMain }
 
 { #category : #'*st_launcher-Pharo-Core' }
-AbstractMain >> systemInfo [
+AbstractMain >> objOut [
 
-	^ SystemVersion current version
+	^ objOut ifNil: [ 
+		objOut := (STONWriter on: self stdout)
+			prettyPrint: true; 
+			newLine: String lf;
+			yourself ]
 ]
