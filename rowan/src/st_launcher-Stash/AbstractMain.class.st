@@ -9,6 +9,37 @@ Class {
 }
 
 { #category : 'script execution' }
+AbstractMain >> executeScript [
+
+	opts
+		at: 'help'
+		ifAbsent: [
+			opts
+				at: 'info'
+				ifAbsent: [
+					self preExecute.
+					self orderedOptions do: [:option |
+						(opts includesKey: option)
+							ifTrue: [
+								| selector |
+								selector := (self scriptOptionsMap at: option) at: 4.
+								selector numArgs = 0
+									ifTrue: [ self perform: selector asSymbol ]
+									ifFalse: [ self perform: selector asSymbol with: (opts at: option) ] ] ].
+					self postExecute ] 
+				ifPresent: [ ^ self info ] ]
+		ifPresent: [ ^ self usage ]
+]
+
+{ #category : 'info' }
+AbstractMain >> info [
+
+	self stderr
+		nextPutAll: self systemInfo;
+		yourself
+]
+
+{ #category : 'script execution' }
 AbstractMain >> main [
 
 	self subclassResponsibility: #main
@@ -61,7 +92,9 @@ AbstractMain >> usage: scriptName shortDescription: shortDescription description
 	', scriptName, ' - ', shortDescription, '.
 
 SYNOPSIS
-  ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  [ -h | --help ]
+  ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
+----------
+  ', scriptName, ' [ -h | --help ] [ --info ]
 
 DESCRIPTION
 	', description, '

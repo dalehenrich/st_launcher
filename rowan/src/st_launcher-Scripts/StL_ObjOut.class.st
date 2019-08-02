@@ -20,7 +20,7 @@ StL_ObjOut >> main [
 { #category : 'accessing' }
 StL_ObjOut >> resultObject [
 
-	^ resultObject	ifNil: [ 7 ]
+	^ resultObject ifNil: [ { 7 } ]
 ]
 
 { #category : 'options' }
@@ -28,4 +28,40 @@ StL_ObjOut >> scriptMethodOptions [
 	^ {
 			#('help' $h  #none #usage).
 	}
+]
+
+{ #category : 'script options' }
+StL_ObjOut >> scriptOptions [
+	"specify the command line options"
+	^ {
+			#('help' $h #none).
+			#('skip' nil #none #skipError).
+	}
+]
+
+{ #category : 'usage' }
+StL_ObjOut >> usage: scriptName shortDescription: shortDescription description: description [
+	| dashes |
+	dashes := '----------------------------------------------------
+'.
+  self stdout nextPutAll: dashes,
+		(self manPageClass
+          fromString:
+'NAME
+	', scriptName, ' - ', shortDescription, '.
+
+SYNOPSIS
+  ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
+----------
+  ', scriptName, ' [ -h | --help ] [ --info ]
+
+DESCRIPTION
+	', description, '
+
+EXAMPLES
+	', scriptName, ' -h
+	', scriptName, ' --help
+
+	', scriptName, '
+') printString, dashes
 ]

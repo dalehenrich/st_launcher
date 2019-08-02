@@ -50,7 +50,7 @@ StashCommandLineHandler >> activate [
 	self loadStashDriverFile.
 	self executeStashDriverFile.
 	
-	Stdio stderr nextPutAll: 'Calling exitSuccess'; lf.
+	Stdio stdout lf.
 	Smalltalk exit: 0
 ]
 
