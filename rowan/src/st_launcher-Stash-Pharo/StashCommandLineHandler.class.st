@@ -44,21 +44,24 @@ StashCommandLineHandler class >> isResponsibleFor: aCommandLine [
 
 { #category : #activation }
 StashCommandLineHandler >> activate [
+	| exitStatus |
+	exitStatus := 0.
 	self activateHelp
 		ifTrue: [  ^ self ].
 	
 	self loadStashDriverFile.
-	self executeStashDriverFile.
+	self executeStashDriverFile
+		ifFalse: [ exitStatus := 1 ].
 	
 	Stdio stdout lf.
-	Smalltalk exit: 0
+	(Exit status: exitStatus) signal
 ]
 
 { #category : #execution }
 StashCommandLineHandler >> executeStashDriverFile [
 
 	stashhDriverFile readStreamDo: [:stream |
-		Smalltalk compiler evaluate: stream contents ]
+		^ Smalltalk compiler evaluate: stream contents ]
 ]
 
 { #category : #loading }

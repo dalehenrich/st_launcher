@@ -3,17 +3,23 @@ Extension { #name : #StLauncherCommon }
 { #category : #'*st_launcher-pharo-core' }
 StLauncherCommon class >> stderr [
 
-	^ Stdio stderr
+	^ ZnCharacterWriteStream
+		on: Stdio stderr
+		encoding: ZnCharacterEncoder utf8
 ]
 
 { #category : #'*st_launcher-pharo-core' }
 StLauncherCommon class >> stdin [
 
-	^ Stdio stdin
+	^ ZnCharacterReadStream
+		on: Stdio stdin
+		encoding: ZnCharacterEncoder utf8
 ]
 
 { #category : #'*st_launcher-pharo-core' }
 StLauncherCommon class >> stdout [
 
-	^ Stdio stdout
+	^ ZnCharacterWriteStream
+		on: Stdio stdout
+		encoding: ZnCharacterEncoder utf8
 ]

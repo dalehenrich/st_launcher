@@ -53,16 +53,16 @@ EOF
 		'1' $status
 }
 
-testHello_explicitmage_pharo_1() {
+testHello_explicitmage_pharo() {
   result=`bin/hello.st pharo --`
 	status=$?
-	th_validateHello "testHello_exlicitImage_pharo_1" "$status" "$result"
+	th_validateHello "testHello_exlicitImage_pharo" "$status" "$result"
 }
 
-testHello_explicitmage_gs_1() {
+testHello_explicitmage_gs() {
   result=`bin/hello.st gemstone --`
 	status=$?
-	th_validateHello "testHello_exlicitImage_gs_1" "$status" "$result"
+	th_validateHello "testHello_exlicitImage_gs" "$status" "$result"
 }
 
 testHello_defaultImage() {
@@ -85,6 +85,26 @@ testHello_invalidOption() {
 #	assertEquals "testHello_invalidOption: invalid option error" \
 #	'1' "$status"
 	assertEquals "testHello_invalidOption: invalid option error" \
+	'0' "$status"
+}
+
+testHello_invalidOption_gs() {
+  result=`bin/hello.st gemstone -- -x`
+	status=$?
+# see https://github.com/dalehenrich/st_launcher/issues/4
+#	assertEquals "testHello_invalidOption: invalid option error" \
+#	'1' "$status"
+	assertEquals "testHello_invalidOption_gs: invalid option error" \
+	'0' "$status"
+}
+
+testHello_invalidOption_pharo() {
+  result=`bin/hello.st pharo -- -x`
+	status=$?
+#	see https://github.com/pharo-project/pharo/issues/4174
+#	assertEquals "testHello_invalidOption_pharo: invalid option error" \
+#	'1' "$status"
+	assertEquals "testHello_invalidOption_pharo: invalid option error" \
 	'0' "$status"
 }
 
