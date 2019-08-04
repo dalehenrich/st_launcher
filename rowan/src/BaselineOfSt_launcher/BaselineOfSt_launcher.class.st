@@ -24,6 +24,7 @@ BaselineOfSt_launcher >> baseline: spec [
 				package: #'st_launcher-Stash' with: [ spec requires: #('st_launcher-Core') ];
 				package: #'st_launcher-Stash-Pharo' with: [ spec requires: #('st_launcher-Stash') ];
 				package: #'st_launcher-Pharo-Core' with: [ spec requires: #('st_launcher-Core') ];
+				package: #'st_launcher-Samples';
 				yourself ].
 	spec for: #scripts do: [
 			spec

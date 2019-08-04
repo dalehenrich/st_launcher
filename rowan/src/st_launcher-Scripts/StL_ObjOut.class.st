@@ -38,7 +38,14 @@ StL_ObjOut >> scriptMethodOptions [
 	^ {
 			#('help' $h  #none).
 			#('info' nil #none).
+			#('sample' nil #sample).
 	}
+]
+
+{ #category : 'script execution' }
+StL_ObjOut >> sample [
+
+	^ resultObject := StL_ObjOut_Sample new name: 'Blueberries'; count: 10; yourself
 ]
 
 { #category : 'usage' }
@@ -55,7 +62,7 @@ StL_ObjOut >> usage: scriptName shortDescription: ignored description: descripti
 SYNOPSIS
   ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
 ----------
-  ', scriptName, ' [ -h | --help ] [ --info ] [ - ]
+  ', scriptName, ' [ -h | --help ] [ --info ] [ - ] [ --sample ]
 
 DESCRIPTION
 	This script writes objects to stdout.

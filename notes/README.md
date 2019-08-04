@@ -15,3 +15,21 @@ Here's some example code for cleaning up cached full paths in Pharo [from Sean D
 			fixedLocation := FileLocator imageDirectory withPath: newPath.
 			e location: fixedLocation ]
 ```
+
+### Roassal pie chart
+```smalltalk
+| b |
+b := RTPieBuilder new.
+b interaction popup.
+b
+	objects:
+		(Array
+			with: ('Dictionary' -> 10)
+			with: ('Collection' -> 10)
+			with: ('Set' -> 5)
+			with: ('OrderedCollection' -> 1)).
+b slice: #value.
+b normalizer distinctColor.
+b labeled.
+^ b
+```

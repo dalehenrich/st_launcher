@@ -13,7 +13,8 @@ RwComponentLoadConfiguration {
 				#packageNames : [
 					'st_launcher-Scripts',
 					'st_launcher-Stash-Rowan',
-					'st_launcher-Stash'
+					'st_launcher-Stash',
+					'st_launcher-Samples'
 				]
 			},
 			'tests' : {
