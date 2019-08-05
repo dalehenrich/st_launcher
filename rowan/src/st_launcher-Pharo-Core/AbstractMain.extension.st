@@ -1,5 +1,11 @@
 Extension { #name : #AbstractMain }
 
+{ #category : '*st_launcher-pharo-core' }
+AbstractMain >> globalNamed: aString [
+
+	^ Smalltalk at: aString asSymbol
+]
+
 { #category : #'*st_launcher-Pharo-Core' }
 AbstractMain >> objOut [
 
