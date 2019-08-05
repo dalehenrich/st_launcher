@@ -14,7 +14,7 @@ Class {
 { #category : 'script execution' }
 StL_ObjOut >> main [
 
-	(args includes: '-') 
+	(self args includes: '-') 
 		ifTrue: [ 
 			"read objects from stdin"
 			self stdin peek. "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
@@ -33,6 +33,12 @@ StL_ObjOut >> resultObject [
 	^ resultObject ifNil: [ { 7 } ]
 ]
 
+{ #category : 'script execution' }
+StL_ObjOut >> sample [
+
+	^ resultObject := StL_ObjOut_Sample new name: 'Blueberries'; count: 10; yourself
+]
+
 { #category : 'options' }
 StL_ObjOut >> scriptMethodOptions [
 	^ {
@@ -40,12 +46,6 @@ StL_ObjOut >> scriptMethodOptions [
 			#('info' nil #none).
 			#('sample' nil #sample).
 	}
-]
-
-{ #category : 'script execution' }
-StL_ObjOut >> sample [
-
-	^ resultObject := StL_ObjOut_Sample new name: 'Blueberries'; count: 10; yourself
 ]
 
 { #category : 'usage' }

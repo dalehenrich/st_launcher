@@ -41,6 +41,24 @@ StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs 
 		yourself.
 ]
 
+{ #category : 'aliased properties' }
+StLauncherPharoImageProperties >> headless: anImageNameOrAlias [
+
+	"answer true if <anImageNameOrAlias> should run scripts in headless mode"
+
+	^ (self aliases at: anImageNameOrAlias ifAbsent: [ ^ true ])
+		at: 'headless' ifAbsent: [ true ]
+]
+
+{ #category : 'aliased properties' }
+StLauncherPharoImageProperties >> headless: anImageNameOrAlias  put: aBool [
+
+	"answer true if <anImageName> should run scripts in headless mode"
+
+	(self aliases at: anImageNameOrAlias ifAbsentPut: [ Dictionary new ])
+		at: 'headless' put: aBool
+]
+
 { #category : 'accessing' }
 StLauncherPharoImageProperties >> pharoVersion [
 

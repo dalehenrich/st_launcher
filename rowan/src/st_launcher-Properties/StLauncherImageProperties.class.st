@@ -2,6 +2,8 @@ Class {
 	#name : 'StLauncherImageProperties',
 	#superclass : 'StLauncherProperties',
 	#instVars : [
+		'aliases',
+		'imageAlias',
 		'structureName',
 		'imagePath',
 		'imageDirectory'
@@ -50,6 +52,18 @@ StLauncherImageProperties class >> propertyClassForPlatform: platformName [
 	^ self allSubclasses detect: [:each | each platformName = platformName ] ifNone: [ self error: 'Platform name ', platformName printString , ' not reconized.' ]
 ]
 
+{ #category : 'accessing' }
+StLauncherImageProperties >> aliases [
+	"aliases are alternate names for an image directory ... the aliases dictionary should contain
+		properties that are specific to the alias. The primary use case is to allow a pharo image
+		to be launced with or without a ui"
+
+	"the contents of the Dictionary are accessed via imageAlias, so that different sets of properties
+		can be maintained under different aliases, while utilizing a single concrete image"
+
+	^ aliases ifNil: [ aliases := Dictionary new ]
+]
+
 { #category : 'actions' }
 StLauncherImageProperties >> createStandardStructure [
 	"create standard directory structure on disk"
@@ -70,7 +84,10 @@ StLauncherImageProperties >> excludedInstVarNames [
 { #category : 'exporting' }
 StLauncherImageProperties >> export [
 
-	self export: self defaultPropertiesDirectory / self defaultPropertyFilename
+	| copy |
+	copy := self copy.
+	copy imageAlias: nil. "imageAlias should not be exported to disk"
+	copy export: self defaultPropertiesDirectory / self defaultPropertyFilename
 ]
 
 { #category : 'exporting' }
@@ -90,6 +107,26 @@ StLauncherImageProperties >> generateLaunchScriptFrom: scriptFilePath debugComma
 	"The scriptFilePath file contains the smalltalk code to launch a smalltalk script ... 
 		in general nothing needs to be done to the script. Override if the vm
 		needs to handle smalltalk execution differently"
+]
+
+{ #category : 'accessing' }
+StLauncherImageProperties >> imageAlias [
+	"an imageAlias allows one to use a different set of properties while running 
+		in the same image. See aliases."
+
+	"imageAlias should not be exported to disk"
+
+	^ imageAlias ifNil: [ self name ]
+]
+
+{ #category : 'accessing' }
+StLauncherImageProperties >> imageAlias: aString [
+	"an imageAlias allows one to use a different set of properties while running 
+		in the same image. See aliases."
+
+	"imageAlias should not be exported to disk"
+
+	imageAlias := aString
 ]
 
 { #category : 'accessing' }
