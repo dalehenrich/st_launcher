@@ -114,6 +114,22 @@ testSimpleArrayInOut_default() {
 	th_validateSimpleArray "testSimpleArrayInOut: <default>" "$status" "$result"
 }
 
+testPieStdInOut_gemstone() {
+	th_testPieStdInOut "gemstone"
+}
+
+testPieStdInOut_pharo() {
+	th_testPieStdInOut "pharo"
+}
+
+testPieFileInOut_gemstone() {
+	th_testPieFileInOut "gemstone"
+}
+
+testPieFileInOut_pharo() {
+	th_testPieFileInOut "pharo"
+}
+
 testSimpleArrayInOut_gemstone() {
 	th_testSimpleArrayInOut "gemstone"
 }
@@ -140,6 +156,33 @@ th_validateSimpleArray() {
 	8
 ]' \
 		"$result"
+}
+
+th_testPieFileInOut() {
+	imageName="$1"
+	expected=`cat travis_tests/pie.ston`
+	result=`bin/objInOut.st $imageName -- --file=travis_tests/pie.ston`
+	status=$?
+	th_validatePie "testPieFileInOut: <${imageName}>" "$status" "$expected" "$result"
+}
+
+th_testPieStdInOut() {
+	imageName="$1"
+	expected=`cat travis_tests/pie.ston`
+	result=`bin/objInOut.st $imageName -- - < travis_tests/pie.ston`
+	status=$?
+	th_validatePie "testPieStdInOut: <${imageName}>" "$status" "$expected" "$result"
+}
+
+th_validatePie() {
+	testName="$1"
+	status="$2"
+	expected="$3"
+	result="$4"
+	assertEquals "$testName: exit status" \
+		'0' "$status"
+	assertEquals "$testName: wrong output" \
+		"$expected" "$result"
 }
 
 th_validateHello() {

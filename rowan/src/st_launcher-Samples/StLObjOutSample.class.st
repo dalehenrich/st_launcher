@@ -1,5 +1,5 @@
 Class {
-	#name : 'StL_ObjOut_Sample',
+	#name : 'StLObjOutSample',
 	#superclass : 'Object',
 	#instVars : [
 		'name',
@@ -9,31 +9,31 @@ Class {
 }
 
 { #category : 'accessing' }
-StL_ObjOut_Sample >> count [
+StLObjOutSample >> count [
 
 	^ count
 ]
 
 { #category : 'accessing' }
-StL_ObjOut_Sample >> count: anInteger [
+StLObjOutSample >> count: anInteger [
 
 	count := anInteger
 ]
 
 { #category : 'accessing' }
-StL_ObjOut_Sample >> name [
+StLObjOutSample >> name [
 
 	^ name
 ]
 
 { #category : 'accessing' }
-StL_ObjOut_Sample >> name: aString [
+StLObjOutSample >> name: aString [
 
 	name := aString
 ]
 
 { #category : 'formatting' }
-StL_ObjOut_Sample >> printString [
+StLObjOutSample >> printString [
 
 	^ self name
 ]

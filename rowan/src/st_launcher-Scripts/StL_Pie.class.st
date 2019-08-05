@@ -5,7 +5,9 @@ Display pie chart based on objects read off of objIn
 Class {
 	#name : 'StL_Pie',
 	#superclass : 'AbstractMain',
-	#instVars : [ 'sampleObjects' ],
+	#instVars : [
+		'sampleObjects'
+	],
 	#category : 'st_launcher-Scripts'
 }
 
@@ -16,13 +18,15 @@ StL_Pie >> main [
 
 	"read objects from stdin"
 	self stdin peek. "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
-	[ self objIn atEnd ]
+	[ 
+		self objIn consumeWhitespace.
+		self objIn atEnd ]
 		whileFalse: [
 			| obj |
 			obj := self objIn next.
 			sampleObjects add: obj ].
 	self makePie.
-	^ true 
+	^ true
 ]
 
 { #category : 'script execution' }
@@ -39,15 +43,15 @@ StL_Pie >> makePie [
 ]
 
 { #category : 'accessing' }
-StL_Pie >> sampleObjects: aCollection [
-
-	sampleObjects := aCollection
-]
-
-{ #category : 'accessing' }
 StL_Pie >> sampleObjects [
 
 	^ sampleObjects ifNil: [ sampleObjects := {} ]
+]
+
+{ #category : 'accessing' }
+StL_Pie >> sampleObjects: aCollection [
+
+	sampleObjects := aCollection
 ]
 
 { #category : 'options' }

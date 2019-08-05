@@ -6,7 +6,8 @@ Class {
 	#name : 'StL_ObjOut',
 	#superclass : 'AbstractMain',
 	#instVars : [
-		'resultObject'
+		'resultObject',
+		'objectFile'
 	],
 	#category : 'st_launcher-Scripts'
 }
@@ -14,17 +15,37 @@ Class {
 { #category : 'script execution' }
 StL_ObjOut >> main [
 
-	(self args includes: '-') 
+	| objectReader |
+	objectReader := (self args includes: '-') 
 		ifTrue: [ 
 			"read objects from stdin"
 			self stdin peek. "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
-			[ self objIn atEnd ]
+			 self objIn ]
+		ifFalse: [ STONReader on:  (ZnBufferedReadStream on: self objectFile readStream) ].
+	objectReader
+		ifNotNil: [
+			[ 
+				objectReader consumeWhitespace.
+				objectReader atEnd ]
 				whileFalse: [
 					| obj |
-					obj := self objIn next.
+					obj := objectReader next.
 					self objOut nextPut: obj ].
+			objectReader close.
 			^ self sentinelObject ].
 	^ self resultObject
+]
+
+{ #category : 'accessing' }
+StL_ObjOut >> objectFile [
+
+	^ objectFile
+]
+
+{ #category : 'accessing' }
+StL_ObjOut >> objectFile: aFilePath [
+
+	objectFile := aFilePath asFileReference
 ]
 
 { #category : 'accessing' }
@@ -36,7 +57,7 @@ StL_ObjOut >> resultObject [
 { #category : 'script execution' }
 StL_ObjOut >> sample [
 
-	^ resultObject := StL_ObjOut_Sample new name: 'Blueberries'; count: 10; yourself
+	^ resultObject := StLObjOutSample new name: 'Blueberries'; count: 10; yourself
 ]
 
 { #category : 'options' }
@@ -44,7 +65,8 @@ StL_ObjOut >> scriptMethodOptions [
 	^ {
 			#('help' $h  #none).
 			#('info' nil #none).
-			#('sample' nil #sample).
+			#('sample' nil #none #sample).
+			#('file' nil #required #objectFile:).
 	}
 ]
 
@@ -62,7 +84,7 @@ StL_ObjOut >> usage: scriptName shortDescription: ignored description: descripti
 SYNOPSIS
   ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
 ----------
-  ', scriptName, ' [ -h | --help ] [ --info ] [ - ] [ --sample ]
+  ', scriptName, ' [ -h | --help ] [ --info ] [ - ] [ --sample ] [ --file=<filepath> ]
 
 DESCRIPTION
 	This script writes objects to stdout.
@@ -78,6 +100,9 @@ EXAMPLES
 	', scriptName, ' --info
 
 	', scriptName, '
+
+	', scriptName, ' --file=object.ston
+
 	', scriptName, ' > object.ston
 	', scriptName, ' - < object.ston
 ') printString, dashes

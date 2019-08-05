@@ -1,0 +1,10 @@
+StLObjOutSample {
+	#name : 'Blueberries',
+	#count : 10
+}StLObjOutSample {
+	#name : 'Blackberries',
+	#count : 3
+}StLObjOutSample {
+	#name : 'Strawberries',
+	#count : 8
+}
