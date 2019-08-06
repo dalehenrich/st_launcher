@@ -34,7 +34,7 @@ structureProperties := StLauncherProperties defaultPropertyFile.
 self stderr nextPutAll: 'INFO: currenti mage name: ', self currentImageName; lf. 
 self stderr nextPutAll: 'INFO: ', structureProperties name; lf.
 structureProperties imageMap keysAndValuesDo: [:anImageName :anImagePath |
-	self stderr nextPutAll: '	INFO: ', anImageName printString, ' -> ', anImagePath printString ]. 
+	self stderr nextPutAll: 'INFO:	', anImageName printString, ' -> ', anImagePath printString; lf ]. 
 					self objOut nextPut: self imageProperties ] ]
 		ifPresent: [ ^ self usage ]
 ]
