@@ -35,7 +35,7 @@ AbstractProgram >> executeScript [
 { #category : 'info' }
 AbstractProgram >> imageProperties [
 
-	^ StLauncherProperties defaultPropertyFile propertiesForImageNamed: self currentImageName
+	^ self structureProperties propertiesForImageNamed: self currentImageName
 ]
 
 { #category : 'script execution' }
@@ -71,6 +71,12 @@ AbstractProgram >> sentinelObject [
 	"unique instance that is used to indicate that the stream of objects being processed is complete"
 
 	sentinelObject ifNil: [ sentinelObject := Object new ]
+]
+
+{ #category : 'info' }
+AbstractProgram >> structureProperties [
+
+	^ StLauncherProperties defaultPropertyFile
 ]
 
 { #category : 'usage' }

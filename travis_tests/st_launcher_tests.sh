@@ -4,6 +4,13 @@ if [ -z ${ST_LAUNCHER_HOME+x} ]; then
 	export ST_LAUNCHER_HOME="`pwd`/home"
 fi
 
+testClean_launcher_home() {
+	# needed to clean env vars out of structure properties so testInfoOption_pharo passes
+	result=`bin/cleanlauncher_home.st gemstone --`
+	assertEquals "testClean_launcher_home" \
+		"true" "$result"
+}
+
 testTopaz_empty_args() {
 	result=`bin/test_args.tpz gemstone -- -lq --`
 	assertEquals "testTopaz_empty_args" \
