@@ -108,16 +108,6 @@ testHello_invalidOption_pharo() {
 	'0' "$status"
 }
 
-testSimpleArrayInOut_default() {
-	result=`bin/objInOut.st - < travis_tests/simpleArray.ston`
-	status=$?
-	th_validateSimpleArray "testSimpleArrayInOut: <default>" "$status" "$result"
-}
-
-testPieStdInOut_gemstone() {
-	th_testPieStdInOut "gemstone"
-}
-
 testPieStdInOut_pharo() {
 	th_testPieStdInOut "pharo"
 }
@@ -128,10 +118,6 @@ testPieFileInOut_gemstone() {
 
 testPieFileInOut_pharo() {
 	th_testPieFileInOut "pharo"
-}
-
-testSimpleArrayInOut_gemstone() {
-	th_testSimpleArrayInOut "gemstone"
 }
 
 testSimpleArrayInOut_pharo() {
