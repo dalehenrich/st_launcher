@@ -4,7 +4,7 @@ Display pie chart based on objects read off of objIn
 "
 Class {
 	#name : 'StL_Pie',
-	#superclass : 'AbstractMain',
+	#superclass : 'AbstractProgram',
 	#instVars : [
 		'sampleObjects'
 	],

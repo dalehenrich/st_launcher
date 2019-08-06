@@ -178,7 +178,7 @@ th_validateHello() {
 	assertEquals "$testName: exit status" \
 		'0' "$status"
 	assertEquals "$testName: wrong output" \
-		'hello world' "$result"
+		"'hello world'" "$result"
 }
 
 oneTimeSetUp() {

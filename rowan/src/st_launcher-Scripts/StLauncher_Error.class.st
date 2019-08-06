@@ -4,7 +4,7 @@ Example script that signals an error
 "
 Class {
 	#name : 'StLauncher_Error',
-	#superclass : 'StLauncherScript',
+	#superclass : 'AbstractProgram',
 	#instVars : [
 		'skip'
 	],
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'script execution' }
-StLauncher_Error >> postExecute [
+StLauncher_Error >> main [
 
 	self skip
 		ifTrue: [ self stderr nextPutAll: 'Skipping error'; lf ]
@@ -20,10 +20,10 @@ StLauncher_Error >> postExecute [
 ]
 
 { #category : 'script options' }
-StLauncher_Error >> scriptOptions [
-	"specify the command line options"
+StLauncher_Error >> scriptMethodOptions [
 	^ {
-			#('help' $h #none).
+			#('help' $h  #none).
+			#('info' nil #none).
 			#('skip' nil #none #skipError).
 	}
 ]
@@ -60,7 +60,7 @@ StLauncher_Error >> usage [
 SYNOPSIS
   error.st [ imageName [-H] [-D] [-V] [st vm args] -- ]  [script args]
 
-  error.st [--help] [--skip]
+  error.st [--help] [--info] [--skip]
 
 DESCRIPTION
 
@@ -71,6 +71,7 @@ DESCRIPTION
 
 EXAMPLES
 	./error.st --help
+	./error.st --info
 
 	./error.st
 	./error.st -D -- 

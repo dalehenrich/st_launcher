@@ -1,13 +1,13 @@
-Extension { #name : 'AbstractMain' }
+Extension { #name : 'AbstractProgram' }
 
 { #category : '*st_launcher-gemstone-core' }
-AbstractMain >> globalNamed: aString [
+AbstractProgram >> globalNamed: aString [
 
 	^ Rowan globalNamed: aString
 ]
 
 { #category : '*st_launcher-gemstone-core' }
-AbstractMain >> objOut [
+AbstractProgram >> objOut [
 
 	^ objOut ifNil: [ 
 		objOut := (STONWriter on: self stdout)

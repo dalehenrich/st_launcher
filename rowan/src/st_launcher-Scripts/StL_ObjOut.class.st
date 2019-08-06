@@ -4,7 +4,7 @@ Simple cross platform script to demonstrate use of objIn and objOut
 "
 Class {
 	#name : 'StL_ObjOut',
-	#superclass : 'AbstractMain',
+	#superclass : 'AbstractProgram',
 	#instVars : [
 		'resultObject',
 		'objectFile'

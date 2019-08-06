@@ -1,13 +1,13 @@
-Extension { #name : #AbstractMain }
+Extension { #name : #AbstractProgram }
 
 { #category : '*st_launcher-pharo-core' }
-AbstractMain >> globalNamed: aString [
+AbstractProgram >> globalNamed: aString [
 
 	^ Smalltalk at: aString asSymbol
 ]
 
 { #category : #'*st_launcher-Pharo-Core' }
-AbstractMain >> objOut [
+AbstractProgram >> objOut [
 
 	^ objOut ifNil: [ 
 		objOut := (STONWriter on: self stdout)

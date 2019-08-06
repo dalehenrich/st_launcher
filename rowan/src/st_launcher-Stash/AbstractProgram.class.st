@@ -1,5 +1,5 @@
 Class {
-	#name : 'AbstractMain',
+	#name : 'AbstractProgram',
 	#superclass : 'StLauncherScript',
 	#instVars : [
 		'objIn',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'script execution' }
-AbstractMain >> executeScript [
+AbstractProgram >> executeScript [
 
 	opts
 		at: 'help'
@@ -33,25 +33,25 @@ AbstractMain >> executeScript [
 ]
 
 { #category : 'info' }
-AbstractMain >> imageProperties [
+AbstractProgram >> imageProperties [
 
 	^ StLauncherProperties defaultPropertyFile propertiesForImageNamed: self currentImageName
 ]
 
 { #category : 'script execution' }
-AbstractMain >> main [
+AbstractProgram >> main [
 
 	self subclassResponsibility: #main
 ]
 
 { #category : 'io' }
-AbstractMain >> objIn [
+AbstractProgram >> objIn [
 
 	^ objIn ifNil: [ objIn := STONReader on: self stdin ]
 ]
 
 { #category : 'script execution' }
-AbstractMain >> postExecute [
+AbstractProgram >> postExecute [
 
 	| object |
 	object := self main.
@@ -59,47 +59,100 @@ AbstractMain >> postExecute [
 ]
 
 { #category : 'accessing' }
-AbstractMain >> sentinelObject [
+AbstractProgram >> sentinelObject [
 	"unique instance that is used to indicate that the stream of objects being processed is complete"
 
 	sentinelObject ifNil: [ sentinelObject := Object new ]
 ]
 
 { #category : 'usage' }
-AbstractMain >> usage [
+AbstractProgram >> usage [
 
 	^ self usage: self scriptName description: self class comment
 ]
 
 { #category : 'usage' }
-AbstractMain >> usage: scriptName description: description [
+AbstractProgram >> usage: scriptName description: description [
 
-	^ self usage: scriptName shortDescription: '' description: description
+	^ self usage: scriptName shortDescription: self usageSummary description: description
 ]
 
 { #category : 'usage' }
-AbstractMain >> usage: scriptName shortDescription: shortDescription description: description [
+AbstractProgram >> usage: scriptName shortDescription: shortDescription description: description [
 	| dashes |
 	dashes := '----------------------------------------------------
 '.
-  self stdout nextPutAll: dashes,
+  self stdout nextPutAll: "dashes,"
 		(self manPageClass
           fromString:
 'NAME
 	', scriptName, ' - ', shortDescription, '.
 
 SYNOPSIS
-  ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
+	', scriptName, ' [ [ <image-name> ] [-H] [-D] [-V] [ <st-vm-args> ] -- ]  <script options>
 ----------
-  ', scriptName, ' [ -h | --help ] [ --info ]
-
+	', (self usageSynopsis: scriptName), '
 DESCRIPTION
 	', description, '
+',
+	self usageDescription, '
+
+	<image-name>
+		name of the st_launcher image to be used to run the script. If
+		no <image-name> is specified the default image will be used.
+
+	-H
+		help. st_launcher script interpreter help message
+
+	-D
+		debug. bring up debugger if an error occurs while running script
+
+	-V
+		verbose. display more detail about script interpreter execution
+
+	<st-vm-args>
+		smalltalk vm specific arguments passed directly to vm when launching script
 
 EXAMPLES
 	', scriptName, ' -h
 	', scriptName, ' --help
+	', scriptName, ' --info
 
-	', scriptName, '
-') printString, dashes
+	', scriptName, ' pharo -- --info
+
+	', (self usageExamples: scriptName), '
+') printString", dashes"
+]
+
+{ #category : 'usage' }
+AbstractProgram >> usageDescription [
+
+	^	'
+	--help
+		display this message
+
+	--info
+		return (on objOut) the image properties object for the image running
+		this script
+'
+]
+
+{ #category : 'usage' }
+AbstractProgram >> usageExamples: scriptName [
+
+	^	scriptName, '
+'
+]
+
+{ #category : 'usage' }
+AbstractProgram >> usageSummary [
+
+	^ self class comment
+]
+
+{ #category : 'usage' }
+AbstractProgram >> usageSynopsis: scriptName [
+
+	^	scriptName, ' [ -h | --help ] [ --info ]
+'
 ]
