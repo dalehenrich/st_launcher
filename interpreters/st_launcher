@@ -94,8 +94,13 @@ cat - > $vmScriptFile << EOF
 			scriptName: '$scriptName'
 			workingDir: '$pwd'.
 		true	]
-		on: StashCommandError, Error
+		on: StashCommandError, Error, Warning
 		do: [:ex |
+			(ex isKindOf: Warning)
+				ifTrue: [
+					$debugCommandError
+						ifTrue: [ ex pass ]
+						ifFalse: [ ex resume ] ].
 			$debugCommandError
 				ifTrue: [ ex pass ]
 				ifFalse: [ 

@@ -19,7 +19,7 @@ StL_ObjOut >> main [
 	objectReader := (self args includes: '-') 
 		ifTrue: [ 
 			"read objects from stdin"
-			self stdin peek. "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
+			"self stdin peek." "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
 			 self objIn ]
 		ifFalse: [ STONReader on:  (ZnBufferedReadStream on: self objectFile readStream) ].
 	objectReader
