@@ -58,6 +58,14 @@ AbstractProgram >> postExecute [
 	object ~~ self sentinelObject ifTrue: [ self objOut nextPut: object ]
 ]
 
+{ #category : 'options' }
+AbstractProgram >> scriptMethodOptions [
+	^ {
+			#('help' $h  #none #usage).
+			#('info' nil #none).
+	}
+]
+
 { #category : 'accessing' }
 AbstractProgram >> sentinelObject [
 	"unique instance that is used to indicate that the stream of objects being processed is complete"

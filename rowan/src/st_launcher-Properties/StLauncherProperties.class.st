@@ -11,7 +11,7 @@ Class {
 { #category : 'accessing' }
 StLauncherProperties class >> defaultPropertiesDirectory [
 
-	^ '$HOME' asFileReference / '.config' / 'st_launcher'
+	^ FileLocator home / '.config' / 'st_launcher'
 ]
 
 { #category : 'instance creation' }

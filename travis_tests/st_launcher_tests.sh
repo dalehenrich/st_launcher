@@ -71,6 +71,60 @@ testHello_defaultImage() {
 	th_validateHello "testHello_defaultImage" "$status" "$result"
 }
 
+testhelpOption_gs() {
+  result=`bin/hello.st gemstone -- -h`
+	status=$?
+	th_validateInfoOption "testhelpOption_gs" "$status" "$result" "NAME"
+}
+
+testhelpOption_pharo() {
+  result=`bin/hello.st pharo -- -h`
+	status=$?
+	th_validateInfoOption "testhelpOption_pharo" "$status" "$result" "NAME"
+}
+
+testhelpOption_defaultImage() {
+  result=`bin/hello.st -h`
+	status=$?
+	th_validateInfoOption "testhelpOption_defaultImage" "$status" "$result" "NAME"
+}
+
+testHelpOption_gs() {
+  result=`bin/hello.st gemstone -- --help`
+	status=$?
+	th_validateInfoOption "testHelpOption_gs" "$status" "$result" "NAME"
+}
+
+testHelpOption_pharo() {
+  result=`bin/hello.st pharo -- --help`
+	status=$?
+	th_validateInfoOption "testHelpOption_pharo" "$status" "$result" "NAME"
+}
+
+testHelpOption_defaultImage() {
+  result=`bin/hello.st --help`
+	status=$?
+	th_validateInfoOption "testHelpOption_defaultImage" "$status" "$result" "NAME"
+}
+
+testInfoOption_gs() {
+  result=`bin/hello.st gemstone -- --info`
+	status=$?
+	th_validateInfoOption "testInfoOption_gs" "$status" "$result" "StLauncherGemStoneSoloImageProperties {"
+}
+
+testInfoOption_pharo() {
+  result=`bin/hello.st pharo -- --info`
+	status=$?
+	th_validateInfoOption "testInfoOption_pharo" "$status" "$result" "StLauncherPharoImageProperties {"
+}
+
+testInfoOption_defaultImage() {
+  result=`bin/hello.st --info`
+	status=$?
+	th_validateInfoOption "testInfoOption_defaultImage" "$status" "$result" "StLauncherGemStoneSoloImageProperties {"
+}
+
 testHello_invalidImageName() {
   result=`bin/hello.st foobar --`
 	status=$?
@@ -142,6 +196,16 @@ th_validateSimpleArray() {
 	8
 ]' \
 		"$result"
+}
+
+th_validateInfoOption() {
+	testName="$1"
+	status="$2"
+	result=`echo ${3%%$'\n'*}`
+	expected="$4"
+	assertEquals "$testName: exit status" \
+		'0' "$status"
+	assertEquals "$testName: wrong output" "$expected" "$result"
 }
 
 th_testPieFileInOut() {
