@@ -28,7 +28,7 @@ AbstractProgram >> executeScript [
 									ifTrue: [ self perform: selector asSymbol ]
 									ifFalse: [ self perform: selector asSymbol with: (opts at: option) ] ] ].
 					self postExecute ] 
-				ifPresent: [  self objOut nextPut: self imageProperties ] ]
+				ifPresent: [ self stderr nextPutAll: 'INFO: ', self currentImageName; lf. self objOut nextPut: self imageProperties ] ]
 		ifPresent: [ ^ self usage ]
 ]
 
