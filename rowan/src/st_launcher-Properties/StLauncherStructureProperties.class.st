@@ -122,6 +122,12 @@ StLauncherStructureProperties >> imageMap: aDictionary [
 ]
 
 { #category : 'image management' }
+StLauncherStructureProperties >> imageNamed: aString [
+
+	^ self imageNamed: aString ifAbsent: [ self error: 'Image named ', aString printString, ' not found' ].
+]
+
+{ #category : 'image management' }
 StLauncherStructureProperties >> imageNamed: aString ifAbsent: absentBlock [
 
 	^ self imageNamed: aString ifPresent: [:imagePath | imagePath ] ifAbsent: absentBlock

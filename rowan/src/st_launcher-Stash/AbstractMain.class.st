@@ -28,17 +28,14 @@ AbstractMain >> executeScript [
 									ifTrue: [ self perform: selector asSymbol ]
 									ifFalse: [ self perform: selector asSymbol with: (opts at: option) ] ] ].
 					self postExecute ] 
-				ifPresent: [ ^ self info ] ]
+				ifPresent: [  self objOut nextPut: self imageProperties ] ]
 		ifPresent: [ ^ self usage ]
 ]
 
 { #category : 'info' }
-AbstractMain >> info [
+AbstractMain >> imageProperties [
 
-	self stderr
-		nextPutAll: self systemInfo;
-		lf;
-		yourself
+	^ StLauncherProperties defaultPropertyFile propertiesForImageNamed: self currentImageName
 ]
 
 { #category : 'script execution' }
