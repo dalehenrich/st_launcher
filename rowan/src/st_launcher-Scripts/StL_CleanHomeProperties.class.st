@@ -8,12 +8,12 @@ Rewrite st_launcher_home.ston and st_launcher_default.env making sure that any
 	define location of checkout.
 "
 Class {
-	#name : 'StLauncher_CleanHomeProperties',
+	#name : 'StL_CleanHomeProperties',
 	#superclass : 'AbstractProgram',
 	#category : 'st_launcher-Scripts'
 }
 
-{ #category : 'script execution' }
+{ #category : 'main' }
 StLauncher_CleanHomeProperties >> main [
 
 	| structureProperties imageMap pharoProductMap |

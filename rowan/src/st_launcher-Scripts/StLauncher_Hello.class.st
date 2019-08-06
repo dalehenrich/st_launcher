@@ -8,7 +8,7 @@ Class {
 	#category : 'st_launcher-Scripts'
 }
 
-{ #category : 'script execution' }
+{ #category : 'main' }
 StLauncher_Hello >> main [
 
 	^'hello world'

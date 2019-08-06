@@ -128,13 +128,8 @@ DESCRIPTION
 		smalltalk vm specific arguments passed directly to vm when launching script
 
 EXAMPLES
-	', scriptName, ' -h
-	', scriptName, ' --help
-	', scriptName, ' --info
-
-	', scriptName, ' pharo -- --info
-
-	', (self usageExamples: scriptName), '
+	', (self usageStandardExamples: scriptName), 
+	(self usageExamples: scriptName), '
 ') printString", dashes"
 ]
 
@@ -159,9 +154,21 @@ AbstractProgram >> usageExamples: scriptName [
 ]
 
 { #category : 'usage' }
+AbstractProgram >> usageStandardExamples: scriptName [
+
+	^ scriptName, ' -h
+	', scriptName, ' --help
+	', scriptName, ' --info
+
+	', scriptName, ' pharo -- --info
+
+	'
+]
+
+{ #category : 'usage' }
 AbstractProgram >> usageSummary [
 
-	^ self class comment
+	^ 	(ReadStream on: self class comment) nextLine, '...'
 ]
 
 { #category : 'usage' }

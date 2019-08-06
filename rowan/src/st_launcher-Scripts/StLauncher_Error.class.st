@@ -1,6 +1,9 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
-Example script that signals an error
+Example script that signals an error.
+
+	--skip
+		write message to stderr and skip signalling an error
 "
 Class {
 	#name : 'StLauncher_Error',
@@ -11,12 +14,13 @@ Class {
 	#category : 'st_launcher-Scripts'
 }
 
-{ #category : 'script execution' }
+{ #category : 'main' }
 StLauncher_Error >> main [
 
 	self skip
 		ifTrue: [ self stderr nextPutAll: 'Skipping error'; lf ]
 		ifFalse: [ Error signal: 'You wanted an error?' ].
+	^ self sentinelObject "don't write anything to objOut"
 ]
 
 { #category : 'script options' }
@@ -47,35 +51,17 @@ StLauncher_Error >> skipError [
 ]
 
 { #category : 'usage' }
-StLauncher_Error >> usage [
-	| dashes |
-	dashes := '----------------------------------------------------
-'.
-  self stdout nextPutAll: dashes,
-		(self manPageClass
-          fromString:
-'NAME
-	error.st - signal an error.
+StLauncher_Error >> usageExamples: scriptName [
 
-SYNOPSIS
-  error.st [ imageName [-H] [-D] [-V] [st vm args] -- ]  [script args]
+	^	scriptName, '
+	', scriptName, ' -D --
+	', scriptName, ' pharo -D --
+	', scriptName, ' --skip
+'
+]
 
-  error.st [--help] [--info] [--skip]
+{ #category : 'usage' }
+StLauncher_Error >> usageSynopsis: scriptName [
 
-DESCRIPTION
-
-	By default this script signals an error. 
-
-	If the --skip option is specified, a skip message is written to stderr
-	and the error is not signalled
-
-EXAMPLES
-	./error.st --help
-	./error.st --info
-
-	./error.st
-	./error.st -D -- 
-	./error.st --skip
-
-') printString, dashes
+	^	scriptName, ' [ -h | --help ] [ --skip ]'
 ]

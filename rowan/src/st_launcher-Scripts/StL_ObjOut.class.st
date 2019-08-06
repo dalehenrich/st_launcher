@@ -1,6 +1,21 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
-Simple cross platform script to demonstrate use of objIn and objOut
+Simple cross platform script to demonstrate use of `objIn` and `objOut`.
+
+	Objects are read from `objIn` and written to`objOut`  using STON format.
+	`objIn` is a STONReader stream on `stdin`. `objOut` is a STONWriter 
+	stream on `stdout`.
+
+	-
+		Read objects from objIn
+
+	--file=<file-path>
+		Read objects in STON format from the given file
+
+	-- sample
+		Use an instance of StLObjOutSample as the read object
+
+	With no options the Array`{ 7 }` is used as the read object.
 "
 Class {
 	#name : 'StL_ObjOut',
@@ -12,7 +27,7 @@ Class {
 	#category : 'st_launcher-Scripts'
 }
 
-{ #category : 'script execution' }
+{ #category : 'main' }
 StL_ObjOut >> main [
 
 	| objectReader |
@@ -20,7 +35,8 @@ StL_ObjOut >> main [
 		ifTrue: [ 
 			"read objects from stdin"
 			 self objIn ]
-		ifFalse: [ STONReader on:  (ZnBufferedReadStream on: self objectFile readStream) ].
+		ifFalse: [
+			self objectFile ifNotNil: [ STONReader on:  (ZnBufferedReadStream on: objectFile readStream) ] ].
 	objectReader
 		ifNotNil: [
 			[ 
@@ -53,7 +69,7 @@ StL_ObjOut >> resultObject [
 	^ resultObject ifNil: [ { 7 } ]
 ]
 
-{ #category : 'script execution' }
+{ #category : 'accessing' }
 StL_ObjOut >> sample [
 
 	^ resultObject := StLObjOutSample new name: 'Blueberries'; count: 10; yourself
@@ -70,39 +86,26 @@ StL_ObjOut >> scriptMethodOptions [
 ]
 
 { #category : 'usage' }
-StL_ObjOut >> usage: scriptName shortDescription: ignored description: description [
-	| dashes |
-	dashes := '----------------------------------------------------
-'.
-  self stdout nextPutAll: dashes,
-		(self manPageClass
-          fromString:
-'NAME
-	', scriptName, ' - ', description, '.
+StL_ObjOut >> usageExamples: scriptName [
 
-SYNOPSIS
-  ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
-----------
-  ', scriptName, ' [ -h | --help ] [ --info ] [ - ] [ --sample ] [ --file=<filepath> ]
-
-DESCRIPTION
-	This script writes objects to stdout.
-
-	If `-` is specified, objects will be read from stdin and written to stdout without
-	further processing.
-
-	By default, the Array `{ 7 }` will be written to stdout.
-
-EXAMPLES
-	', scriptName, ' -h
-	', scriptName, ' --help
-	', scriptName, ' --info
-
-	', scriptName, '
-
-	', scriptName, ' --file=object.ston
-
-	', scriptName, ' > object.ston
+	^	scriptName, '
+	', scriptName, '  > object.ston
 	', scriptName, ' - < object.ston
-') printString, dashes
+	', scriptName, ' --file=object.ston
+	', scriptName, ' --sample
+
+	', scriptName, ' -D --
+
+	', scriptName, ' pharo --
+	', scriptName, ' pharo -- > object.ston
+	', scriptName, ' pharo -- - < object.ston
+	', scriptName, ' pharo -- --file=object.ston
+	', scriptName, ' pharo -- --sample
+'
+]
+
+{ #category : 'usage' }
+StL_ObjOut >> usageSynopsis: scriptName [
+
+	^	scriptName, ' [ -h | --help ] [ --info ]  [ - | --file=<file-path> | --sample ]'
 ]

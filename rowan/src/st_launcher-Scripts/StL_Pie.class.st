@@ -1,6 +1,19 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
-Display pie chart based on objects read off of objIn
+Display a Roassal pie chart based on StL_ObjOut_Sample instances read from objIn.
+
+	Since GemStone does not have a GUI, this script currently should be run against 
+	a pharo image.
+
+	The collection of object used to create the pie chart are read from `objIn` using
+	STON format.
+
+	`objIn` is a STONReader stream on `stdin`.
+
+	-
+		Read objects from objIn
+
+	With no arguments an empty pie chart is displayed.
 "
 Class {
 	#name : 'StL_Pie',
@@ -11,16 +24,13 @@ Class {
 	#category : 'st_launcher-Scripts'
 }
 
-{ #category : 'script execution' }
+{ #category : 'main' }
 StL_Pie >> main [
 
 	sampleObjects := OrderedCollection new.
 
-	"read objects from stdin"
-	self stdin peek. "it seems that at least in GemStone 3.5.0, stdin needs to be primed"
-	[ 
-		self objIn consumeWhitespace.
-		self objIn atEnd ]
+	"read objects from objIin"
+	[ self objIn atEnd ]
 		whileFalse: [
 			| obj |
 			obj := self objIn next.
@@ -29,8 +39,9 @@ StL_Pie >> main [
 	^ true
 ]
 
-{ #category : 'script execution' }
+{ #category : 'pie' }
 StL_Pie >> makePie [
+	"create the pie chart"
 
 	| builder |
 	builder := (self globalNamed: 'RTPieBuilder') new.
@@ -63,31 +74,21 @@ StL_Pie >> scriptMethodOptions [
 ]
 
 { #category : 'usage' }
-StL_Pie >> usage: scriptName shortDescription: ignored description: description [
-	| dashes |
-	dashes := '----------------------------------------------------
-'.
-  self stdout nextPutAll: dashes,
-		(self manPageClass
-          fromString:
-'NAME
-	', scriptName, ' - ', description, '.
+StL_Pie >> usageExamples: scriptName [
 
-SYNOPSIS
-  ', scriptName, ' [ [ imageName ] [-H] [-D] [-V] [st vm args] -- ]  <script options>
-----------
-  ', scriptName, ' [ -h | --help ] [ --info ] 
+	^	scriptName, ' pharo --
+	', scriptName, ' pharo -- - < object.ston
+'
+]
 
-DESCRIPTION
-	This script reads StL_ObjOut_Sample instances from stdin and creates a pie
-	chart using Roassal.
+{ #category : 'usage' }
+StL_Pie >> usageStandardExamples: scriptName [
 
-EXAMPLES
-	', scriptName, ' -h
-	', scriptName, ' --help
-	', scriptName, ' --info
+	^ scriptName, ' pharo -- -h
+	', scriptName, ' pharo -- --help
+	', scriptName, ' pharo -- --info
 
-	', scriptName, '
-	', scriptName, ' < object.ston
-') printString, dashes
+	', scriptName, ' pharo -- --info
+
+	'
 ]
