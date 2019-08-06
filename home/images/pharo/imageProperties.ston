@@ -1,4 +1,7 @@
 StLauncherPharoImageProperties {
+	#aliasProperties : {
+			'pharo-ui' : { 'headless' : true }
+		},
 	#imagePath : '$ST_LAUNCHER_HOME/images/pharo',
 	#pharoVersion : '70-64',
 	#name : 'pharo',

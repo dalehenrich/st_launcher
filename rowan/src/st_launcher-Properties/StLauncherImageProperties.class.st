@@ -2,7 +2,7 @@ Class {
 	#name : 'StLauncherImageProperties',
 	#superclass : 'StLauncherProperties',
 	#instVars : [
-		'aliases',
+		'aliasProperties',
 		'imageAlias',
 		'structureName',
 		'imagePath',
@@ -53,15 +53,15 @@ StLauncherImageProperties class >> propertyClassForPlatform: platformName [
 ]
 
 { #category : 'accessing' }
-StLauncherImageProperties >> aliases [
-	"aliases are alternate names for an image directory ... the aliases dictionary should contain
+StLauncherImageProperties >> aliasProperties [
+	"aliasProperties are alternate names for an image directory ... the aliasProperties dictionary should contain
 		properties that are specific to the alias. The primary use case is to allow a pharo image
 		to be launced with or without a ui"
 
 	"the contents of the Dictionary are accessed via imageAlias, so that different sets of properties
 		can be maintained under different aliases, while utilizing a single concrete image"
 
-	^ aliases ifNil: [ aliases := Dictionary new ]
+	^ aliasProperties ifNil: [ aliasProperties := Dictionary new ]
 ]
 
 { #category : 'actions' }
