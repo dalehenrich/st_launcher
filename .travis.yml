@@ -11,6 +11,7 @@ before_script:
     - ls -altr home/platforms/gemstone/downloads
     - ls -altr home/platforms/gemstone/products
     - ls -altr home/images/gemstone
+    - ls -altr home/images/pharo
     - ls -altr home/platforms/pharo
     - ls -altr home/platforms/pharo/*
     - ls -altr travis_tests
