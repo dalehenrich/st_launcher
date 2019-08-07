@@ -1,0 +1,1 @@
+../rowan/src/st_launcher-Scripts/StL_About.class.st

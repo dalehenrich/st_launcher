@@ -37,7 +37,7 @@ StLauncherImageProperties class >> defaultPropertyFilename [
 { #category : 'accessing' }
 StLauncherImageProperties class >> permanentImageNames [
 
-	^#( 'gemstone' 'pharo' ' pharo-ui')
+	^#( 'gemstone' 'gemstone_DataCurator' 'pharo' ' pharo-ui')
 ]
 
 { #category : 'accessing' }

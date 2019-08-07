@@ -16,6 +16,7 @@ Here's some example code for cleaning up cached full paths in Pharo [from Sean D
 			e location: fixedLocation ]
 ```
 ### disabling PharoDebug.log
+SmalltalkImage>>logError:inContext: looks like the culprit for logging to stdout and PharoDebug.log. The following might just diable both:
 ```smalltalk
 GTGenericStackDebugger logDebuggerStackToFile: false. "?"
 DebugSession logDebuggerStackToFile: false.

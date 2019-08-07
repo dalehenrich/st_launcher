@@ -1,5 +1,16 @@
 Extension { #name : #AbstractProgram }
 
+{ #category : '*st_launcher-gemstone-core' }
+AbstractProgram >> about [
+
+	| reportDict |
+	reportDict := Dictionary new
+		at: 'systemVersion' put: SystemVersion current dottedMajorMinorPatch;
+		at: 'build' put: SystemVersion current asString;
+		yourself.
+^ reportDict
+]
+
 { #category : '*st_launcher-pharo-core' }
 AbstractProgram >> globalNamed: aString [
 
