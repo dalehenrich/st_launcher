@@ -24,11 +24,12 @@ StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: 
 		ifFalse: [ vmArgs ].
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: theVmArgs, ' -C "GEM_SOLO_EXTENT=';
+		nextPutAll: ' -I ', (self imageDirectory / self topaziniFilename) pathString;
+		nextPutAll: ' -C "GEM_SOLO_EXTENT=';
 		nextPutAll: self soloSnapshot;
 		nextPutAll: '"';
-		nextPutAll: ' -I ', (self imageDirectory / '.topazini ') pathString;
 		nextPutAll: ' -S ', scriptFilePath;
+		nextPutAll: ' ', theVmArgs;
 		lf;
 		yourself.
 ]

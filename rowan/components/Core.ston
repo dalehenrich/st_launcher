@@ -38,6 +38,7 @@ RwComponentLoadConfiguration{
 	#conditionalPackageMapSpecs : {
 		'gemstone' : {
 			'SystemUser' : {
+				#defaultSymbolDictName : 'Globals',
 				#packageNameToPlatformPropertiesMap : {
 					'st_launcher-GemStone-Kernel' : { 'symbolDictName' : 'Globals' }
 				}

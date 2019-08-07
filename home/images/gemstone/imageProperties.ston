@@ -1,6 +1,6 @@
 StLauncherGemStoneSoloImageProperties {
 	#aliasProperties : {
-			'gemstone_DataCurator' : { '.topazini_DataCurator' : false }
+			'gemstone_DataCurator' : { 'topazini' : '.topazini_DataCurator' }
 		},
 	#binPath : 'bin',
 	#gemstoneVersion : '3.5.0',

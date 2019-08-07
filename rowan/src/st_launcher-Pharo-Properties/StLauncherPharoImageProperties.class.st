@@ -25,7 +25,7 @@ StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs 
 	| theVmArgs  stArg |
 	theVmArgs := vmArgs isEmpty
 		ifTrue: [
-			(debugCommandErrorBool or: [ (self headless: self imageAlias) not ])
+			(debugCommandErrorBool or: [ self isHeadless not ])
 				ifTrue: [ '' ]
 				ifFalse: [ ' --nodisplay' ] ]
 		ifFalse: [ vmArgs ].
@@ -57,6 +57,12 @@ StLauncherPharoImageProperties >> headless: anImageNameOrAlias  put: aBool [
 
 	(self aliasProperties at: anImageNameOrAlias ifAbsentPut: [ Dictionary new ])
 		at: 'headless' put: aBool
+]
+
+{ #category : 'testing' }
+StLauncherPharoImageProperties >> isHeadless [
+
+	^ self headless: self imageAlias
 ]
 
 { #category : 'accessing' }

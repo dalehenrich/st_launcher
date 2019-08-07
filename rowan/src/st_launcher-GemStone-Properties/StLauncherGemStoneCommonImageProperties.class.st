@@ -128,9 +128,9 @@ StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom
 		ifFalse: [ vmArgs ].
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: ' ', theVmArgs;
-		nextPutAll: ' -I ', (self imageDirectory / '.topazini') pathString;
+		nextPutAll: ' -I ', (self imageDirectory / self topaziniFilename) pathString;
 		nextPutAll: ' -S ', scriptFilePath;
+		nextPutAll: ' ', theVmArgs;
 		lf;
 		yourself.
 ]
@@ -193,6 +193,25 @@ StLauncherGemStoneCommonImageProperties >> snapshotsPath: aString [
 StLauncherGemStoneCommonImageProperties >> topaziniFile [
 
 	^ self imageDirectory / '.topazini'
+]
+
+{ #category : 'aliased properties' }
+StLauncherGemStoneCommonImageProperties >> topaziniFilename [
+
+	"answer the topazini file name to be used to launch this vm"
+
+	^ self topaziniFilenameFor: self imageAlias
+]
+
+{ #category : 'aliased properties' }
+StLauncherGemStoneCommonImageProperties >> topaziniFilenameFor: anImageNameOrAlias [
+
+	"answer the topazini file name to be used to launch this vm"
+
+	| default |
+	default := '.topazini'.
+	^ (self aliasProperties at: anImageNameOrAlias ifAbsent: [ ^ default ])
+		at: 'topazini' ifAbsent: [ default ]
 ]
 
 { #category : 'accessing' }
