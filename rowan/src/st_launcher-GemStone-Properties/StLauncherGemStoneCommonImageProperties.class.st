@@ -38,6 +38,25 @@ StLauncherGemStoneCommonImageProperties >> binPath: aString [
 	binPath := aString
 ]
 
+{ #category : 'aliased properties' }
+StLauncherGemStoneCommonImageProperties >> cacheName [
+
+	"answer the cacheName to be used to launch this vm - the cacheName shows up statmon reports"
+
+	^ self cacheNameFor: self imageAlias
+]
+
+{ #category : 'aliased properties' }
+StLauncherGemStoneCommonImageProperties >> cacheNameFor: anImageNameOrAlias [
+
+	"answer the cacheName to be used to launch this vm - the cacheName shows up statmon reports"
+
+	| default |
+	default := 'st_launcher'.
+	^ (self aliasProperties at: anImageNameOrAlias ifAbsent: [ ^ default ])
+		at: 'cacheName' ifAbsent: [ default ]
+]
+
 { #category : 'actions' }
 StLauncherGemStoneCommonImageProperties >> createStandardStructure [
 	"create standard directory structure on disk"
@@ -130,6 +149,7 @@ StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
 		nextPutAll: ' -I ', (self imageDirectory / self topaziniFilename) pathString;
 		nextPutAll: ' -S ', scriptFilePath;
+		nextPutAll: ' -u ', self cacheName;
 		nextPutAll: ' ', theVmArgs;
 		lf;
 		yourself.
