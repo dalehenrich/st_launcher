@@ -15,6 +15,11 @@ Here's some example code for cleaning up cached full paths in Pharo [from Sean D
 			fixedLocation := FileLocator imageDirectory withPath: newPath.
 			e location: fixedLocation ]
 ```
+### disabling PharoDebug.log
+```smalltalk
+GTGenericStackDebugger logDebuggerStackToFile: false. "?"
+DebugSession logDebuggerStackToFile: false.
+```
 
 ### Roassal pie chart
 ```smalltalk
