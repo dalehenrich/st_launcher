@@ -9,6 +9,12 @@ Class {
 	#category : 'st_launcher-Stash'
 }
 
+{ #category : 'utility' }
+AbstractProgram >> evaluate: stExpression [
+
+	^ self evaluate: stExpression inContext: nil
+]
+
 { #category : 'script execution' }
 AbstractProgram >> executeScript [
 
@@ -175,6 +181,5 @@ AbstractProgram >> usageSummary [
 { #category : 'usage' }
 AbstractProgram >> usageSynopsis: scriptName [
 
-	^	scriptName, ' [ -h | --help ] [ --imageProperties ]
-'
+	^	scriptName, ' [ -h | --help ] [ --imageProperties ]'
 ]

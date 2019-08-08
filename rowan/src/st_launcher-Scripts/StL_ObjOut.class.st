@@ -2,9 +2,9 @@
 "
 Simple cross platform script to demonstrate use of `objIn` and `objOut`.
 
-	Objects are read from `objIn` and written to`objOut`  using STON format.
-	`objIn` is a STONReader stream on `stdin`. `objOut` is a STONWriter 
-	stream on `stdout`.
+	Objects are read from `objIn` or <file-path>  and written to `objOut` using 
+	STON format. `objIn` is a STONReader stream on `stdin`. `objOut` is a 
+	STONWriter stream on `stdout`.
 
 	-
 		Read objects from objIn
@@ -12,7 +12,7 @@ Simple cross platform script to demonstrate use of `objIn` and `objOut`.
 	--file=<file-path>
 		Read objects in STON format from the given file
 
-	-- sample
+	--sample
 		Use an instance of StLObjOutSample as the read object
 
 	With no options the Array`{ 7 }` is used as the read object.

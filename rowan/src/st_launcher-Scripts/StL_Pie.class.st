@@ -95,10 +95,10 @@ StL_Pie >> sliceSelector: aStringOrSymbol [
 { #category : 'usage' }
 StL_Pie >> usageExamples: scriptName [
 
-	^	scriptName, ' pharo --
-	', scriptName, ' pharo -- - < object.ston
-	', scriptName, ' pharo -D -- - < object.ston
-	', scriptName, ' pharo -- - --selector=value < object.ston
+	^	scriptName, ' pharo-ui --
+	', scriptName, ' pharo-ui -- - < object.ston
+	', scriptName, ' pharo-ui -D -- - < object.ston
+	', scriptName, ' pharo-ui -- - --selector=value < object.ston
 '
 ]
 

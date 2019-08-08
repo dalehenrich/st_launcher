@@ -169,6 +169,14 @@ testHello_invalidOption_pharo() {
 	'0' "$status"
 }
 
+testEvalCmdLine_pharo() {
+	th_testEvalCmdLine "pharo"
+}
+
+testEvalCmdLine_gemstone() {
+	th_testEvalCmdLine "gemstone"
+}
+
 testPieStdInOut_pharo() {
 	th_testPieStdInOut "pharo"
 }
@@ -213,6 +221,14 @@ th_validateInfoOption() {
 	assertEquals "$testName: exit status" \
 		'0' "$status"
 	assertEquals "$testName: wrong output" "$expected" "$result"
+}
+
+th_testEvalCmdLine() {
+	imageName="$1"
+	expected="7"
+	result=`bin/eval.st $imageName -- "3+4"`
+	status=$?
+	th_validatePie "testEval: <${imageName}>" "$status" "$expected" "$result"
 }
 
 th_testPieFileInOut() {

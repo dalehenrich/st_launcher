@@ -1,6 +1,6 @@
 Extension { #name : #AbstractProgram }
 
-{ #category : '*st_launcher-gemstone-core' }
+{ #category : '*st_launcher-pharo-core' }
 AbstractProgram >> about [
 
 	| reportDict |
@@ -9,6 +9,15 @@ AbstractProgram >> about [
 		at: 'build' put: SystemVersion current asString;
 		yourself.
 ^ reportDict
+]
+
+{ #category : '*st_launcher-pharo-core' }
+AbstractProgram >> evaluate: stExpression inContext: anObject [
+
+	^ Smalltalk compiler
+		source: stExpression;
+		context: anObject;
+		evaluate
 ]
 
 { #category : '*st_launcher-pharo-core' }

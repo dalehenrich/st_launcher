@@ -19,6 +19,12 @@ AbstractProgram >> about [
 ]
 
 { #category : '*st_launcher-gemstone-core' }
+AbstractProgram >> evaluate: stExpression inContext: anObject [
+
+	^ stExpression evaluateInContext: anObject symbolList: Rowan image symbolList
+]
+
+{ #category : '*st_launcher-gemstone-core' }
 AbstractProgram >> globalNamed: aString [
 
 	^ Rowan globalNamed: aString

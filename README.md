@@ -1,26 +1,7 @@
 # st_launcher [![Build Status](https://travis-ci.org/dalehenrich/st_launcher.svg?branch=masterV0.1)](https://travis-ci.org/dalehenrich/st_launcher)
 
-## Installation/Bootstrap
-### Using GsDevKit_home and stash
-
+### Working with GemStone topaz solo extents
+```smalltalk
+./snapshot.gs.st --dir=./snapshots gemstone.dbf  -- st_launcher_350 -lq
+cp -f snapshots/extent0.gemstone.dbf /home/dhenrich/rogue/_homes/rogue/_home/shared/repos/st_launcher/home/images/gemstone/snapshots/
 ```
-export GEMSTONE_NAME="st_launcher_350"
-export GIT_HOME="$GS_HOME/shared/repos"
-
-if [ ! -d "$GS_HOME/server/stones/$GEMSTONE_NAME" ] ; then
-	createStone -G $GEMSTONE_NAME 3.5.0
-else
-	newExtent -s $GS_HOME/server/stones/$GEMSTONE_NAME/product/bin/extent0.dbf $GEMSTONE_NAME
-fi
-
-$GIT_HOME/st_launcher/bootstrapping/gemstone/bin/bootstrap_install.tpz $GEMSTONE_NAME -lq
-
-$GIT_HOME/st_launcher/utility.gs.st --clean --create="3.5.0" --solo -- $GEMSTONE_NAME -lq
-```
-
-### references
-- [mpw/stsh](https://github.com/mpw/stsh)
-- [guillep/PharoBootstrap](https://github.com/guillep/PharoBootstrap/tree/master/scripts)
-- [guillep/scale](https://github.com/guillep/Scale)
-- [dalehenrich/stash](https://github.com/dalehenrich/stash)
-- [pharo-project/pharo-launcher](https://github.com/pharo-project/pharo-launcher)
