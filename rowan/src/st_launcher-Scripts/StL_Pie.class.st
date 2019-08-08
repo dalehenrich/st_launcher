@@ -74,9 +74,8 @@ StL_Pie >> sampleObjects: aCollection [
 
 { #category : 'options' }
 StL_Pie >> scriptMethodOptions [
-	^ {
-			#('help' $h  #none).
-			#('info' nil #none).
+	^ super scriptMethodOptions, 
+	{
 			#('selector' nil #required #sliceSelector: ).
 	}
 ]
@@ -108,9 +107,8 @@ StL_Pie >> usageStandardExamples: scriptName [
 
 	^ scriptName, ' pharo -- -h
 	', scriptName, ' pharo -- --help
-	', scriptName, ' pharo -- --info
 
-	', scriptName, ' pharo -- --info
+	', scriptName, ' pharo -- --imageProperties
 
 	'
 ]
@@ -118,6 +116,5 @@ StL_Pie >> usageStandardExamples: scriptName [
 { #category : 'usage' }
 StL_Pie >> usageSynopsis: scriptName [
 
-	^	scriptName, ' [ -h | --help ] [ --info ] [ --selector=<slice-selector> ]
-'
+	^	(super usageSynopsis: scriptName), ' [ --selector=<slice-selector> ]'
 ]

@@ -77,9 +77,8 @@ StL_ObjOut >> sample [
 
 { #category : 'options' }
 StL_ObjOut >> scriptMethodOptions [
-	^ {
-			#('help' $h  #none).
-			#('info' nil #none).
+	^ super scriptMethodOptions, 
+	{
 			#('sample' nil #none #sample).
 			#('file' nil #required #objectFile:).
 	}
@@ -107,5 +106,5 @@ StL_ObjOut >> usageExamples: scriptName [
 { #category : 'usage' }
 StL_ObjOut >> usageSynopsis: scriptName [
 
-	^	scriptName, ' [ -h | --help ] [ --info ]  [ - | --file=<file-path> | --sample ]'
+	^	(super usageSynopsis: scriptName), ' [ - | --file=<file-path> | --sample ]'
 ]

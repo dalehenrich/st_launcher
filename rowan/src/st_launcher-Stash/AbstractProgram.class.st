@@ -16,7 +16,7 @@ AbstractProgram >> executeScript [
 		at: 'help'
 		ifAbsent: [
 			opts
-				at: 'info'
+				at: 'imageProperties'
 				ifAbsent: [
 					self preExecute.
 					self orderedOptions do: [:option |
@@ -61,8 +61,8 @@ AbstractProgram >> postExecute [
 { #category : 'options' }
 AbstractProgram >> scriptMethodOptions [
 	^ {
-			#('help' $h  #none #usage).
-			#('info' nil #none).
+			#('help' $h  #none).
+			#('imageProperties' nil #none).
 	}
 ]
 
@@ -106,6 +106,7 @@ SYNOPSIS
 	', scriptName, ' [ [ <image-name> ] [-H] [-D] [-V] [ <st-vm-args> ] -- ]  <script options>
 ----------
 	', (self usageSynopsis: scriptName), '
+
 DESCRIPTION
 	', description, '
 ',
@@ -140,7 +141,7 @@ AbstractProgram >> usageDescription [
 	--help
 		display this message
 
-	--info
+	--imageProperties
 		return (on objOut) the image properties object for the image running
 		this script
 '
@@ -158,9 +159,9 @@ AbstractProgram >> usageStandardExamples: scriptName [
 
 	^ scriptName, ' -h
 	', scriptName, ' --help
-	', scriptName, ' --info
+	', scriptName, ' --imageProperties
 
-	', scriptName, ' pharo -- --info
+	', scriptName, ' pharo -- --imageProperties
 
 	'
 ]
@@ -174,6 +175,6 @@ AbstractProgram >> usageSummary [
 { #category : 'usage' }
 AbstractProgram >> usageSynopsis: scriptName [
 
-	^	scriptName, ' [ -h | --help ] [ --info ]
+	^	scriptName, ' [ -h | --help ] [ --imageProperties ]
 '
 ]

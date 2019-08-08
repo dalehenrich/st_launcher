@@ -25,9 +25,8 @@ StLauncher_Error >> main [
 
 { #category : 'script options' }
 StLauncher_Error >> scriptMethodOptions [
-	^ {
-			#('help' $h  #none).
-			#('info' nil #none).
+	^ super scriptMethodOptions, 
+	{
 			#('skip' nil #none #skipError).
 	}
 ]
@@ -63,5 +62,5 @@ StLauncher_Error >> usageExamples: scriptName [
 { #category : 'usage' }
 StLauncher_Error >> usageSynopsis: scriptName [
 
-	^	scriptName, ' [ -h | --help ] [ --skip ]'
+	^	(super usageSynopsis: scriptName), ' [ skip ]'
 ]

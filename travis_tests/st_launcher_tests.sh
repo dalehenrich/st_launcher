@@ -115,19 +115,19 @@ testHelpOption_defaultImage() {
 }
 
 testInfoOption_gs() {
-  result=`bin/hello.st gemstone -- --info`
+  result=`bin/hello.st gemstone -- --imageProperties`
 	status=$?
 	th_validateInfoOption "testInfoOption_gs" "$status" "$result" "StLauncherGemStoneSoloImageProperties {"
 }
 
 testInfoOption_pharo() {
-  result=`bin/hello.st pharo -- --info`
+  result=`bin/hello.st pharo -- --imageProperties`
 	status=$?
 	th_validateInfoOption "testInfoOption_pharo" "$status" "$result" "StLauncherPharoImageProperties {"
 }
 
 testInfoOption_defaultImage() {
-  result=`bin/hello.st --info`
+  result=`bin/hello.st --imageProperties`
 	status=$?
 	th_validateInfoOption "testInfoOption_defaultImage" "$status" "$result" "StLauncherGemStoneSoloImageProperties {"
 }
