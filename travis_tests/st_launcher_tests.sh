@@ -169,6 +169,14 @@ testHello_invalidOption_pharo() {
 	'0' "$status"
 }
 
+testAbout_pharo() {
+	th_testAbout "pharo"
+}
+
+testAbout_gemstone() {
+	th_testAbout "gemstone"
+}
+
 testEvalFileStdin_pharo() {
 	th_testEvalFileStdin "pharo"
 }
@@ -247,10 +255,18 @@ th_validateInfoOption() {
 	assertEquals "$testName: wrong output" "$expected" "$result"
 }
 
+th_testAbout() {
+	imageName="$1"
+	result=`bin/about.st $imageName --`
+	status=$?
+	assertEquals "testAbout_${imageName}: exit status" \
+		'0' "$status"
+}
+
 th_testEvalFileStdin() {
 	imageName="$1"
 	expected="7"
-	result=`bin/eval.st $imageName $imageName -- - --st=travis_tests/arrayAccess.st < travis_tests/simpleArray.ston`
+	result=`bin/eval.st $imageName -- --st=travis_tests/arrayAccess.st - < travis_tests/simpleArray.ston`
 	status=$?
 	th_validatePie "testEval: <${imageName}>" "$status" "$expected" "$result"
 }
@@ -258,7 +274,7 @@ th_testEvalFileStdin() {
 th_testEvalCmdLineStdin() {
 	imageName="$1"
 	expected="8"
-	result=`bin/eval.st $imageName $imageName -- - '"self at: 1"' < travis_tests/simpleArray.ston`
+	result=`bin/eval.st $imageName -- - '"self at: 1"' < travis_tests/simpleArray.ston`
 	status=$?
 	th_validatePie "testEval: <${imageName}>" "$status" "$expected" "$result"
 }
@@ -266,7 +282,7 @@ th_testEvalCmdLineStdin() {
 th_testEvalFileFile() {
 	imageName="$1"
 	expected="7"
-	result=`bin/eval.st $imageName $imageName -- --file=travis_tests/simpleArray.ston --st=travis_tests/arrayAccess.st`
+	result=`bin/eval.st $imageName -- --file=travis_tests/simpleArray.ston --st=travis_tests/arrayAccess.st`
 	status=$?
 	th_validatePie "testEval: <${imageName}>" "$status" "$expected" "$result"
 }
@@ -274,7 +290,7 @@ th_testEvalFileFile() {
 th_testEvalCmdLineFile() {
 	imageName="$1"
 	expected="8"
-	result=`bin/eval.st $imageName $imageName -- --file=travis_tests/simpleArray.ston '"self at: 1"'`
+	result=`bin/eval.st $imageName -- --file=travis_tests/simpleArray.ston '"self at: 1"'`
 	status=$?
 	th_validatePie "testEval: <${imageName}>" "$status" "$expected" "$result"
 }

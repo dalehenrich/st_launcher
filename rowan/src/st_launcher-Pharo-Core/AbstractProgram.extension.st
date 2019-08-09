@@ -7,8 +7,8 @@ AbstractProgram >> about [
 	reportDict := Dictionary new
 		at: 'systemVersion' put: SystemVersion current dottedMajorMinorPatch;
 		at: 'build' put: SystemVersion current asString;
-		at: 'image file' put: Smalltalk image imageFile;
-		at: 'image version' put: Smalltalk vm imageVersionNmber;
+		at: 'image file' put: Smalltalk image imageFile pathString;
+		at: 'image version' put: Smalltalk vm imageVersionNumber;
 		at: 'vm directory' put: Smalltalk vmDirectory;
 		at: 'vm build' put: Smalltalk vm buildDate;
 		at: 'vm version' put: Smalltalk vm version;
