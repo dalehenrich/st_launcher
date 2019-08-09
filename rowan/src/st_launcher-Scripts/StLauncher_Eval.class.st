@@ -1,7 +1,20 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
 Evaluate smalltalk expression from command line or file.
-	The object read from `objIn` or a file is `self`. `self` is nil by default. 
+	The object read from `objIn` or a file is the receiver. The receiver is nil
+	by default.
+
+	If you put the expression on the command line, then you should wrap the 
+	expression with single and double quotes (see the examples from --help).
+
+	'""3 + 4""'
+
+	The outer single quotes preserves the double quotes which are used by the 
+	st_launcher argument parser to preserve the expression as a single argument.
+
+	Literal strings are also a problem since the $' character is treated
+	specially by bash itself. It's best to use the `--st` option to read the 
+	smalltalk expression from a file and avoid bash interference.
 
 	Write result of evaluating expression to `objOut`.
 
@@ -12,7 +25,7 @@ Evaluate smalltalk expression from command line or file.
 		Read objects in STON format from the given file
 
 	--st=<st-file-path>
-		Read smalltalk expression from file	
+		Read smalltalk expression from file
 "
 Class {
 	#name : 'StLauncher_Eval',
@@ -40,8 +53,7 @@ StLauncher_Eval >> contextObject [
 	objectReader consumeWhitespace.
 	objectReader atEnd 
 		ifFalse: [ 
-			objectReader close.
-			^ objectReader next ].
+			[ ^ objectReader next ] ensure: [ objectReader close ] ].
 	^ nil
 ]
 
@@ -49,15 +61,6 @@ StLauncher_Eval >> contextObject [
 StLauncher_Eval >> main [
 
 	^self evaluate: self stExpression inContext: self contextObject
-]
-
-{ #category : 'options' }
-StLauncher_Eval >> scriptMethodOptions [
-	^ super scriptMethodOptions, 
-	{
-			#('script' nil #required #scriptFile:).
-			#('file' nil #required #objectFile:).
-	}
 ]
 
 { #category : 'accessing' }
@@ -83,19 +86,14 @@ StLauncher_Eval >> scriptFile: aFilePath [
 
 	scriptFile := aFilePath asFileReference
 ]
-{ #category : 'usage' }
-StLauncher_Eval >> usageExamples: scriptName [
 
-	^	scriptName, ' "self"
-	', scriptName, ' pharo -- - "self at: 1" < array.ston
-	', scriptName, ' "self at: 1" --file=array.ston
-
-	', scriptName, ' -D -- "self foo" --file=array.ston
-
-	', scriptName, ' --st=workspace.st
-	', scriptName, ' pharo -- - --st=selfat.st < array.ston
-	', scriptName, ' --st=selfat.st --file=array.ston
-'
+{ #category : 'options' }
+StLauncher_Eval >> scriptMethodOptions [
+	^ super scriptMethodOptions, 
+	{
+			#('script' nil #required #scriptFile:).
+			#('file' nil #required #objectFile:).
+	}
 ]
 
 { #category : 'main' }
@@ -110,6 +108,21 @@ StLauncher_Eval >> stExpression [
 			self args do:[:arg |
 				arg = '-' ifFalse: [ ^ arg ] ] ].
 	self error: 'No smalltalk expression defined on command line'
+]
+
+{ #category : 'usage' }
+StLauncher_Eval >> usageExamples: scriptName [
+
+	^	scriptName, ' ''"self"''
+	', scriptName, ' pharo -- - ''"self at: 1"'' < array.ston
+	', scriptName, ' ''"self at: 1"'' --file=array.ston
+
+	', scriptName, ' -D -- ''"self foo"'' --file=array.ston
+
+	', scriptName, ' --st=workspace.st
+	', scriptName, ' pharo -- - --st=selfat.st < array.ston
+	', scriptName, ' --st=selfat.st --file=array.ston
+'
 ]
 
 { #category : 'usage' }

@@ -16,7 +16,7 @@ AbstractProgram >> evaluate: stExpression inContext: anObject [
 
 	^ Smalltalk compiler
 		source: stExpression;
-		context: anObject;
+		receiver: anObject;
 		evaluate
 ]
 
