@@ -17,6 +17,11 @@ StLauncherPlatform class >> createImageNamed: imageName platform: platformName v
 ]
 
 { #category : 'instance creation' }
+StLauncherPlatform class >> createImageNamed: imageName version: versionString from: aRequestor [
+	^ self createImageNamed: imageName version: versionString
+]
+
+{ #category : 'instance creation' }
 StLauncherPlatform class >> download: productVersionString platform: platformName [
 
 	^ (self platformClassFor: platformName) download: productVersionString

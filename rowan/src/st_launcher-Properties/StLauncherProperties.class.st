@@ -32,6 +32,12 @@ StLauncherProperties class >> platformName [
 	self subclassResponsibility: #platformName
 ]
 
+{ #category : 'accessing' }
+StLauncherProperties class >> platformType [
+
+	^ self platformName
+]
+
 { #category : 'instance creation' }
 StLauncherProperties class >> propertyFile: aFilePath [
 
@@ -101,6 +107,12 @@ StLauncherProperties >> name: aString [
 StLauncherProperties >> platformName [
 
 	^self class platformName
+]
+
+{ #category : 'accessing' }
+StLauncherProperties >> platformType [
+
+	^self class platformType
 ]
 
 { #category : 'ston' }

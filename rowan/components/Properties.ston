@@ -14,6 +14,7 @@ RwComponentLoadConfiguration{
 				#packageNames : [
 					'st_launcher-Properties',
 					'st_launcher-GemStone-Platform',
+					'st_launcher-Pharo-Platform',
 					'st_launcher-GemStone-Properties',
 					'st_launcher-Pharo-Properties'
 				]

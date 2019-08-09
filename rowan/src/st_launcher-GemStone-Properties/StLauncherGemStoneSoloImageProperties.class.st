@@ -13,6 +13,12 @@ StLauncherGemStoneSoloImageProperties class >> platformName [
 	^ 'gemstone'
 ]
 
+{ #category : 'accessing' }
+StLauncherGemStoneSoloImageProperties class >> platformType [
+
+	^ 'gemstoneSolo'
+]
+
 { #category : 'launcher' }
 StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs vmScriptPath: scriptFilePath debugCommandError: debugCommandErrorBool [
 
