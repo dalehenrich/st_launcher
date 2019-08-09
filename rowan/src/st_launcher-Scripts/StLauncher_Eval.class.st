@@ -91,7 +91,7 @@ StLauncher_Eval >> scriptFile: aFilePath [
 StLauncher_Eval >> scriptMethodOptions [
 	^ super scriptMethodOptions, 
 	{
-			#('script' nil #required #scriptFile:).
+			#('st' nil #required #scriptFile:).
 			#('file' nil #required #objectFile:).
 	}
 ]
@@ -114,10 +114,12 @@ StLauncher_Eval >> stExpression [
 StLauncher_Eval >> usageExamples: scriptName [
 
 	^	scriptName, ' ''"self"''
+	', scriptName, ' pharo -- - ''"self"'' < array.ston
 	', scriptName, ' pharo -- - ''"self at: 1"'' < array.ston
-	', scriptName, ' ''"self at: 1"'' --file=array.ston
+	', scriptName, ' --file=array.ston ''"(self at: 1) - 1"''
 
-	', scriptName, ' -D -- ''"self foo"'' --file=array.ston
+	', scriptName, ' --file=array.ston ''"self foo"''
+	', scriptName, ' -D --  --file=array.ston ''"self foo"''
 
 	', scriptName, ' --st=workspace.st
 	', scriptName, ' pharo -- - --st=selfat.st < array.ston
