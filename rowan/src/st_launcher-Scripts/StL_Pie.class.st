@@ -1,32 +1,39 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
-Display a Roassal pie chart based on StL_ObjOut_Sample instances read from objIn.
+Display a Roassal pie chart based on StL_ObjOut_Sample instances read from
+	objIn.
 
-	Since GemStone does not have a GUI, this script currently should be run against 
-	a pharo image.
+	Since GemStone does not have a GUI, this script currently should be run
+	against a pharo image.
 
-	The collection of object used to create the pie chart are read from `objIn` using
-	STON format.
+	The collection of objects used to create the pie chart are read from `objIn`
+	using STON format.
 
-	See the #makePie method for details of pie creation. 
+	See the #makePie: method for details of pie creation.
 
 	`objIn` is a STONReader stream on `stdin`.
 
-	-
-		Read objects from objIn
+	With no arguments an empty pie chart is displayed. 
+
+	NOTE: this program reads from stdin and will block on the absence of input. 
 
 	--selector=<slice-selector>
 		The message to be sent to the incoming objects to obtain the value to be
-		used for calculated the size of the slice of the pie. The default is `count`.
+		used for calculated the size of the slice of the pie. The default is
+		`count`.
 
-	With no arguments an empty pie chart is displayed.
+	--style=[ simple | emphasis ]
+		Define the style of pie chart to be display. `simple` (default) or
+		`emphasis`.
+
 "
 Class {
 	#name : 'StL_Pie',
 	#superclass : 'AbstractProgram',
 	#instVars : [
 		'sampleObjects',
-		'sliceSelector'
+		'sliceSelector',
+		'style'
 	],
 	#category : 'st_launcher-Scripts'
 }
@@ -42,21 +49,24 @@ StL_Pie >> main [
 			| obj |
 			obj := self objIn next.
 			sampleObjects add: obj ].
-	self makePie open.
+	(self makePie: self style) open.
 	^ true
 ]
 
 { #category : 'pie' }
-StL_Pie >> makePie [
-	"create the pie chart"
+StL_Pie >> makePie: aStyle [
+	"create the pie chart, using the specified style"
 
-	| builder |
+	| builder samples |
+	samples := self sampleObjects.
 	builder := (self globalNamed: 'RTPieBuilder') new.
 	builder interaction popup.
-	builder objects: self sampleObjects.
+	builder objects: samples.
 	builder slice: self sliceSelector.
 	builder normalizer distinctColor.
 	builder labeled.
+	aStyle = 'emphasis'
+		ifTrue: [ builder emphasize: (samples at: 1) by: 20 ] .
 	^ builder
 ]
 
@@ -77,6 +87,7 @@ StL_Pie >> scriptMethodOptions [
 	^ super scriptMethodOptions, 
 	{
 			#('selector' nil #required #sliceSelector: ).
+			#('style' nil #required #style: ).
 	}
 ]
 
@@ -92,13 +103,26 @@ StL_Pie >> sliceSelector: aStringOrSymbol [
 	sliceSelector := aStringOrSymbol asSymbol
 ]
 
+{ #category : 'accessing' }
+StL_Pie >> style [
+
+	^ style ifNil: [ style := 'simple' ]
+]
+
+{ #category : 'accessing' }
+StL_Pie >> style: aString [
+
+	style := aString
+]
+
 { #category : 'usage' }
 StL_Pie >> usageExamples: scriptName [
 
 	^	scriptName, ' pharo-ui --
-	', scriptName, ' pharo-ui -- - < object.ston
-	', scriptName, ' pharo-ui -D -- - < object.ston
-	', scriptName, ' pharo-ui -- - --selector=value < object.ston
+	', scriptName, ' pharo-ui -- < object.ston
+	', scriptName, ' pharo-ui -D -- < object.ston
+	', scriptName, ' pharo-ui -- --selector=value < object.ston
+	', scriptName, ' pharo-ui -- --style=emphasis < object.ston
 '
 ]
 
@@ -116,5 +140,5 @@ StL_Pie >> usageStandardExamples: scriptName [
 { #category : 'usage' }
 StL_Pie >> usageSynopsis: scriptName [
 
-	^	(super usageSynopsis: scriptName), ' [ --selector=<slice-selector> ]'
+	^	(super usageSynopsis: scriptName), ' [ --selector=<slice-selector> ] [ --style=[simple | emphasis ] ]'
 ]
