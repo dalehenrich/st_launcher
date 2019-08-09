@@ -101,39 +101,54 @@ StLauncherGemStoneCommonImageProperties >> gemstoneVersion: aGemStoneVersionStri
 ]
 
 { #category : 'launcher' }
-StLauncherGemStoneCommonImageProperties >> generateLaunchScriptFrom: scriptFilePath  debugCommandError: debugCommandErrorBool [
-
+StLauncherGemStoneCommonImageProperties >> generateLaunchScriptFrom: scriptFilePath debugCommandError: debugCommandErrorBool [
 	| scriptFile script |
 	scriptFile := scriptFilePath asFileReference.
-	scriptFile readStreamDo: [:fileStream |
-		script := fileStream contents ].
-	scriptFile writeStreamDo: [:fileStream |
-		debugCommandErrorBool
-			ifTrue: [ fileStream nextPutAll: 'iferr 1 stk'; lf ]
-			ifFalse: [ fileStream nextPutAll: 'iferr 1 exit 1'; lf ].
-		fileStream
-			nextPutAll: 'login'; lf;
-			yourself.
-false ifTrue: [
-		"see https://github.com/dalehenrich/st_launcher/issues/4 ... affects exit status and cleanliness of output"
-		fileStream
-			nextPutAll: 'expectvalue true'; lf;
-			yourself .
-].
-		fileStream
-			nextPutAll: 'run'; lf;
-			nextPutAll: script; lf;
-			nextPutAll: '%'; lf;
-			yourself.
-		debugCommandErrorBool 
-			ifTrue: [ 
-				fileStream
-					nextPutAll: 'EXITIFNOERROR'; lf;
-					yourself ]
-			ifFalse: [ 
-				fileStream
-					nextPutAll: 'EXIT'; lf;
-					yourself ] ].
+	scriptFile readStreamDo: [ :fileStream | script := fileStream contents ].
+	scriptFile
+		writeStreamDo: [ :fileStream | 
+			debugCommandErrorBool
+				ifTrue: [ 
+					fileStream
+						nextPutAll: 'iferr 1 stk';
+						lf.
+					fileStream
+						nextPutAll: 'display oops';
+						lf ]
+				ifFalse: [ 
+					fileStream
+						nextPutAll: 'iferr 1 exit 1';
+						lf ].
+			fileStream
+				nextPutAll: 'login';
+				lf;
+				yourself.
+			false
+				ifTrue: [ 
+					"see https://github.com/dalehenrich/st_launcher/issues/4 ... affects exit status and cleanliness of output"
+					fileStream
+						nextPutAll: 'expectvalue true';
+						lf;
+						yourself ].
+			fileStream
+				nextPutAll: 'run';
+				lf;
+				nextPutAll: script;
+				lf;
+				nextPutAll: '%';
+				lf;
+				yourself.
+			debugCommandErrorBool
+				ifTrue: [ 
+					fileStream
+						nextPutAll: 'EXITIFNOERROR';
+						lf;
+						yourself ]
+				ifFalse: [ 
+					fileStream
+						nextPutAll: 'EXIT';
+						lf;
+						yourself ] ]
 ]
 
 { #category : 'launcher' }
