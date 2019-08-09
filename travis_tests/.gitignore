@@ -1,4 +1,5 @@
 *
+!*.st
 !*.ston
 !.gitignore
 !st_launcher_tests.sh
