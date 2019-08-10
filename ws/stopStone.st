@@ -1,7 +1,7 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
 Read image properties off of objin (or file on command line) and stop the 
-	image using the `stopstone` command: 
+	stone using the `stopstone` command: 
 
 		stopstone[Info]: GemStone version '3.5.0'
 		Usage: stopstone [-h] [-i] [-t timeout] [name [account [password]]]

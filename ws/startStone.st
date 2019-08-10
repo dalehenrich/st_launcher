@@ -1,7 +1,7 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
 Read image properties off of objin (or file on command line) and start the 
-	image using the `startstone` command: 
+	stone using the `startstone` command: 
 
 		Usage: startstone [options] [name]
 		where 'options' are any of:
