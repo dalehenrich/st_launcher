@@ -191,6 +191,12 @@ StLauncherPlatform >> platformName [
 	^ self class platformName
 ]
 
+{ #category : 'accessing' }
+StLauncherPlatform >> platformType [
+
+	^ self class platformType
+]
+
 { #category : 'images' }
 StLauncherPlatform >> propertiesForImageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock [
 

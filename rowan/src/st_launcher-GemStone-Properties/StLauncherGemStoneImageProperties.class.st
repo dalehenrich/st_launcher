@@ -35,6 +35,16 @@ StLauncherGemStoneImageProperties >> backupsPath: aString [
 ]
 
 { #category : 'actions' }
+StLauncherGemStoneImageProperties >> createExtentsDirectoryStructure [ 
+
+	self extentsDirectory ensureCreateDirectory.
+
+	self systemConfFile writeStreamDo: [:fileStream | self writeSystemConfFileEntries: fileStream ].
+
+	(self productDirectory / 'bin' / 'extent0.dbf') copyTo: (self extentsDirectory /  'extent0.dbf')
+]
+
+{ #category : 'actions' }
 StLauncherGemStoneImageProperties >> createStandardStructure [
 	"create standard directory structure on disk"
 
@@ -42,7 +52,7 @@ StLauncherGemStoneImageProperties >> createStandardStructure [
 	self statsDirectory exists ifFalse: [ self createStatsDirectoryStructure ].
 	self tranlogsDirectory exists ifFalse: [ self tranlogsDirectory ensureCreateDirectory ].
 	self backupsDirectory exists ifFalse: [ self backupsDirectory ensureCreateDirectory ].
-	self extentsDirectory exists ifFalse: [ self extentsDirectory ensureCreateDirectory ].
+	self extentsDirectory exists ifFalse: [ self createExtentsDirectoryStructure ].
 ]
 
 { #category : 'actions' }
@@ -111,6 +121,12 @@ StLauncherGemStoneImageProperties >> statsSubdirectoryNames [
 ]
 
 { #category : 'accessing' }
+StLauncherGemStoneImageProperties >> systemConfFile [
+
+	^ self extentsDirectory / 'system.conf'
+]
+
+{ #category : 'accessing' }
 StLauncherGemStoneImageProperties >> tranlogsDirectory [
 
 	^ self imageDirectory / self tranlogsPath
@@ -126,4 +142,32 @@ StLauncherGemStoneImageProperties >> tranlogsPath [
 StLauncherGemStoneImageProperties >> tranlogsPath: aString [
 
 	tranlogsPath := aString
+]
+
+{ #category : 'actions' }
+StLauncherGemStoneImageProperties >> writeSystemConfFileEntries: fileStream [
+	fileStream
+		nextPutAll:
+				'#=========================================================================';
+		lf;
+		nextPutAll:
+				'# Following options _must_ be set for proper database operation; no defaults';
+		lf;
+		nextPutAll: '# are provided.';
+		lf;
+		nextPutAll:
+				'#=========================================================================';
+		lf;
+		lf;
+		nextPutAll:
+				'DBF_EXTENT_NAMES = ' , (self extentsDirectory / 'extent0.dbf') pathString , ';';
+		lf;
+		nextPutAll: 'STN_TRAN_FULL_LOGGING = TRUE;';
+		lf;
+		nextPutAll:
+				'STN_TRAN_LOG_DIRECTORIES = ' , self tranlogsDirectory pathString , ';';
+		lf;
+		nextPutAll: 'STN_TRAN_LOG_SIZES = 100 MB;';
+		lf;
+		yourself
 ]

@@ -108,6 +108,12 @@ StL_CreateImage >> imageDirectory: aFilePath [
 ]
 
 { #category : 'accessing' }
+StL_CreateImage >> imageName [
+
+	^ args at: 1
+]
+
+{ #category : 'accessing' }
 StL_CreateImage >> imageType [
 
 	^ imageType
