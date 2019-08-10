@@ -3,6 +3,14 @@
 Create a new gemstone or pharo image of the given version in the given 
 	directory. 
 
+	First, the script creates the necessary directory structure to house the
+	image. Then the script installs the st_launcher support code into the image.
+
+	For gemstone images, the stone and netldi processes are started.
+
+	For GemstoneSolo images, the extent file is copied from the source path, or
+	source image.
+
 	--gemstone
 		Create a gemstone image
 
@@ -17,6 +25,16 @@ Create a new gemstone or pharo image of the given version in the given
 		image in the `images` subdirectory of the `#homePath` directory specified 
 		in the `$HOME/.config/st_launcher/st_launcher_home.ston` properties file.
 
+	--sourceImage=<source-image-name>
+		When creating a gemstone solo image, this option defines which image to use
+		as the source of the solo extent. The gemstone image is snapshotted and the
+		resulting snapshot file is copied to the image's snapshots directory.
+
+	--sourcePath=<solo-extent-path>
+		The extent is copied from the given <solo-extent-path> to the image's 
+		snapshot directory. Note, the <solo-extent-path> should not point to an extent
+		for a running gemstone image.
+
 	--version=<image-version>
 		Use the artifacts in the existing <image-version> product tree
 		listed in the `platforms/gemstone|pharo` directory relative to the 
@@ -30,7 +48,8 @@ Class {
 		'imageType',
 		'imageDirectory',
 		'imageVersion',
-		'snapshotPath'
+		'sourceImage',
+		'sourcePath'
 	],
 	#category : 'st_launcher-Scripts'
 }
@@ -40,7 +59,20 @@ StL_CreateImage >> _platformClass [
 
 	self imageType = 'pharo' ifTrue: [ ^ StLauncherPharoPlatform ].
 	self imageType = 'gemstone' ifTrue: [ ^ StLauncherGemStonePlatform ].
-	self imageType = 'gemstoneSolo' ifTrue: [ ^ StLauncherGemStoneSoloPlatform ].
+	self imageType = 'gemstoneSolo' 
+		ifTrue: [ 
+		self sourceImage 
+			ifNil: [ 
+				self sourcePath 
+					ifNil: []
+					ifNotNil: [:path | 
+						path asFileReference exists 
+							ifFalse: [ self error: 'The snapshot file ', path printString, ' does not exist'] ] ]
+			ifNotNil: [:sourceImageName |
+				StLauncherPlatform 
+					imageNamed: sourceImageName 
+					ifAbsent: [ self error: 'The image ', sourceImageName printString, ' doe not exist'] ].
+		^ StLauncherGemStoneSoloPlatform ].
 	self error: 'Unknown image type', self imageType printString, '. Expecting pharo | gemstone | gemstoneSolo'
 ]
 
@@ -118,23 +150,27 @@ StL_CreateImage >> pharoImage [
 StL_CreateImage >> scriptMethodOptions [
 	^ super scriptMethodOptions, 
 	{
+			#('gemstoneSolo' $g #none #gemstoneSoloImage).
 			#('gemstone' $g #none #gemstoneImage).
 			#('pharo' $p #none #pharoImage).
+			#('sourceImage' nil #required #sourceImage).
 			#('dir' nil #required #imageDirectory:).
 			#('version' nil #required #imageVersion:).
 	}
 ]
 
 { #category : 'accessing' }
-StL_CreateImage >> snapshotPath [
+StL_CreateImage >> soloExtentPath [
 
-	^ snapshotPath ifNil: []
+	"somebody needs to do some copying ... probably the imageProperties guy"
+	self halt: 'use source image (or default) to find the location of the solo extent'
 ]
 
 { #category : 'usage' }
 StL_CreateImage >> usageExamples: scriptName [
 
 	^	scriptName, ' --gemstone --version=3.5.0 gs_350
+	', scriptName, ' --gemstoneSolo --sourceImage=gs_350 gs_solo_350
 	', scriptName, ' --pharo --version=70-64 pharo_70
 
 	', scriptName, ' --pharo --dir=$HOME/images --version=70-64 pharo_70

@@ -6,13 +6,13 @@ Class {
 
 { #category : 'instance creation' }
 StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName version: versionString from: aRequestor [
-	^ self createImageNamed: imageName version: versionString sourceSnapshotFile: aRequestor snapshotPath
+	^ self createImageNamed: imageName version: versionString soloExtentPath: aRequestor soloExtentPath
 ]
 
 { #category : 'instance creation' }
-StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName version: versionString sourceSnapshotFile: snapshotPath [
+StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName version: versionString soloExtentPath: soloExtentPath [
 
-	^ self new createImageNamed: imageName version: versionString sourceSnapshotFile: snapshotPath
+	^ self new createImageNamed: imageName version: versionString soloExtentPath: soloExtentPath
 ]
 
 { #category : 'accessing' }
@@ -22,7 +22,7 @@ StLauncherGemStoneSoloPlatform class >> platformType [
 ]
 
 { #category : 'actions' }
-StLauncherGemStoneSoloPlatform >> createImageNamed: imageName version: versionString sourceSnapshotFile: snapshotPath [
+StLauncherGemStoneSoloPlatform >> createImageNamed: imageName version: versionString soloExtentPath: soloExtentPath [
 
 	| imageProperties |
 	self imageNamed: imageName
@@ -34,7 +34,7 @@ StLauncherGemStoneSoloPlatform >> createImageNamed: imageName version: versionSt
 				yourself.
 	imageProperties productPath: ((self structureProperties productMap at: self platformName) at: versionString).
 
-	imageProperties soloSnapshot: snapshotPath asFileReference pathString.
+	imageProperties soloSnapshot: soloExtentPath asFileReference pathString.
 
 	imageProperties 
 		export;							"initializes directory paths to defaults if not explicitly set"
