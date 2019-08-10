@@ -15,7 +15,8 @@ RwComponentLoadConfiguration {
 					'st_launcher-Stash-Rowan',
 					'st_launcher-Stash',
 					'st_launcher-Samples',
-					'st_launcher-Workspaces'
+					'st_launcher-Workspaces',
+					'st_launcher-Commands'
 				]
 			},
 			'tests' : {

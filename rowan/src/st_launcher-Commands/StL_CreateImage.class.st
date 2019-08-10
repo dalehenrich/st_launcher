@@ -25,6 +25,12 @@ Create a new gemstone or pharo image of the given version in the given
 		image in the `images` subdirectory of the `#homePath` directory specified 
 		in the `$HOME/.config/st_launcher/st_launcher_home.ston` properties file.
 
+	--install=rowan|st_launcher
+		After image is created install additional resources. The `rowan` keyword 
+		will install Rowan. The `st_launcher` keyword will install Rowan and then
+		st_launcher. The --inatall option only applies to pharo and gemstone 
+		images.
+
 	--sourceImage=<source-image-name>
 		When creating a gemstone solo image, this option defines which image to use
 		as the source of the solo extent. The gemstone image is snapshotted and the
@@ -51,7 +57,7 @@ Class {
 		'sourceImage',
 		'sourcePath'
 	],
-	#category : 'st_launcher-Scripts'
+	#category : 'st_launcher-Commands'
 }
 
 { #category : 'private' }
@@ -140,7 +146,7 @@ StL_CreateImage >> imageVersion: aString [
 { #category : 'main' }
 StL_CreateImage >> main [
 	self _validateOptions.
-	self _platformClass
+	^ self _platformClass
 		createImageNamed: self imageName
 		version: self imageVersion
 		from: self
@@ -176,9 +182,11 @@ StL_CreateImage >> soloExtentPath [
 StL_CreateImage >> usageExamples: scriptName [
 
 	^	scriptName, ' --gemstone --version=3.5.0 gs_350
-	', scriptName, ' --gemstoneSolo --sourceImage=gs_350 gs_solo_350
-	', scriptName, ' --pharo --version=70-64 pharo_70
+	', scriptName, ' --gemstone --version=3.5.0 --install=st_launcher gs_350
 
+	', scriptName, ' --gemstoneSolo --sourceImage=gs_350 gs_solo_350
+
+	', scriptName, ' --pharo --version=70-64 pharo_70
 	', scriptName, ' --pharo --dir=$HOME/images --version=70-64 pharo_70
 '
 ]
@@ -187,5 +195,6 @@ StL_CreateImage >> usageExamples: scriptName [
 StL_CreateImage >> usageSynopsis: scriptName [
 
 	^	(super usageSynopsis: scriptName), ' ( [--gemstone | -g] | [--pharo| -p ] ) \
-		--version=<image-version> [--dir=<directory-path> ] <image-name>'
+		--version=<image-version> [--dir=<directory-path> ] [--install=rowan|st_launcher ] \
+		<image-name>'
 ]

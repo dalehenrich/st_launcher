@@ -1,1 +1,1 @@
-../rowan/src/st_launcher-Scripts/StL_CreateImage.class.st
+../rowan/src/st_launcher-Commands/StL_CreateImage.class.st

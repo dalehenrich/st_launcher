@@ -10,6 +10,8 @@ stl_launcher-Worspaces package and give it a unique class name ...
 Class {
 	#name : 'WS_',
 	#superclass : 'AbstractProgram',
+	#instVars : [
+	],
 	#category : 'st_launcher-Workspaces'
 }
 
@@ -19,3 +21,11 @@ WS_ >> main [
 
 	^ self sentinel "do not write objects to objOut"
 ]
+
+WS_ >> usageExamples: scriptName [
+
+	^	scriptName, '
+	', scriptName, ' -D --		# debug errors
+'
+]
+
