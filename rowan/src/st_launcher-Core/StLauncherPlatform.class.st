@@ -98,6 +98,28 @@ StLauncherPlatform class >> platformName [
 ]
 
 { #category : 'images' }
+StLauncherPlatform class >> propertiesForImageNamed: aString ifAbsent: absentBlock [
+	^ self
+		propertiesForImageNamed: aString
+		ifPresent: [ :imageProperties | ^ imageProperties ]
+		ifAbsent: absentBlock
+]
+
+{ #category : 'images' }
+StLauncherPlatform class >> propertiesForImageNamed: aString ifPresent: presentBlock ifAbsent: absentBlock [
+
+	| imagePath imagePropertiesPath imageProperties |
+	imagePath := self imageNamed: aString ifAbsent: absentBlock.
+	imagePropertiesPath := imagePath asFileReference / StLauncherImageProperties defaultPropertyFilename.
+	imagePropertiesPath exists 
+		ifFalse: [ 
+			"no file no properties"
+			^ absentBlock value ].
+	imageProperties := StLauncherProperties propertyFile: imagePropertiesPath.
+	^ presentBlock cull: imageProperties
+]
+
+{ #category : 'images' }
 StLauncherPlatform >> createImageNamed: imageName version: versionString [
 
 	self subclassResponsibility: #createImageNamed:version:

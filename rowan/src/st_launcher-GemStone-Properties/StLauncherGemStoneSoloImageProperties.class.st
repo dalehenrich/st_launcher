@@ -40,6 +40,12 @@ StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: 
 		yourself.
 ]
 
+{ #category : 'testing' }
+StLauncherGemStoneSoloImageProperties >> isTopazSolo [
+
+	^true
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneSoloImageProperties >> soloSnapshot [
 

@@ -170,6 +170,12 @@ StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom
 		yourself.
 ]
 
+{ #category : 'testing' }
+StLauncherGemStoneCommonImageProperties >> isTopazSolo [
+
+	^false
+]
+
 { #category : 'accessing' }
 StLauncherGemStoneCommonImageProperties >> logsDirectory [
 
