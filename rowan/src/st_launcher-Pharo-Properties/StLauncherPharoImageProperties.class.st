@@ -42,7 +42,7 @@ StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs 
 	GsFile stdout 
 		nextPutAll: (self productDirectory / 'pharo-vm' / 'pharo') pathString;
 		nextPutAll: ' ', theVmArgs ;
-		nextPutAll: '  ', (self imageDirectory / 'Pharo.image') pathString;
+		nextPutAll: '  ', (self imageDirectory / self pharoImageFilename) pathString;
 		nextPutAll: '  stash ', stArg, scriptFilePath asFileReference pathString; 
 		lf;
 		yourself.
@@ -70,6 +70,21 @@ StLauncherPharoImageProperties >> headless: anImageNameOrAlias  put: aBool [
 StLauncherPharoImageProperties >> isHeadless [
 
 	^ self headless: self imageAlias
+]
+
+{ #category : 'accessing' }
+StLauncherPharoImageProperties >> pharoImageFilename [
+
+	^ self pharoImageFilename: self imageAlias
+]
+
+{ #category : 'aliased properties' }
+StLauncherPharoImageProperties >> pharoImageFilename: anImageNameOrAlias [
+
+	"answer the name of the pharo image file to use for <anImageNameOrAlias>"
+
+	^ (self aliasProperties at: anImageNameOrAlias ifAbsent: [ ^ 'Pharo.image' ])
+		at: 'pharoImageName' ifAbsent: [ 'Pharo.image' ]
 ]
 
 { #category : 'accessing' }
