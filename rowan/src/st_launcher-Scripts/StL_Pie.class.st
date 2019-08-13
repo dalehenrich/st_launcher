@@ -49,6 +49,7 @@ StL_Pie >> labeled: aString [
 	labeled := aString = 'on'
 ]
 
+{ #category : 'accessing' }
 StL_Pie >> labeled [
 
 	^ labeled ifNil: [ true ]

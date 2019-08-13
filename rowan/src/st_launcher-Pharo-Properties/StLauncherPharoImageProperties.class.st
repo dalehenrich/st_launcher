@@ -17,6 +17,13 @@ StLauncherPharoImageProperties class >> named: nameString version: pharoVersionS
 		yourself
 ]
 
+{ #category : 'actions' }
+StLauncherPharoImageProperties >> createStandardStructure [
+	"create standard directory structure on disk"
+
+	super createStandardStructure
+]
+
 { #category : 'launcher' }
 StLauncherPharoImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs vmScriptPath: scriptFilePath debugCommandError: debugCommandErrorBool [
 
