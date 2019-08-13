@@ -62,7 +62,6 @@ pushd home/images/pharo
 	curl -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/pharo.zip"
 	unzip -q pharo.zip
 	rm pharo.zip
-	ln -s ../../platforms/pharo/70-64/*.sources .
 popd
 sudo mkdir /usr/local/bin/smalltalk
 sudo mkdir /usr/local/bin/smalltalk/gemstone
