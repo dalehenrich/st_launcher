@@ -17,6 +17,10 @@ Display a Roassal pie chart based on StL_ObjOut_Sample instances read from
 
 	NOTE: this program reads from stdin and will block on the absence of input. 
 
+	--label=[ on | off ]
+		Indicate whether or not the pie chart should be labeled. By default 
+		labeling is `on`. The label is the printString of the sample object.
+
 	--selector=<slice-selector>
 		The message to be sent to the incoming objects to obtain the value to be
 		used for calculated the size of the slice of the pie. The default is
@@ -31,12 +35,24 @@ Class {
 	#name : 'StL_Pie',
 	#superclass : 'AbstractProgram',
 	#instVars : [
+		'labeled',
 		'sampleObjects',
 		'sliceSelector',
 		'style'
 	],
 	#category : 'st_launcher-Scripts'
 }
+
+{ #category : 'accessing' }
+StL_Pie >> labeled: aString [
+
+	labeled := aString = 'on'
+]
+
+StL_Pie >> labeled [
+
+	^ labeled ifNil: [ true ]
+]
 
 { #category : 'main' }
 StL_Pie >> main [
@@ -48,7 +64,9 @@ StL_Pie >> main [
 		whileFalse: [
 			| obj |
 			obj := self objIn next.
-			sampleObjects add: obj ].
+			obj isArray
+				ifTrue: [ sampleObjects addAll: obj ]
+				ifFalse: [ sampleObjects add: obj ] ].
 	(self makePie: self style) open.
 	^ true
 ]
@@ -64,7 +82,8 @@ StL_Pie >> makePie: aStyle [
 	builder objects: samples.
 	builder slice: self sliceSelector.
 	builder normalizer distinctColor.
-	builder labeled.
+	self labeled
+		ifTrue: [ builder labeled ].
 	aStyle = 'emphasis'
 		ifTrue: [ builder emphasize: (samples at: 1) by: 20 ] .
 	^ builder
@@ -87,6 +106,7 @@ StL_Pie >> scriptMethodOptions [
 	^ super scriptMethodOptions, 
 	{
 			#('selector' nil #required #sliceSelector: ).
+			#('label' nil #required #labeled: ).
 			#('style' nil #required #style: ).
 	}
 ]
@@ -120,6 +140,10 @@ StL_Pie >> usageExamples: scriptName [
 
 	^	scriptName, ' pharo-ui --
 	', scriptName, ' pharo-ui -- < object.ston
+
+	', scriptName, ' pharo-ui -- label=off< object.ston
+	', scriptName, ' pharo-ui -- label=on < object.ston
+
 	', scriptName, ' pharo-ui -D -- < object.ston
 	', scriptName, ' pharo-ui -- --selector=value < object.ston
 	', scriptName, ' pharo-ui -- --style=emphasis < object.ston
@@ -140,5 +164,6 @@ StL_Pie >> usageStandardExamples: scriptName [
 { #category : 'usage' }
 StL_Pie >> usageSynopsis: scriptName [
 
-	^	(super usageSynopsis: scriptName), ' [ --selector=<slice-selector> ] [ --style=[simple | emphasis ] ]'
+	^	(super usageSynopsis: scriptName), ' [ --selector=<slice-selector> ] \
+			[ --label=[ on | off ] ] [ --style=[ simple | emphasis ] ]'
 ]
