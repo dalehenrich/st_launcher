@@ -66,6 +66,12 @@ StLauncherProperties >> comment: aString [
 	comment := aString
 ]
 
+{ #category : 'exporting' }
+StLauncherProperties >> copyForExport [
+
+	^ self copy postExportCopy
+]
+
 { #category : 'accessing' }
 StLauncherProperties >> defaultPropertiesDirectory [
 
@@ -92,10 +98,11 @@ StLauncherProperties >> export [
 
 { #category : 'exporting' }
 StLauncherProperties >> export: aFileReferenceOrPath [
-	| file |
+	| file copyForExport |
 	file := aFileReferenceOrPath asFileReference.
 	file parent exists ifFalse: [ file parent ensureCreateDirectory ].
-	file writeStreamDo: [:stream | STON put: self onStreamPretty: stream ]
+	copyForExport := self copyForExport.
+	file writeStreamDo: [:stream | copyForExport exportToStream: stream ]
 ]
 
 { #category : 'exporting' }
@@ -126,6 +133,12 @@ StLauncherProperties >> platformName [
 StLauncherProperties >> platformType [
 
 	^self class platformType
+]
+
+{ #category : 'exporting' }
+StLauncherProperties >> postExportCopy [
+
+	^ self
 ]
 
 { #category : 'ston' }

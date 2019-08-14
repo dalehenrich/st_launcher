@@ -153,6 +153,25 @@ StLauncherStructureProperties >> platforms [
 	^ self home / 'platforms'
 ]
 
+{ #category : 'exporting' }
+StLauncherStructureProperties >> postExportCopy [
+
+	| oldImageMap oldPlatformMap |
+
+	super postExportCopy.
+	oldImageMap := self imageMap.
+	imageMap := self class orderedDictionaryClass new.
+	oldImageMap keys asArray sort do: [:key | imageMap at: key put: (oldImageMap at: key) ]. "put imageMap into canonical order"
+	oldPlatformMap := self productMap.
+	productMap := self class orderedDictionaryClass new.
+	oldPlatformMap keys asArray sort do: [:platformName | 
+		| oldProductMap sortedProductMap |
+		oldProductMap := oldPlatformMap at: platformName.
+		sortedProductMap := self class orderedDictionaryClass new.
+		oldProductMap keys asArray sort do: [:productName | sortedProductMap at: productName put: (oldProductMap at: productName) ].	"put products into canonical order"
+		productMap at: platformName put: sortedProductMap ].	"put platforms into canonical order"
+]
+
 { #category : 'accessing' }
 StLauncherStructureProperties >> productMap [
 

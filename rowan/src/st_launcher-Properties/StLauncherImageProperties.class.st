@@ -147,6 +147,25 @@ StLauncherImageProperties >> imagePath: aString [
 	imagePath := aString
 ]
 
+{ #category : 'exporting' }
+StLauncherImageProperties >> postExportCopy [
+
+	| oldAliasProperties |
+
+	super postExportCopy.
+	self imageAlias: nil. "imageAlias should not be exported to disk"
+
+	oldAliasProperties= self aliasProperties.
+	oldAliasProperties ifNil: [ ^ self ].
+	aliasProperties := self class orderedDictionaryClass new.
+	oldAliasProperties keys asArray sort do: [:theAliasName | 
+		| oldProperties sortedProperties |
+		oldProperties := oldAliasProperties at: theAliasName.
+		sortedProperties := self class orderedDictionaryClass new.
+		oldProperties keys asArray sort do: [:propertyName | sortedProperties at: propertyName put: (oldProperties at: propertyName) ].	"put properties into canonical order"
+		aliasProperties at: theAliasName put: sortedProperties ].	"put aliasProperties into canonical order"
+]
+
 { #category : 'accessing' }
 StLauncherImageProperties >> structureName [
 
