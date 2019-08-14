@@ -12,6 +12,8 @@ Class {
 
 { #category : 'main' }
 StL_About >> main [
+	"The about report is platform-specific, so it is implemented in AbstractProgram,
+		where platform overrides can be made"
 
 	| dict |
 	dict := self about.

@@ -40,7 +40,7 @@ StL_ListImages >> verbose [
 StL_ListImages >> scriptMethodOptions [
 	^ super scriptMethodOptions, 
 	{
-			#('verbose' $v #none #verbose).
+		#('verbose' $v #none #verbose).
 	}
 ]
 
