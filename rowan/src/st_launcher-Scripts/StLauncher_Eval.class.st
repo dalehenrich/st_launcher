@@ -59,6 +59,9 @@ StLauncher_Eval >> contextObject [
 
 { #category : 'main' }
 StLauncher_Eval >> main [
+	"script evaluation is platform specific, so this functionality is implemented
+		in AbstractProgram, so that conditional platform code can be run by the
+		script"
 
 	^self evaluate: self stExpression inContext: self contextObject
 ]
@@ -131,5 +134,5 @@ StLauncher_Eval >> usageExamples: scriptName [
 StLauncher_Eval >> usageSynopsis: scriptName [
 
 	^	(super usageSynopsis: scriptName), ' [ - | --file=<file-path> ] \
-		[ --st=<st-file-path> | "<st-expression" ]'
+		[ --st=<st-file-path> | ''"<st-expression>"'' ]'
 ]

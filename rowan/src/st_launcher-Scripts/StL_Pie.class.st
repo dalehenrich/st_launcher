@@ -142,8 +142,8 @@ StL_Pie >> usageExamples: scriptName [
 	^	scriptName, ' pharo-ui --
 	', scriptName, ' pharo-ui -- < object.ston
 
-	', scriptName, ' pharo-ui -- label=off< object.ston
-	', scriptName, ' pharo-ui -- label=on < object.ston
+	', scriptName, ' pharo-ui -- --label=off < object.ston
+	', scriptName, ' pharo-ui -- --label=on < object.ston
 
 	', scriptName, ' pharo-ui -D -- < object.ston
 	', scriptName, ' pharo-ui -- --selector=value < object.ston
