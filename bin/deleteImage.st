@@ -1,0 +1,1 @@
+../rowan/src/st_launcher-Commands/StL_DeleteImage.class.st
