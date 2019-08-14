@@ -3,6 +3,7 @@ StLauncherGemStoneSoloImageProperties {
 			'gemstone_DataCurator' : { 'topazini' : '.topazini_DataCurator' }
 		},
 	#binPath : 'bin',
+	#comment : 'default GemStone image',
 	#gemstoneVersion : '3.5.0',
 	#imagePath : '$ST_LAUNCHER_HOME/images/gemstone',
 	#logsPath : 'logs',

@@ -3,7 +3,8 @@ Class {
 	#superclass : 'StLauncherCommon',
 	#instVars : [
 		'name',
-		'structureProperties'
+		'structureProperties',
+		'comment'
 	],
 	#category : 'st_launcher-Properties'
 }
@@ -51,6 +52,18 @@ StLauncherProperties class >> propertyFile: aFilePath [
 StLauncherProperties class >> propertyFileNamed: aName [
 
 	^ self propertyFile:  self defaultPropertiesDirectory / aName, 'ston'
+]
+
+{ #category : 'accessing' }
+StLauncherProperties >> comment [
+
+	^ comment
+]
+
+{ #category : 'accessing' }
+StLauncherProperties >> comment: aString [
+
+	comment := aString
 ]
 
 { #category : 'accessing' }

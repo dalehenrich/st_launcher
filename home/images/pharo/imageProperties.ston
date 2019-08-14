@@ -6,6 +6,7 @@ StLauncherPharoImageProperties {
 				'headless' : false,
 				'pharoImageName' : 'pharo.dev.image'  }
 		},
+	#comment : 'default pharo image',
 	#imagePath : '$ST_LAUNCHER_HOME/images/pharo',
 	#pharoVersion : '70-64',
 	#name : 'pharo',
