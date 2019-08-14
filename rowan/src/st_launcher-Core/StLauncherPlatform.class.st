@@ -11,14 +11,16 @@ Class {
 }
 
 { #category : 'instance creation' }
-StLauncherPlatform class >> createImageNamed: imageName platform: platformName version: versionString [
-
-	^ (self platformClassFor: platformName) createImageNamed: imageName version: versionString
+StLauncherPlatform class >> createImageNamed: imageName comment: commentString version: versionString from: aRequestor [
+	^ self createImageNamed: imageName comment: commentString version: versionString
 ]
 
 { #category : 'instance creation' }
-StLauncherPlatform class >> createImageNamed: imageName version: versionString from: aRequestor [
-	^ self createImageNamed: imageName version: versionString
+StLauncherPlatform class >> createImageNamed: imageName platform: platformName comment: commentString version: versionString [
+	^ (self platformClassFor: platformName)
+		createImageNamed: imageName
+		comment: commentString 
+		version: versionString
 ]
 
 { #category : 'instance creation' }
@@ -120,9 +122,9 @@ StLauncherPlatform class >> propertiesForImageNamed: aString ifPresent: presentB
 ]
 
 { #category : 'images' }
-StLauncherPlatform >> createImageNamed: imageName version: versionString [
+StLauncherPlatform >> createImageNamed: imageName comment: commentString  version: versionString [
 
-	self subclassResponsibility: #createImageNamed:version:
+	self subclassResponsibility: #createImageNamed:comment:version:
 ]
 
 { #category : 'products' }

@@ -39,6 +39,7 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 					snapshotPath := sourceImageProperties snapshotsDirectory / ('extent0.', sourceImageName, '.dbf'). 
 					imageProperties := StLauncherGemStonePlatform 
 						createSoloImageNamed: (theImageName ifNil: [ launcherProperties defaultImageName ])
+						comment: ''
 						version: sourceImageProperties gemstoneVersion
 						sourceSnapshotFile: snapshotPath.
 				].
@@ -47,6 +48,7 @@ StLauncher_GemStone_UTILITY_Script >> executeScript [
 					imageProperties := StLauncherPlatform 
 						createImageNamed: (theImageName ifNil: [ launcherProperties defaultImageName ])
 						platform: 'gemstone'
+						comment: ''
 						version: platformVersionString.
 				].
 			opts at: 'snapshot' ifPresent: [

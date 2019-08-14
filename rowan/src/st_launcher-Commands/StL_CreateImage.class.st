@@ -55,7 +55,8 @@ Class {
 		'imageDirectory',
 		'imageVersion',
 		'sourceImage',
-		'sourcePath'
+		'sourcePath',
+		'comment'
 	],
 	#category : 'st_launcher-Commands'
 }
@@ -87,6 +88,18 @@ StL_CreateImage >> _validateOptions [
 	self imageType ifNil: [ self error: 'Required imageType argument is missing' ].
 	self _platformClass.	"triggers error, if not a know image type"
 	self imageVersion ifNil: [ self error: 'Require `--version` option is not specified' ].
+]
+
+{ #category : 'accessing' }
+StL_CreateImage >> comment [
+
+	^ comment ifNil: [ '' ]
+]
+
+{ #category : 'accessing' }
+StL_CreateImage >> comment: aString [
+
+	comment := aString
 ]
 
 { #category : 'script options' }
@@ -148,6 +161,7 @@ StL_CreateImage >> main [
 	self _validateOptions.
 	^ self _platformClass
 		createImageNamed: self imageName
+		comment: self comment
 		version: self imageVersion
 		from: self
 ]

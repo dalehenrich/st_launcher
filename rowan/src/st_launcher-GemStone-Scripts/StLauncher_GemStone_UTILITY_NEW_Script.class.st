@@ -44,6 +44,7 @@ StLauncher_GemStone_UTILITY_NEW_Script >> create: imageName [
 	imageProperties := StLauncherPlatform 
 		createImageNamed: (imageName ifNil: [ self _launcherProperties defaultImageName ])
 		platform: self _platformName
+		comment: ''
 		version: platformVersionString.
 ]
 

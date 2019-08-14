@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : 'instance creation' }
-StLauncherGemStonePlatform class >> createImageNamed: imageName version: versionString [
+StLauncherGemStonePlatform class >> createImageNamed: imageName comment: commentString  version: versionString [
 
-	^ self new createImageNamed: imageName version: versionString
+	^ self new createImageNamed: imageName comment: commentString  version: versionString
 ]
 
 { #category : 'instance creation' }
@@ -45,7 +45,7 @@ StLauncherGemStonePlatform >> addImageForProperties: imageProperties [
 ]
 
 { #category : 'actions' }
-StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString [
+StLauncherGemStonePlatform >> createImageNamed: imageName comment: commentString  version: versionString [
 
 	| imageProperties |
 	self imageNamed: imageName
@@ -55,6 +55,7 @@ StLauncherGemStonePlatform >> createImageNamed: imageName version: versionString
 		ifFalse: [ self download: versionString ].
 	imageProperties := ((StLauncherImageProperties propertyClassForPlatform: self platformType) 
 			named: imageName version: versionString)
+				comment: commentString;
 				structureName: self structureProperties name;
 				yourself.
 	imageProperties productPath: ((self structureProperties productMap at: self platformName) at: versionString).

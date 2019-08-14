@@ -5,14 +5,17 @@ Class {
 }
 
 { #category : 'instance creation' }
-StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName version: versionString from: aRequestor [
-	^ self createImageNamed: imageName version: versionString soloExtentPath: aRequestor soloExtentPath
+StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName comment: commentString version: versionString from: aRequestor [
+	^ self createImageNamed: imageName comment: commentString version: versionString soloExtentPath: aRequestor soloExtentPath
 ]
 
 { #category : 'instance creation' }
-StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName version: versionString soloExtentPath: soloExtentPath [
-
-	^ self new createImageNamed: imageName version: versionString soloExtentPath: soloExtentPath
+StLauncherGemStoneSoloPlatform class >> createImageNamed: imageName comment: commentString version: versionString soloExtentPath: soloExtentPath [
+	^ self new
+		createImageNamed: imageName
+		comment: commentString
+		version: versionString
+		soloExtentPath: soloExtentPath
 ]
 
 { #category : 'accessing' }
@@ -22,7 +25,7 @@ StLauncherGemStoneSoloPlatform class >> platformType [
 ]
 
 { #category : 'actions' }
-StLauncherGemStoneSoloPlatform >> createImageNamed: imageName version: versionString soloExtentPath: soloExtentPath [
+StLauncherGemStoneSoloPlatform >> createImageNamed: imageName comment: commentString version: versionString soloExtentPath: soloExtentPath [
 
 	| imageProperties |
 	self imageNamed: imageName
@@ -30,6 +33,7 @@ StLauncherGemStoneSoloPlatform >> createImageNamed: imageName version: versionSt
 		ifAbsent: [].
 	imageProperties := (StLauncherGemStoneSoloImageProperties 
 			named: imageName version: versionString)
+				comment: commentString;
 				structureName: self structureProperties name;
 				yourself.
 	imageProperties productPath: ((self structureProperties productMap at: self platformName) at: versionString).
