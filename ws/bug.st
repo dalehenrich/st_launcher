@@ -1,0 +1,1 @@
+../rowan/src/st_launcher-Workspaces/bug.class.st
