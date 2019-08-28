@@ -1,11 +1,10 @@
 #!/usr/local/bin/smalltalk/gemstone/st_launcher
 "
-Template workspace script ... copy me to a new file and put the code you want
-to run into the main method. Change the comment to reflect help text you want
-to have.
+Collect a list of classes and their method counts, recording the results in the
+	class StLObjectOutSample. The collection is suitable for use as objIn for the
+	pie.st script:
 
-If you want to make the resulting script available in an image, move it to th 
-stl_launcher-Worspaces package and give it a unique class name ...
+		ws/gsClassesAndMethodCounts.st gemstone -- | bin/pie.pharo.st pharo-ui --
 "
 Class {
 	#name : 'WS_',
@@ -28,8 +27,10 @@ WS_ >> main [
 
 WS_ >> usageExamples: scriptName [
 
-	^	scriptName, '
-	', scriptName, ' -D --		# debug errors
+	^	scriptName, 'gemstone --
+	', scriptName, ' gemstone -D --		# debug errors
+
+	', scriptName, ' gemstone -- | bin/pie.pharo.st pharo-ui --
 '
 ]
 
