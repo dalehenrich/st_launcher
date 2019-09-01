@@ -1,0 +1,37 @@
+RwComponentLoadConfiguration{
+	#name : 'Core',
+	#comment : '',
+	#version : '0.1.0',
+	#definedGroupNames : {
+		'core' : [ ],
+		'tests' : [ 'core' ]
+	},
+	#configurationNames : [
+		'Samples'
+	],
+	#conditionalPackages : {
+		[
+			'common'
+		] : {
+			'core' : {
+				#packageNames : [
+					'RWSTestStats-Core'
+				]
+			},
+			'tests' : {
+				#packageNames : [
+				]
+			}
+		}
+	},
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'SystemUser' : {
+				#defaultSymbolDictName : 'Globals'
+			}
+		}
+	},
+	#projectNames : [
+		'st_launcher'
+	]
+}

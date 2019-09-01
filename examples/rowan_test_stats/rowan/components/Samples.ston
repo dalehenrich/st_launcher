@@ -1,0 +1,28 @@
+RwComponentLoadConfiguration {
+	#name : 'Samples',
+	#comment : '',
+	#version : '0.1.0',
+	#configurationNames : [
+		'Core'
+	],
+	#conditionalPackages : {
+		[
+			'common'
+		] : {
+			'core' : {
+				#packageNames : [
+					'RWSTestStats-Samples'
+				]
+			},
+			'tests' : {
+				#packageNames : [ ]
+			}
+		}
+	},
+	#definedGroupNames : {
+		'tests' : [
+			'core'
+		],
+		'core' : [ ]
+	}
+}
