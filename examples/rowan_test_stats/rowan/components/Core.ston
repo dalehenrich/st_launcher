@@ -1,11 +1,7 @@
-RwComponentLoadConfiguration{
+RwComponentLoadConfiguration {
 	#name : 'Core',
 	#comment : '',
 	#version : '0.1.0',
-	#definedGroupNames : {
-		'core' : [ ],
-		'tests' : [ 'core' ]
-	},
 	#configurationNames : [
 		'Samples'
 	],
@@ -19,8 +15,7 @@ RwComponentLoadConfiguration{
 				]
 			},
 			'tests' : {
-				#packageNames : [
-				]
+				#packageNames : [ ]
 			}
 		}
 	},
@@ -30,6 +25,12 @@ RwComponentLoadConfiguration{
 				#defaultSymbolDictName : 'Globals'
 			}
 		}
+	},
+	#definedGroupNames : {
+		'tests' : [
+			'core'
+		],
+		'core' : [ ]
 	},
 	#projectNames : [
 		'st_launcher'
