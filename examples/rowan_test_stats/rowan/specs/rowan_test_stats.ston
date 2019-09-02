@@ -2,6 +2,8 @@ RwComponentSpecification{
 	#specName : 'rowan_test_stats',
 	#version : '0.3.0',
 	#projectUrl : 'https://github.com/dalehenrich/st_launcher',
+	#repoSpec : RwGitRepositorySpecification {
+	},
 	#configsPath : 'rowan/components',
 	#projectsPath : 'rowan/projects',
 	#repoPath : 'rowan/src',

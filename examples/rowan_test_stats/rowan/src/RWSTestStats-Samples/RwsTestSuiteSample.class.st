@@ -41,6 +41,9 @@ RwsTestSuiteSample class >> fromJson: filePath [
 
 { #category : 'accessing' }
 RwsTestSuiteSample class >> resetSuiteSamples [
+	"
+		RwsTestSuiteSample resetSuiteSamples
+	"
 	suiteSamples := nil
 ]
 
@@ -84,6 +87,25 @@ RwsTestSuiteSample >> properties: aDictionary [
 	properties := aDictionary
 ]
 
+{ #category : 'queries' }
+RwsTestSuiteSample >> queryTestCases: queryString [
+	"
+		status: #passed, #failure, #error
+
+		((RwsTestSuiteSample suiteSamples detect: [:each | true ]) 
+			queryTestCases: 'each.status == #passed' ) size
+
+		((RwsTestSuiteSample suiteSamples detect: [:each | true ]) 
+			queryTestCases: 'each.className = ''RwProjectTonelReaderWriterTest''' ) size
+
+		((RwsTestSuiteSample suiteSamples detect: [:each | true ]) 
+			queryTestCases: '(each.className = ''RwProjectTonelReaderWriterTest'') & (each.status ~~ #passed)' ) size
+
+	"
+
+	^ GsQuery fromString: queryString on: self testCases
+]
+
 { #category : 'accessing' }
 RwsTestSuiteSample >> resultsSummary [
 	^ resultsSummary
@@ -106,7 +128,11 @@ RwsTestSuiteSample >> suiteName: aString [
 
 { #category : 'accessing' }
 RwsTestSuiteSample >> testCases [
-	^ testCases ifNil: [ testCases := RcLowMaintenanceIdentityBag new ]
+	^ testCases
+		ifNil: [ 
+			testCases := RcLowMaintenanceIdentityBag new.
+			self testCaseSampleIndexSpec createIndexesOn: testCases.
+			testCases ]
 ]
 
 { #category : 'accessing' }
@@ -117,6 +143,15 @@ RwsTestSuiteSample >> testCases: anArrayOfTestCaseSampleDictionaries [
 			testCaseSample := RwsTestCaseSample fromDictionary: sampleDict.
 			testCaseSample suite: self.
 			self testCases add: testCaseSample ]
+]
+
+{ #category : 'indexing' }
+RwsTestSuiteSample >> testCaseSampleIndexSpec [
+	^ GsIndexSpec new
+		stringOptimizedIndex: 'each.className';
+		symbolOptimizedIndex: 'each.selector';
+		symbolOptimizedIndex: 'each.status';
+		yourself
 ]
 
 { #category : 'accessing' }
