@@ -1,0 +1,1 @@
+../../../bin/bar.pharo.st

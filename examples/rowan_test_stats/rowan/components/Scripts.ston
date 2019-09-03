@@ -1,0 +1,28 @@
+RwComponentLoadConfiguration {
+	#name : 'Scripts',
+	#comment : '',
+	#version : '0.1.0',
+	#configurationNames : [
+		'Core'
+	],
+	#conditionalPackages : {
+		[
+			'pharo'
+		] : {
+			'core' : {
+				#packageNames : [
+					'RWSTestStats-Pharo-Scripts'
+				]
+			},
+			'tests' : {
+				#packageNames : [ ]
+			}
+		}
+	},
+	#definedGroupNames : {
+		'tests' : [
+			'core'
+		],
+		'core' : [ ]
+	}
+}
