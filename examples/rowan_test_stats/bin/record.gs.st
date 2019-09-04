@@ -1,0 +1,1 @@
+../rowan/src/RWSTestStats-GemStone-Scripts/RwsTestStatsRecord.class.st

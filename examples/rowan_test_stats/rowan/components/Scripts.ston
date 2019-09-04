@@ -17,7 +17,19 @@ RwComponentLoadConfiguration {
 			'tests' : {
 				#packageNames : [ ]
 			}
-		}
+		},
+		[
+			'gemstone'
+		] : {
+			'core' : {
+				#packageNames : [
+					'RWSTestStats-GemStone-Scripts'
+				]
+			},
+			'tests' : {
+				#packageNames : [ ]
+			}
+		},
 	},
 	#definedGroupNames : {
 		'tests' : [
