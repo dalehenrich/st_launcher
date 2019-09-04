@@ -8,7 +8,9 @@ Class {
 		'resultsSummary',
 		'timeStamp',
 		'notes',
-		'gsVersion'
+		'gsVersion',
+		'branch',
+		'commitSha'
 	],
 	#classVars : [
 		'suiteSamples'
@@ -39,6 +41,22 @@ RwsTestSuiteSample class >> fromJson: filePath [
 	^ self fromDictionary: sampleDict
 ]
 
+{ #category : 'instance creation' }
+RwsTestSuiteSample class >> new [
+
+	^ self basicNew initialize
+]
+
+{ #category : 'queries' }
+RwsTestSuiteSample class >> querySuiteSamples: queryString [
+	"
+		RwsTestSuiteSample suiteSamples 
+			querySuiteSamples: 'each.branch == ''masterV0.1''' ) size
+	"
+
+	^ GsQuery fromString: queryString on: self suiteSamples
+]
+
 { #category : 'accessing' }
 RwsTestSuiteSample class >> resetSuiteSamples [
 	"
@@ -54,7 +72,45 @@ RwsTestSuiteSample class >> suiteSamples [
 			(RwsTestSuiteSample fromJson: '/home/dhenrich/rogue/_homes/rogue/_home/server/stones/test_rowan_dev_350/testResults.json')
 	"
 
-	^ suiteSamples ifNil: [ suiteSamples := RcLowMaintenanceIdentityBag new ]
+	^ suiteSamples
+		ifNil: [ 
+			suiteSamples := RcLowMaintenanceIdentityBag new.
+			self suiteSamplesIndexSpec createIndexesOn: suiteSamples.
+			suiteSamples ]
+]
+
+{ #category : 'indexing' }
+RwsTestSuiteSample class >> suiteSamplesIndexSpec [
+	| indexOptions |
+	indexOptions := GsIndexOptions default + GsIndexOptions reducedConflict.
+	^ GsIndexSpec new
+		stringOptimizedIndex: 'each.suiteName' options: indexOptions;
+		stringOptimizedIndex: 'each.gsVersion' options: indexOptions;
+		stringOptimizedIndex: 'each.branch' options: indexOptions;
+		stringOptimizedIndex: 'each.commitSha' options: indexOptions;
+		equalityIndex: 'each.timeStamp'
+			lastElementClass: DateAndTime
+			options: indexOptions yourself
+]
+
+{ #category : 'accessing' }
+RwsTestSuiteSample >> branch [
+	^ branch
+]
+
+{ #category : 'accessing' }
+RwsTestSuiteSample >> branch: aString [
+	branch := aString
+]
+
+{ #category : 'accessing' }
+RwsTestSuiteSample >> commitSha [
+	^ commitSha
+]
+
+{ #category : 'accessing' }
+RwsTestSuiteSample >> commitSha: aString [
+	commitSha := aString
 ]
 
 { #category : 'accessing' }
@@ -65,6 +121,11 @@ RwsTestSuiteSample >> gsVersion [
 { #category : 'accessing' }
 RwsTestSuiteSample >> gsVersion: aString [
 	gsVersion := aString
+]
+
+{ #category : 'initialization' }
+RwsTestSuiteSample >> initialize [
+	branch := commitSha := ''
 ]
 
 { #category : 'accessing' }
@@ -147,10 +208,12 @@ RwsTestSuiteSample >> testCases: anArrayOfTestCaseSampleDictionaries [
 
 { #category : 'indexing' }
 RwsTestSuiteSample >> testCaseSampleIndexSpec [
+	| indexOptions |
+	indexOptions := GsIndexOptions default + GsIndexOptions reducedConflict.
 	^ GsIndexSpec new
-		stringOptimizedIndex: 'each.className';
-		symbolOptimizedIndex: 'each.selector';
-		symbolOptimizedIndex: 'each.status';
+		stringOptimizedIndex: 'each.className' options: indexOptions;
+		symbolOptimizedIndex: 'each.selector' options: indexOptions;
+		symbolOptimizedIndex: 'each.status' options: indexOptions;
 		yourself
 ]
 

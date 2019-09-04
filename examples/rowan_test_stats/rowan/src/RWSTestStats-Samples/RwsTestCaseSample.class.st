@@ -20,6 +20,12 @@ RwsTestCaseSample class >> fromDictionary: sampleDict [
 	^ newTestCaseSample
 ]
 
+{ #category : 'instance creation' }
+RwsTestCaseSample class >> new [
+
+	^ self basicNew initialize
+]
+
 { #category : 'accessing' }
 RwsTestCaseSample >> className [
 	^ className
@@ -28,6 +34,10 @@ RwsTestCaseSample >> className [
 { #category : 'accessing' }
 RwsTestCaseSample >> className: aString [
 	className := aString
+]
+
+{ #category : 'initialization' }
+RwsTestCaseSample >> initialize [
 ]
 
 { #category : 'accessing' }
