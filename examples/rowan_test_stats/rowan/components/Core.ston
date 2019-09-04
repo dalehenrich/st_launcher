@@ -3,7 +3,8 @@ RwComponentLoadConfiguration {
 	#comment : '',
 	#version : '0.1.0',
 	#configurationNames : [
-		'Samples'
+		'Samples',
+		'Scripts'
 	],
 	#conditionalPackages : {
 		[
@@ -32,7 +33,5 @@ RwComponentLoadConfiguration {
 		],
 		'core' : [ ]
 	},
-	#projectNames : [
-		'st_launcher'
-	]
+	#projectNames : [ ]
 }
