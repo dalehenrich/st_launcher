@@ -171,6 +171,46 @@ RwsTestSuiteSample >> commitSha: aString [
 ]
 
 { #category : 'comparison' }
+RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict label: label on: aWriteStream [
+	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize  |
+	mySortedSelectors := myDict at: theClassName.
+	theirSortedSelectors := theirDict at: theClassName.
+	mySortedSelectors asArray = theirSortedSelectors asArray
+		ifTrue: [ 
+			"no diffs"
+			^ true ].
+	mySelectorIndex := 1.
+	theirSelectorIndex := 1.
+	mySelectorsSize := mySortedSelectors size.
+	theirSelectorsSize := theirSortedSelectors size.
+	[ 
+	mySelectorIndex <= mySelectorsSize
+		and: [ theirSelectorIndex <= theirSelectorsSize ] ]
+		whileTrue: [ 
+			| mySelector theirSelector |
+			mySelector := mySortedSelectors atOrNil: mySelectorIndex.
+			theirSelector := theirSortedSelectors atOrNil: theirSelectorIndex.
+			mySelector = theirSelector
+				ifTrue: [ 
+					"selector present in both lists ... go on to next selector"
+					mySelectorIndex := mySelectorIndex + 1.
+					theirSelectorIndex := theirSelectorIndex + 1 ]
+				ifFalse: [ 
+					mySelector < theirSelector
+						ifTrue: [ 
+							aWriteStream
+								nextPutAll: '+ ' , theClassName , '>>' , mySelector;
+								lf.
+							mySelectorIndex := mySelectorIndex + 1 ]
+						ifFalse: [ 
+							aWriteStream
+								nextPutAll: '- ' , theClassName , '>>' , theirSelector;
+								lf.
+							theirSelectorIndex := theirSelectorIndex + 1 ] ] ].
+	^ false
+]
+
+{ #category : 'comparison' }
 RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 	"answer the differences for passed, errors, and failures between the receiver and <testSuiteSample>"
 
@@ -210,9 +250,13 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 					lf.
 				myKey = theirKey
 					ifTrue: [ 
-						aWriteStream
-							nextPutAll: 'No diffs for: ' , myKey printString;
-							lf.
+						(self
+							compareSelectorsIn: myDict
+							for: myKey
+							against: theirDict
+							label: label
+							on: aWriteStream)
+							ifFalse: [ noDiffs := false ].
 						myKeyIndex := myKeyIndex + 1.
 						theirKeyIndex := theirKeyIndex + 1 ]
 					ifFalse: [ 
