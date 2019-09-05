@@ -24,7 +24,7 @@ RwsTestSuiteSample class >> compareLatestTestCasesFor: aGsVersion branch: aBranc
 	latestTestSuiteSample := self
 		latestQuerySuiteSampleFor: aBranch
 		andVersion: aGsVersion.
-	^ latestTestSuiteSample compareTo: testSuiteSample on: aWriteStream
+	^ testSuiteSample compareTo: latestTestSuiteSample on: aWriteStream
 ]
 
 { #category : 'instance creation' }
@@ -171,8 +171,8 @@ RwsTestSuiteSample >> commitSha: aString [
 ]
 
 { #category : 'comparison' }
-RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict label: label on: aWriteStream [
-	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize |
+RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict label: label theirSample: theirSuiteSample on: aWriteStream [
+	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize symbol |
 	mySortedSelectors := myDict at: theClassName.
 	theirSortedSelectors := theirDict at: theClassName.
 	mySortedSelectors asArray = theirSortedSelectors asArray
@@ -198,8 +198,18 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 				ifFalse: [ 
 					(mySelector _unicodeLessThan: theirSelector)
 						ifTrue: [ 
+							(theirSuiteSample
+								queryTestCases:
+									'(each.className = ''' , theClassName , ''') & (each.selector = #''' , mySelector
+										, ''')') size = 0
+								ifTrue: [ 
+									"passed in mySample, not present in theirSample -- new passing test"
+									symbol := ' ++	' ]
+								ifFalse: [ 
+									"passed in mySample, failure/errort in theirSample -- now passing"
+									symbol := ' +	' ].
 							aWriteStream
-								nextPutAll: ' +	' , theClassName , '>>' , mySelector;
+								nextPutAll: symbol , theClassName , '>>' , mySelector;
 								lf.
 							mySelectorIndex := mySelectorIndex + 1 ]
 						ifFalse: [ 
@@ -217,7 +227,7 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 	| mySampleMaps theirSampleMaps labels noDiffs |
 	mySampleMaps := self _testCaseSampleMaps.
 	theirSampleMaps := testSuiteSample _testCaseSampleMaps.
-	labels := {'PASSING'.
+	labels := {'PASSING: tests: + means now passing;  ++ new passing test; - means removed test'.
 	'FAILING'.
 	'ERRORING'}.
 	noDiffs := true.
@@ -225,7 +235,7 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 		| label myDict theirDict myKeys theirKeys myKey theirKey myKeyIndex theirKeyIndex myKeysSize theirKeysSize |
 		label := labels at: index.
 		aWriteStream
-			nextPutAll: 'Diffs for ' , label , ' tests -----------------------------';
+			nextPutAll: 'Diffs for ' , label;
 			lf.
 		myDict := mySampleMaps at: index.
 		theirDict := theirSampleMaps at: index.
@@ -246,6 +256,7 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 							for: myKey
 							against: theirDict
 							label: label
+							theirSample: testSuiteSample
 							on: aWriteStream)
 							ifFalse: [ noDiffs := false ].
 						myKeyIndex := myKeyIndex + 1.
