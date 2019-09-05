@@ -172,31 +172,35 @@ RwsTestSuiteSample >> commitSha: aString [
 
 { #category : 'comparison' }
 RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict status: status theirSample: theirSuiteSample on: aWriteStream [
-	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize symbol |
-	mySortedSelectors := myDict at: theClassName.
-	theirSortedSelectors := theirDict at: theClassName.
+	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize symbol illegalSelector |
+	illegalSelector := '' asSymbol.
+	mySortedSelectors := myDict at: theClassName ifAbsent: [ #() ].
+	theirSortedSelectors := theirDict at: theClassName ifAbsent: [ #() ].
 	mySortedSelectors asArray = theirSortedSelectors asArray
 		ifTrue: [ 
 			"no diffs"
 			^ true ].
-	mySelectorIndex := 1.
-	theirSelectorIndex := 1.
+	mySelectorIndex := 0.
+	theirSelectorIndex := 0.
 	mySelectorsSize := mySortedSelectors size.
 	theirSelectorsSize := theirSortedSelectors size.
 	[ 
-	mySelectorIndex <= mySelectorsSize
-		and: [ theirSelectorIndex <= theirSelectorsSize ] ]
+	mySelectorIndex + 1 <= mySelectorsSize
+		or: [ theirSelectorIndex + 1 <= theirSelectorsSize ] ]
 		whileTrue: [ 
 			| mySelector theirSelector |
-			mySelector := mySortedSelectors atOrNil: mySelectorIndex.
-			theirSelector := theirSortedSelectors atOrNil: theirSelectorIndex.
+			mySelector := mySortedSelectors atOrNil: mySelectorIndex + 1.
+			mySelector ifNil: [ mySelector := illegalSelector ].
+			theirSelector := theirSortedSelectors atOrNil: theirSelectorIndex + 1.
+			theirSelector ifNil: [ theirSelector := illegalSelector ].
 			(mySelector _unicodeEqual: theirSelector)
 				ifTrue: [ 
 					"selector present in both lists ... go on to next selector"
 					mySelectorIndex := mySelectorIndex + 1.
 					theirSelectorIndex := theirSelectorIndex + 1 ]
 				ifFalse: [ 
-					(mySelector _unicodeLessThan: theirSelector)
+					((mySelector ~~ illegalSelector and: [ theirSelector == illegalSelector ])
+						or: [ mySelector ~~ illegalSelector and: [ mySelector _unicodeLessThan: theirSelector] ])
 						ifTrue: [ 
 							"mySelector present in my list, not present in their list - 
 								query to find out if the test exists in their suite of tests"
@@ -217,15 +221,17 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 						ifFalse: [ 
 							"theirSelector not present in my list, present in their list - 
 								query to find out if the test exists in my suite of tests"
-							(self
-								queryTestCases:
-									'(each.className = ''' , theClassName , ''') & (each.selector = #'''
-										, theirSelector , ''')') size = 0
+							theirSelector ~~ illegalSelector
 								ifTrue: [ 
-									"not present in my suite of tests -- removed test"
-									aWriteStream
-										nextPutAll: ' -	' , theClassName , '>>' , theirSelector;
-										lf ].
+									(self
+										queryTestCases:
+											'(each.className = ''' , theClassName , ''') & (each.selector = #'''
+												, theirSelector , ''')') size = 0
+										ifTrue: [ 
+											"not present in my suite of tests -- removed test"
+											aWriteStream
+												nextPutAll: ' -	' , theClassName , '>>' , theirSelector;
+												lf ] ].
 							theirSelectorIndex := theirSelectorIndex + 1 ] ] ].
 	^ false
 ]
@@ -237,12 +243,12 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 	| mySampleMaps theirSampleMaps labels noDiffs statusArray |
 	mySampleMaps := self _testCaseSampleMaps.
 	theirSampleMaps := testSuiteSample _testCaseSampleMaps.
-	labels := {
-		'PASSES: tests: + now passing;  ++ new passing test; - removed test'.
-		'FAILURES: tests: + now failing;  ++ new failing test; - removed test'.
-		'ERRORS: tests: + now erroring;  ++ new erroring test; - removed test'.
-}.
-	statusArray := {#passing . #failures . #errors }.
+	labels := {'PASSES: tests: + now passing;  ++ new passing test; - removed test'.
+	'FAILURES: tests: + now failing;  ++ new failing test; - removed test'.
+	'ERRORS: tests: + now erroring;  ++ new erroring test; - removed test'}.
+	statusArray := {#'passing'.
+	#'failures'.
+	#'errors'}.
 	noDiffs := true.
 	1 to: 3 do: [ :index | 
 		| label myDict theirDict myKeys theirKeys myKey theirKey myKeyIndex theirKeyIndex myKeysSize theirKeysSize |
@@ -275,23 +281,26 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 						myKeyIndex := myKeyIndex + 1.
 						theirKeyIndex := theirKeyIndex + 1 ]
 					ifFalse: [ 
-						noDiffs := false.
 						(myKey _unicodeLessThan: theirKey)
 							ifTrue: [ 
-								"the class myKey is not present in theirDict, so all of the selectors are added"
-								(myDict at: myKey)
-									do: [ :sel | 
-										aWriteStream
-											nextPutAll: ' +	' , myKey , '>>' , sel;
-											lf ].
+								(self
+									compareSelectorsIn: myDict
+									for: myKey
+									against: theirDict
+									status: (statusArray at: index)
+									theirSample: testSuiteSample
+									on: aWriteStream)
+									ifFalse: [ noDiffs := false ].
 								myKeyIndex := myKeyIndex + 1 ]
 							ifFalse: [ 
-								"the class theirKey is not present in myDict, so all of the selectors are removed"
-								(theirDict at: theirKey)
-									do: [ :sel | 
-										aWriteStream
-											nextPutAll: ' -	' , theirKey , '>>' , sel;
-											lf ].
+								(self
+									compareSelectorsIn: myDict
+									for: theirKey
+									against: theirDict
+									status: (statusArray at: index)
+									theirSample: testSuiteSample
+									on: aWriteStream)
+									ifFalse: [ noDiffs := false ].
 								theirKeyIndex := theirKeyIndex + 1 ] ] ] ].
 	^ noDiffs
 ]
