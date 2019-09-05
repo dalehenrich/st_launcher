@@ -172,7 +172,7 @@ RwsTestSuiteSample >> commitSha: aString [
 
 { #category : 'comparison' }
 RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict label: label on: aWriteStream [
-	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize  |
+	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize |
 	mySortedSelectors := myDict at: theClassName.
 	theirSortedSelectors := theirDict at: theClassName.
 	mySortedSelectors asArray = theirSortedSelectors asArray
@@ -190,21 +190,21 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 			| mySelector theirSelector |
 			mySelector := mySortedSelectors atOrNil: mySelectorIndex.
 			theirSelector := theirSortedSelectors atOrNil: theirSelectorIndex.
-			mySelector = theirSelector
+			(mySelector _unicodeEqual: theirSelector)
 				ifTrue: [ 
 					"selector present in both lists ... go on to next selector"
 					mySelectorIndex := mySelectorIndex + 1.
 					theirSelectorIndex := theirSelectorIndex + 1 ]
 				ifFalse: [ 
-					mySelector < theirSelector
+					(mySelector _unicodeLessThan: theirSelector)
 						ifTrue: [ 
 							aWriteStream
-								nextPutAll: '+ ' , theClassName , '>>' , mySelector;
+								nextPutAll: ' +	' , theClassName , '>>' , mySelector;
 								lf.
 							mySelectorIndex := mySelectorIndex + 1 ]
 						ifFalse: [ 
 							aWriteStream
-								nextPutAll: '- ' , theClassName , '>>' , theirSelector;
+								nextPutAll: ' -	' , theClassName , '>>' , theirSelector;
 								lf.
 							theirSelectorIndex := theirSelectorIndex + 1 ] ] ].
 	^ false
@@ -217,13 +217,16 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 	| mySampleMaps theirSampleMaps labels noDiffs |
 	mySampleMaps := self _testCaseSampleMaps.
 	theirSampleMaps := testSuiteSample _testCaseSampleMaps.
-	labels := {'Passed'.
-	'failed'.
-	'errored'}.
+	labels := {'PASSING'.
+	'FAILING'.
+	'ERRORING'}.
 	noDiffs := true.
 	1 to: 3 do: [ :index | 
 		| label myDict theirDict myKeys theirKeys myKey theirKey myKeyIndex theirKeyIndex myKeysSize theirKeysSize |
 		label := labels at: index.
+		aWriteStream
+			nextPutAll: 'Diffs for ' , label , ' tests -----------------------------';
+			lf.
 		myDict := mySampleMaps at: index.
 		theirDict := theirSampleMaps at: index.
 		myKeys := myDict keys asArray sort.
@@ -236,19 +239,7 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 			whileTrue: [ 
 				myKey := myKeys atOrNil: myKeyIndex.
 				theirKey := theirKeys atOrNil: theirKeyIndex.
-				aWriteStream
-					tab;
-					nextPutAll:
-							'MY ' , label asUppercase , ' ' , myKeyIndex printString , '('
-									, myKeysSize printString , ')';
-					lf.
-				aWriteStream
-					tab;
-					nextPutAll:
-							'THEIRS ' , label asUppercase , ' ' , theirKeyIndex printString , '('
-									, theirKeysSize printString , ')';
-					lf.
-				myKey = theirKey
+				(myKey _unicodeEqual: theirKey)
 					ifTrue: [ 
 						(self
 							compareSelectorsIn: myDict
@@ -261,16 +252,22 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 						theirKeyIndex := theirKeyIndex + 1 ]
 					ifFalse: [ 
 						noDiffs := false.
-						myKey < theirKey
+						(myKey _unicodeLessThan: theirKey)
 							ifTrue: [ 
-								aWriteStream
-									nextPutAll: 'No ' , label , ' >> entries for ' , myKey printString;
-									lf.
+								"the class myKey is not present in theirDict, so all of the selectors are added"
+								(myDict at: myKey)
+									do: [ :sel | 
+										aWriteStream
+											nextPutAll: ' +	' , myKey , '>>' , sel;
+											lf ].
 								myKeyIndex := myKeyIndex + 1 ]
 							ifFalse: [ 
-								aWriteStream
-									nextPutAll: 'No ' , label , ' >> entries for ' , theirKey printString;
-									lf.
+								"the class theirKey is not present in myDict, so all of the selectors are removed"
+								(theirDict at: theirKey)
+									do: [ :sel | 
+										aWriteStream
+											nextPutAll: ' -	' , theirKey , '>>' , sel;
+											lf ].
 								theirKeyIndex := theirKeyIndex + 1 ] ] ] ].
 	^ noDiffs
 ]
