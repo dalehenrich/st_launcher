@@ -171,7 +171,7 @@ RwsTestSuiteSample >> commitSha: aString [
 ]
 
 { #category : 'comparison' }
-RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict label: label theirSample: theirSuiteSample on: aWriteStream [
+RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict status: status theirSample: theirSuiteSample on: aWriteStream [
 	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize symbol |
 	mySortedSelectors := myDict at: theClassName.
 	theirSortedSelectors := theirDict at: theClassName.
@@ -198,24 +198,34 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 				ifFalse: [ 
 					(mySelector _unicodeLessThan: theirSelector)
 						ifTrue: [ 
+							"mySelector present in my list, not present in their list - 
+								query to find out if the test exists in their suite of tests"
 							(theirSuiteSample
 								queryTestCases:
-									'(each.className = ''' , theClassName , ''') & (each.selector = #''' , mySelector
-										, ''')') size = 0
+									'(each.className = ''' , theClassName , ''') & (each.selector = #'''
+										, mySelector , ''')') size = 0
 								ifTrue: [ 
-									"passed in mySample, not present in theirSample -- new passing test"
+									"not present in their test suite-- new passing test"
 									symbol := ' ++	' ]
 								ifFalse: [ 
-									"passed in mySample, failure/errort in theirSample -- now passing"
+									"present in their test suite (not passing) passed in mySample -- now passing"
 									symbol := ' +	' ].
 							aWriteStream
 								nextPutAll: symbol , theClassName , '>>' , mySelector;
 								lf.
 							mySelectorIndex := mySelectorIndex + 1 ]
 						ifFalse: [ 
-							aWriteStream
-								nextPutAll: ' -	' , theClassName , '>>' , theirSelector;
-								lf.
+							"theirSelector not present in my list, present in their list - 
+								query to find out if the test exists in my suite of tests"
+							(self
+								queryTestCases:
+									'(each.className = ''' , theClassName , ''') & (each.selector = #'''
+										, theirSelector , ''')') size = 0
+								ifTrue: [ 
+									"not present in my suite of tests -- removed test"
+									aWriteStream
+										nextPutAll: ' -	' , theClassName , '>>' , theirSelector;
+										lf ].
 							theirSelectorIndex := theirSelectorIndex + 1 ] ] ].
 	^ false
 ]
@@ -224,12 +234,15 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 	"answer the differences for passed, errors, and failures between the receiver and <testSuiteSample>"
 
-	| mySampleMaps theirSampleMaps labels noDiffs |
+	| mySampleMaps theirSampleMaps labels noDiffs statusArray |
 	mySampleMaps := self _testCaseSampleMaps.
 	theirSampleMaps := testSuiteSample _testCaseSampleMaps.
-	labels := {'PASSING: tests: + means now passing;  ++ new passing test; - means removed test'.
-	'FAILING'.
-	'ERRORING'}.
+	labels := {
+		'PASSES: tests: + now passing;  ++ new passing test; - removed test'.
+		'FAILURES: tests: + now failing;  ++ new failing test; - removed test'.
+		'ERRORS: tests: + now erroring;  ++ new erroring test; - removed test'.
+}.
+	statusArray := {#passing . #failures . #errors }.
 	noDiffs := true.
 	1 to: 3 do: [ :index | 
 		| label myDict theirDict myKeys theirKeys myKey theirKey myKeyIndex theirKeyIndex myKeysSize theirKeysSize |
@@ -255,7 +268,7 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 							compareSelectorsIn: myDict
 							for: myKey
 							against: theirDict
-							label: label
+							status: (statusArray at: index)
 							theirSample: testSuiteSample
 							on: aWriteStream)
 							ifFalse: [ noDiffs := false ].
