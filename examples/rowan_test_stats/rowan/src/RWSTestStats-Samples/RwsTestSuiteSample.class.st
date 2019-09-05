@@ -264,24 +264,36 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 		theirKeyIndex := 1.
 		myKeysSize := myKeys size.
 		theirKeysSize := theirKeys size.
-		[ myKeyIndex <= myKeysSize and: [ theirKeyIndex <= theirKeysSize ] ]
+		[ myKeyIndex <= myKeysSize or: [ theirKeyIndex <= theirKeysSize ] ]
 			whileTrue: [ 
 				myKey := myKeys atOrNil: myKeyIndex.
 				theirKey := theirKeys atOrNil: theirKeyIndex.
-				(myKey _unicodeEqual: theirKey)
+				(myKey isNil or: [ theirKey isNil ])
 					ifTrue: [ 
-						(self
-							compareSelectorsIn: myDict
-							for: myKey
-							against: theirDict
-							status: (statusArray at: index)
-							theirSample: testSuiteSample
-							on: aWriteStream)
-							ifFalse: [ noDiffs := false ].
-						myKeyIndex := myKeyIndex + 1.
-						theirKeyIndex := theirKeyIndex + 1 ]
+						myKey
+							ifNil: [ 
+								(self
+									compareSelectorsIn: myDict
+									for: theirKey
+									against: theirDict
+									status: (statusArray at: index)
+									theirSample: testSuiteSample
+									on: aWriteStream)
+									ifFalse: [ noDiffs := false ].
+								theirKeyIndex := theirKeyIndex + 1 ].
+						theirKey
+							ifNil: [ 
+								(self
+									compareSelectorsIn: myDict
+									for: myKey
+									against: theirDict
+									status: (statusArray at: index)
+									theirSample: testSuiteSample
+									on: aWriteStream)
+									ifFalse: [ noDiffs := false ].
+								myKeyIndex := myKeyIndex + 1 ] ]
 					ifFalse: [ 
-						(myKey _unicodeLessThan: theirKey)
+						(myKey _unicodeEqual: theirKey)
 							ifTrue: [ 
 								(self
 									compareSelectorsIn: myDict
@@ -291,17 +303,30 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 									theirSample: testSuiteSample
 									on: aWriteStream)
 									ifFalse: [ noDiffs := false ].
-								myKeyIndex := myKeyIndex + 1 ]
+								myKeyIndex := myKeyIndex + 1.
+								theirKeyIndex := theirKeyIndex + 1 ]
 							ifFalse: [ 
-								(self
-									compareSelectorsIn: myDict
-									for: theirKey
-									against: theirDict
-									status: (statusArray at: index)
-									theirSample: testSuiteSample
-									on: aWriteStream)
-									ifFalse: [ noDiffs := false ].
-								theirKeyIndex := theirKeyIndex + 1 ] ] ] ].
+								(myKey _unicodeLessThan: theirKey)
+									ifTrue: [ 
+										(self
+											compareSelectorsIn: myDict
+											for: myKey
+											against: theirDict
+											status: (statusArray at: index)
+											theirSample: testSuiteSample
+											on: aWriteStream)
+											ifFalse: [ noDiffs := false ].
+										myKeyIndex := myKeyIndex + 1 ]
+									ifFalse: [ 
+										(self
+											compareSelectorsIn: myDict
+											for: theirKey
+											against: theirDict
+											status: (statusArray at: index)
+											theirSample: testSuiteSample
+											on: aWriteStream)
+											ifFalse: [ noDiffs := false ].
+										theirKeyIndex := theirKeyIndex + 1 ] ] ] ] ].
 	^ noDiffs
 ]
 
