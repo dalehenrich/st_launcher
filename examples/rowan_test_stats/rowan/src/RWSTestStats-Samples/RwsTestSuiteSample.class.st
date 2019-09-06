@@ -355,6 +355,15 @@ RwsTestSuiteSample >> notes: aString [
 	notes := aString
 ]
 
+{ #category : 'printing' }
+RwsTestSuiteSample >> printOn: aStream [ 
+	aStream
+		nextPutAll: self class name;
+		nextPut: $(;
+		nextPutAll: self suiteName printString, ' ', self gsVersion, ' ' , self branch, ' ', self commitSha, ' ', self timeStamp printString printString;
+		nextPut: $)
+]
+
 { #category : 'accessing' }
 RwsTestSuiteSample >> properties [
 	^ properties

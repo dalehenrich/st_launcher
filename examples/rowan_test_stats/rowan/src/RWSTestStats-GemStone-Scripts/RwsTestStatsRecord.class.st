@@ -26,6 +26,15 @@ This script provides support for recording and querying test results from Rowan 
 		last recorded RwsTestSuiteSample sample for the given <gemstone-version> and `--branch`. The
 		default branch (masterV0.1) is used if the `--branch` option is not spedified. The `--reset` option
 		and `--compare` options should not be used together.
+
+	--updateSHA=<git-commit-SHA>
+		Updates the commitSha of the latest test suite sample for the given branch. This option should not
+		be used with the `--reset`, `--compare` and `--load` options.
+
+	--query[=summary]
+		Perform a query using the --branch and --gsVersion values to narrow the search. If the `summary` 
+		argument is specified, a summary of the query results will be written to stderr. Without the `summary` 
+		argument, the query result will be written to objOut.
 "
 Class {
 	#name : 'RwsTestStatsRecord',
@@ -34,7 +43,10 @@ Class {
 		'jsonFile',
 		'branch',
 		'resetSuiteSamples',
-		'gsVersionToCompare'
+		'gsVersionToCompare',
+		'updateSHA',
+		'gsVersion',
+		'query'
 	],
 	#category : 'RWSTestStats-GemStone-Scripts'
 }
@@ -71,6 +83,19 @@ RwsTestStatsRecord >> compare: aGsVersionString [
 ]
 
 { #category : 'accessing' }
+RwsTestStatsRecord >> gsVersion [
+
+	gsVersion ifNil: [ ^ '3.5.0' ].
+	^ gsVersion
+]
+
+{ #category : 'options' }
+RwsTestStatsRecord >> gsVersion: aString [
+
+	gsVersion := aString
+]
+
+{ #category : 'accessing' }
 RwsTestStatsRecord >> jsonFile [
 
 	jsonFile ifNil: [ self error: 'Required --load option not specified' ].
@@ -93,6 +118,11 @@ RwsTestStatsRecord >> main [
 					self
 						error:
 							'Not allowed to use the --compare option and --reset option together' ].
+			updateSHA
+				ifNotNil: [ 
+					self
+						error:
+							'Not allowed to use the --updateSHA option and --reset option together' ].
 			self _testSuiteSampleClass resetSuiteSamples.
 			self commit
 				ifFalse: [ 
@@ -100,12 +130,31 @@ RwsTestStatsRecord >> main [
 					self error: 'Commit conflict resetting samples' ] ].
 	jsonFile
 		ifNil: [ 
-			gsVersionToCompare
+			updateSHA
+				ifNotNil: [ 
+					(self _testSuiteSampleClass
+						latestQuerySuiteSampleFor: self branch
+						andVersion: self gsVersion) commitSha: updateSHA.
+					self commit
+						ifFalse: [ 
+							self stderr nextPutAll: System detailedConflictReportString.
+							self error: 'Commit conflict updating suiteSamples' ] ]
+				ifNil: [ 
+					query
+						ifNotNil: [ 
+							self performQuery.
+							^ self sentinelObject ].
+					gsVersionToCompare
+						ifNotNil: [ 
+							self
+								error:
+									'The --load option must be specified for the --compare option to have an effect.' ] ] ]
+		ifNotNil: [ 
+			updateSHA
 				ifNotNil: [ 
 					self
 						error:
-							'The --load option must be specified for the --compare option to have an effect.' ] ]
-		ifNotNil: [ 
+							'Not allowed to use the --updateSHA option and --load option together' ].
 			suiteSample := self _suiteSamplesFrom: self jsonFile.
 			gsVersionToCompare
 				ifNotNil: [ 
@@ -121,6 +170,45 @@ RwsTestStatsRecord >> main [
 							self stderr nextPutAll: System detailedConflictReportString.
 							self error: 'Commit conflict updating suiteSamples' ] ] ].
 	^ true
+]
+
+{ #category : 'query' }
+RwsTestStatsRecord >> performQuery [
+	| queryResult |
+	queryResult := branch isNil & gsVersion isNil
+		ifTrue: [ 
+			"answer the full collection"
+			self _testSuiteSampleClass suiteSamples asArray ]
+		ifFalse: [ 
+			| queryStream hasTerm |
+			queryStream := WriteStream on: String new.
+			queryStream nextPutAll: '('.
+			hasTerm := false.
+			branch
+				ifNotNil: [ queryStream nextPutAll: '(each.branch = ' , self branch printString , ')' ].
+			gsVersion
+				ifNotNil: [ 
+					hasTerm
+						ifTrue: [ queryStream nextPutAll: ' & ' ].
+					queryStream
+						nextPutAll: '(each.gsVersion = ' , self gsVersion printString , ')' ].
+			queryStream nextPutAll: ')'.
+			(self _testSuiteSampleClass querySuiteSamples: queryStream contents) asArray ].
+	query = 'summary'
+		ifTrue: [ 
+			self stderr lf.
+			(queryResult sort: [ :a :b | a timeStamp <= b timeStamp ])
+				do: [ :each | 
+					self stderr
+						nextPutAll: each printString;
+						lf ]	]
+		ifFalse: [ self objOut nextPut: queryResult ]
+]
+
+{ #category : 'options' }
+RwsTestStatsRecord >> query: aQueryParameter [
+
+	query := aQueryParameter ifNil: [ 'std' ]
 ]
 
 { #category : 'options' }
@@ -141,7 +229,16 @@ RwsTestStatsRecord >> scriptMethodOptions [
 			#('load' nil #'required' #jsonFile:).
 			#('branch' nil #'required' #branch:).
 			#('reset' nil #'none' #resetSamples).
+			#('updateSHA' nil #'required' #updateSHA:).
+			#('gsVersion' nil #'required' #gsVersion:).
+			#('query' nil #'optional' #query:).
 	}
+]
+
+{ #category : 'options' }
+RwsTestStatsRecord >> updateSHA: aSHA [
+
+	updateSHA := aSHA
 ]
 
 { #category : 'usage' }
@@ -154,11 +251,22 @@ RwsTestStatsRecord >> usageExamples: scriptName [
 
 	', scriptName, ' --load=testResults.json --compare=3.5.0
 	', scriptName, ' --load=testResults.json --branch=issue_308 --compare=3.5.0
+
+	', scriptName, ' --updateSHA=92de7b5  --branch=issue_308 --gsVersion=3.2.15
+
+	', scriptName, ' --query  --branch=issue_308 --gsVersion=3.2.15
+	', scriptName, ' --query=summary  --branch=issue_308 --gsVersion=3.2.15
+
+	', scriptName, ' --query
+	', scriptName, ' --query=summary 
 '
 ]
 
 { #category : 'usage' }
 RwsTestStatsRecord >> usageSynopsis: scriptName [
-	^	(super usageSynopsis: scriptName), ' [--reset | --load=<json-file-path> [ --reset | --compare=<gs-version> ] ] \
-		[ --branch=<branch-name> ]'
+	^	(super usageSynopsis: scriptName), '  --query[=summary ]  [ --branch=<branch-name> ] [ --gsVersion=<gs-version> ]
+	', scriptName, ' --updateSHA=<commit-sha>  [ --branch=<branch-name> ] [ --gsVersion=<gs-version> ]
+	', scriptName, ' --load=<json-file-path> [ --reset ] [ --branch=<branch-name> ]
+	', scriptName, ' --load=<json-file-path> --compare=<gs-version>  [ --reset ] [ --branch=<branch-name> ]
+'
 ]
