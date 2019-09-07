@@ -18,8 +18,11 @@ WS_ >> main [
 	gsVersion := '3.5.0'.
 	testSuiteSample := self _testSuiteSampleClass latestQuerySuiteSampleFor: branch andVersion: gsVersion.
 	className := 'RwRowanSample4Test'.
-	(testSuiteSample queryTestCases: '(each.className = ', className printString, ')')
-		do: [:each | self stderr nextPutAll: each printString; lf ]
+	query := testSuiteSample queryTestCases: '((each.className = ', className printString, ') & (each.status = x))'.
+	query bind: 'x' to: #passed.
+	(query asArray 
+		sort: [:a :b | a selector < b selector])
+			do: [:each | self stderr nextPutAll: each printString; lf ]
 ]
 
 { #category : 'private' }

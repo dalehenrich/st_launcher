@@ -42,11 +42,7 @@ RwsTestCaseSample >> initialize [
 
 { #category : 'printing' }
 RwsTestCaseSample >> printOn: aStream [ 
-	aStream
-		nextPutAll: self class name;
-		nextPut: $(;
-		nextPutAll: self className, ' debug: ', self selector printString;
-		nextPut: $)
+	aStream nextPutAll: self className, ' debug: ', self selector printString
 ]
 
 { #category : 'accessing' }
