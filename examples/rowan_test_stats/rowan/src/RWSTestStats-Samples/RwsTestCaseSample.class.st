@@ -40,6 +40,15 @@ RwsTestCaseSample >> className: aString [
 RwsTestCaseSample >> initialize [
 ]
 
+{ #category : 'printing' }
+RwsTestCaseSample >> printOn: aStream [ 
+	aStream
+		nextPutAll: self class name;
+		nextPut: $(;
+		nextPutAll: self className, ' debug: ', self selector printString;
+		nextPut: $)
+]
+
 { #category : 'accessing' }
 RwsTestCaseSample >> selector [
 	^ selector
