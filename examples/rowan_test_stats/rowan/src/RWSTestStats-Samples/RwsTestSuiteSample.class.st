@@ -139,11 +139,11 @@ RwsTestSuiteSample >> _testCaseSampleMaps [
 		do: [ :testCaseSample | 
 			(pass at: testCaseSample className ifAbsentPut: [ IcuSortedCollection new ])
 				add: testCaseSample selector ].
-	(self queryTestCases: 'each.status == #failure')
+	(self queryTestCases: 'each.status == #failures')
 		do: [ :testCaseSample | 
 			(fail at: testCaseSample className ifAbsentPut: [ IcuSortedCollection new ])
 				add: testCaseSample selector ].
-	(self queryTestCases: 'each.status == #error')
+	(self queryTestCases: 'each.status == #errors')
 		do: [ :testCaseSample | 
 			(error at: testCaseSample className ifAbsentPut: [ IcuSortedCollection new ])
 				add: testCaseSample selector ].
