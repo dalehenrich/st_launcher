@@ -47,8 +47,8 @@ WS_ >> testSuiteQuery_1 [
 
 	| query branch gsVersion testSuiteSample className |
 	gsVersion := self gsVersion.
-	testSuiteSample := self _testSuiteSampleClass latestQuerySuiteSampleFor: branch andVersion: gsVersion.
 	branch := self branch.
+	testSuiteSample := self _testSuiteSampleClass latestQuerySuiteSampleFor: branch andVersion: gsVersion.
 	className := self className.
 	#(passed failures errors) do: [:status |
 		self stderr nextPutAll: status; lf.
@@ -59,9 +59,36 @@ WS_ >> testSuiteQuery_1 [
 				do: [:each | self stderr tab; nextPutAll: each printString; lf ]]
 ]
 
+{ #category : 'queries' }
+WS_ >> testSuiteQuery_2 [
+
+	| query gsVersion branch testSuiteSample className |
+	gsVersion := self gsVersion.
+	branch := self branch.
+	testSuiteSample := self _testSuiteSampleClass latestQuerySuiteSampleFor: branch andVersion: gsVersion.
+	#(passed failures errors) do: [:status |
+		self stderr nextPutAll: status; lf.
+		query := testSuiteSample queryTestCases: '(each.status = x)'.
+		query bind: 'x' to: status.
+		(query asArray 
+			select: [:sample | (sample selector includesString: '493') or: [sample className includesString: '493' ]])
+				do: [:each | self stderr tab; nextPutAll: each printString; lf ]]
+]
+
+{ #category : 'queries' }
+WS_ >> testSuiteQuery_3 [
+	| testSuiteSample_old testSuiteSample_new stream oldSHA newSHA |
+	oldSHA := '74a12aa'.
+	newSHA := '68f6a46'.
+	testSuiteSample_old :=  (RwsTestSuiteSample querySuiteSamples: '((each.gsVersion = ', self gsVersion printString, ') & (each.branch = ', self branch printString, ') & (each.commitSha = ', oldSHA printString, '))') asArray first.
+	testSuiteSample_new := (RwsTestSuiteSample querySuiteSamples: '((each.gsVersion = ', self gsVersion printString, ') & (each.branch = ', self branch printString, ') & (each.commitSha = ', newSHA printString, '))') asArray first.
+	self stderr nextPutAll: '3.5.0; issue_308 ', oldSHA, ' to ', newSHA ; lf.
+	testSuiteSample_new compareTo: testSuiteSample_old on: self stderr
+]
+
 { #category : 'main' }
 WS_ >> main [
-	^self testSuiteCompareSamples_1
+	^self testSuiteQuery_3
 ]
 
 { #category : 'private' }

@@ -172,7 +172,12 @@ RwsTestSuiteSample >> commitSha: aString [
 
 { #category : 'comparison' }
 RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: theirDict status: status theirSample: theirSuiteSample on: aWriteStream [
-	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize symbol illegalSelector |
+	| mySortedSelectors theirSortedSelectors mySelectorIndex theirSelectorIndex mySelectorsSize theirSelectorsSize symbol illegalSelector formerStatusIndicator |
+	formerStatusIndicator := Dictionary new
+		at: #'passed' put: 'P';
+		at: #'failures' put: 'F';
+		at: #'errors' put: 'E';
+		yourself.
 	illegalSelector := '' asSymbol.
 	mySortedSelectors := myDict at: theClassName ifAbsent: [ #() ].
 	theirSortedSelectors := theirDict at: theClassName ifAbsent: [ #() ].
@@ -200,20 +205,24 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 					theirSelectorIndex := theirSelectorIndex + 1 ]
 				ifFalse: [ 
 					((mySelector ~~ illegalSelector and: [ theirSelector == illegalSelector ])
-						or: [ mySelector ~~ illegalSelector and: [ mySelector _unicodeLessThan: theirSelector] ])
+						or: [ 
+							mySelector ~~ illegalSelector
+								and: [ mySelector _unicodeLessThan: theirSelector ] ])
 						ifTrue: [ 
+							| res |
 							"mySelector present in my list, not present in their list - 
 								query to find out if the test exists in their suite of tests"
-							(theirSuiteSample
+							res := (theirSuiteSample
 								queryTestCases:
 									'(each.className = ''' , theClassName , ''') & (each.selector = #'''
-										, mySelector , ''')') size = 0
+										, mySelector , ''')') asArray.
+							res size = 0
 								ifTrue: [ 
-									"not present in their test suite-- new passing test"
+									"not present in their test suite-- new test"
 									symbol := ' ++	' ]
 								ifFalse: [ 
-									"present in their test suite (not passing) passed in mySample -- now passing"
-									symbol := ' +	' ].
+									"present in their test suite - different status"
+									symbol := ' +' , (formerStatusIndicator at: res first status) , '	' ].
 							aWriteStream
 								nextPutAll: symbol , theClassName , '>>' , mySelector;
 								lf.
@@ -228,9 +237,16 @@ RwsTestSuiteSample >> compareSelectorsIn: myDict for: theClassName against: thei
 											'(each.className = ''' , theClassName , ''') & (each.selector = #'''
 												, theirSelector , ''')') size = 0
 										ifTrue: [ 
+											| res |
 											"not present in my suite of tests -- removed test"
+											res := (theirSuiteSample
+												queryTestCases:
+													'(each.className = ''' , theClassName , ''') & (each.selector = #'''
+														, theirSelector , ''')') asArray.
 											aWriteStream
-												nextPutAll: ' -	' , theClassName , '>>' , theirSelector;
+												nextPutAll:
+														' -' , (formerStatusIndicator at: res first status) , '	' , theClassName , '>>'
+																, theirSelector;
 												lf ] ].
 							theirSelectorIndex := theirSelectorIndex + 1 ] ] ].
 	^ false
@@ -243,9 +259,9 @@ RwsTestSuiteSample >> compareTo: testSuiteSample on: aWriteStream [
 	| mySampleMaps theirSampleMaps labels noDiffs statusArray |
 	mySampleMaps := self _testCaseSampleMaps.
 	theirSampleMaps := testSuiteSample _testCaseSampleMaps.
-	labels := {'PASSES: tests: + now passing;  ++ new passing test; - removed test'.
-	'FAILURES: tests: + now failing;  ++ new failing test; - removed test'.
-	'ERRORS: tests: + now erroring;  ++ new erroring test; - removed test'}.
+	labels := {'PASSES: tests: + now passing;  ++ new passing test; - removed test [EFP is indication of previous test status]'.
+	'FAILURES: tests: + now failing;  ++ new failing test; - removed test [EFP is indication of previous test status]'.
+	'ERRORS: tests: + now erroring;  ++ new erroring test; - removed test [EFP is indication of previous test status]'}.
 	statusArray := {#'passing'.
 	#'failures'.
 	#'errors'}.
