@@ -26,6 +26,8 @@ bin/install.sh
 The following examples are intended to illustrate different features of st_launcher scripts.
 
 #### bin/hello.st
+Simplest script ... 'hello world' written on `objOut` (STON write stream). 
+Note that class comment winds up in the help output:
 ```
 cat bin/hello.st         # view the hello.st source
 bin/hello.st -h          # view the help for bin/hello.st
@@ -34,6 +36,8 @@ bin/hello.st pharo --    # execute bin/hello.st using the pharo (headless) image
 bin/hello.st gemstone -- # execute bin/hello.st using the gemstone image
 ```
 #### bin/error.st
+Example error handling ... description written (in red) to `stderr`.
+Of course, you can open a debugger on the error:
 ```
 cat bin/error.st            # view error.st source
 bin/error.st --help         # view the help for bin/error.st
@@ -44,6 +48,7 @@ bin/error.st pharo -D --    # execute bin/error.st using the pharo image and deb
 bin/error.st gemstone -D -- # execute bin/error.st using the gemstone image and debug flag (type quit to exit the GemStone debugger)
 ```
 #### ws/array.st
+Another `objOut` example ... with a few different objects:
 ```
 cat ws/array.st         # vi array.st source
 ws/array.st -h          # view the help for ws/array.st
@@ -51,6 +56,7 @@ ws/array.st gemstone -- # execute ws/array.st using the gemstone image
 ws/array.st pharo --    # execute ws/array.st using the pharo image
 ```
 #### bin/listImages.st
+Utility script for listing the known images:
 ```
 cat bin/listImages.st         # view the source for bin/listImages.st
 bin/listImages.st -h          # view the help for bin/listImages.st
@@ -58,6 +64,7 @@ bin/listImages.st gemstone -- # execute bin/listImages.st using the gemstone ima
 bin/listImages.st pharo --    # execute bin/listImages.st using the pharo image
 ```
 #### bin/about.st
+`about` is an inherited message for all scripts ... useful if you want to know some details about the image:
 ```
 cat bin/about.st         # view the source for bin/about.st
 bin/about.st -h          # view the help for bin/about.st
@@ -66,6 +73,7 @@ bin/about.st pharo --    # execute bin/about.st using the pharo image
 ```
 
 #### ws/gsClassesAndMethodCounts.st
+The class STLObjOutSample was created for this example: classes and their method counts calculated for GemStone and written to `objOut`:
 ```
 cat ws/gsClassesAndMethodCounts.st      # view the source for ws/gsClassesAndMethodCounts.st
 ws/gsClassesAndMethodCounts.st -h       # view the help for ws/gsClassesAndMethodCounts.st
@@ -73,10 +81,13 @@ ws/gsClassesAndMethodCounts.st          # execute ws/gsClassesAndMethodCounts.st
 ws/gsClassesAndMethodCounts.st gemstone # execute ws/gsClassesAndMethodCounts.st using the gemstone image
 ```
 #### bin/pie.pharo.st
+This script creates a pie chart using [Roassal][5] and a headful Pharo image.
+The data for the pie chart is read from objIn.
+Here's an example where data produced in a GemStone image, is piped into a Pharo image:
 ```
 cat bin/pie.pharo.st                                                      # view the source for bin/pie.pharo.st
 bin/pie.pharo.st -h                                                       # view the help for bin/pie.pharo.st
-ws/gsClassesAndMethodCounts.st | bin/pie.pharo.st pharo-ui -- --label=off # pipe output of ws/gsClassesAndMethodCounts.st into bin/pie.pharo.st and display pie charg
+ws/gsClassesAndMethodCounts.st gemstone -- | bin/pie.pharo.st pharo-ui -- --label=off # pipe output of ws/gsClassesAndMethodCounts.st into bin/pie.pharo.st and display pie charg
 ```
 ### GsDevKit_home-based development
 ```smalltalk
@@ -88,3 +99,4 @@ cp -f snapshots/extent0.gemstone.dbf /home/dhenrich/rogue/_homes/rogue/_home/sha
 [2]: https://github.com/GemTalk/Rowan
 [3]: https://gemtalksystems.com/products/gs64/versions35x/
 [4]: https://pharo.org/news/pharo7.0-released
+[5]: https://github.com/ObjectProfile/Roassal2
