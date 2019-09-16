@@ -54,7 +54,9 @@ pushd home
 popd
 
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
+sed -i "s/\$TRAVIS_BUILD_DIR/$st_launcher_HOME/g" st_launcher_default.env
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_home.ston"
+sed -i "s/\$TRAVIS_BUILD_DIR/$st_launcher_HOME/g" st_launcher_home.ston
 mv st_launcher_default.env st_launcher_home.ston $HOME/.config/st_launcher
 pushd home/images/gemstone/snapshots
 	curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/extent0.gemstone.dbf.zip"
