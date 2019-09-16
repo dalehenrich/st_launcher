@@ -86,9 +86,22 @@ WS_ >> testSuiteQuery_3 [
 	testSuiteSample_new compareTo: testSuiteSample_old on: self stderr
 ]
 
+{ #category : 'queries' }
+WS_ >> testSuiteQuery_4 [
+	"compare testResults.json with oldSHA"
+
+	| testSuiteSample_old testSuiteSample_new stream oldSHA |
+	oldSHA := '74a12aa'.
+	oldSHA := 'e4725a6'.
+	testSuiteSample_old :=  (RwsTestSuiteSample querySuiteSamples: '((each.gsVersion = ', self gsVersion printString, ') & (each.branch = ', self branch printString, ') & (each.commitSha = ', oldSHA printString, '))') asArray first.
+	testSuiteSample_new := self _testSuiteSampleClass fromJson: 'testResults.json'.
+	self stderr nextPutAll: '3.5.0; issue_308 ', oldSHA, ' to testResults.json'; lf.
+	testSuiteSample_new compareTo: testSuiteSample_old on: self stderr
+]
+
 { #category : 'main' }
 WS_ >> main [
-	^self testSuiteQuery_3
+	^self testSuiteQuery_4
 ]
 
 { #category : 'private' }
