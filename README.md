@@ -18,6 +18,7 @@ export ROWAN_PROJECTS_HOME=`pwd`
 git clone https://github.com/dalehenrich/st_launcher.git
 cd st_launcher
 export TRAVIS_SUDO_COMMAND=sudo
+export TRAVIS_BUILD_DIR=`pwd`
 export ST_LAUNCHER_HOME=`pwd`/home
 bin/install.sh
 ```
