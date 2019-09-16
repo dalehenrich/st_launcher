@@ -28,21 +28,21 @@ The following examples are intended to illustrate different features of st_launc
 
 #### bin/hello.st
 ```
-cat bin/hello.st 		# view the hello.st source
-bin/hello.st -h 		# view the help for bin/hello.st
-bin/hello.st 			# execute bin/hello.st using the default image
-bin/hello.st pharo -- 		# execute bin/hello.st using the pharo (headless) image
-bin/hello.st gemstone -- 	# execute bin/hello.st using the gemstone image
+cat bin/hello.st         # view the hello.st source
+bin/hello.st -h          # view the help for bin/hello.st
+bin/hello.st             # execute bin/hello.st using the default image
+bin/hello.st pharo --    # execute bin/hello.st using the pharo (headless) image
+bin/hello.st gemstone -- # execute bin/hello.st using the gemstone image
 ```
 #### bin/error.st
 ```
-cat bin/error.st 		# view error.st source
-bin/error.st --help 		# view the help for bin/error.st
-bin/error.st 			# execute bin/error.st using the default image
-bin/error.st pharo -- 		# execute bin/error.st using the pharo (headless) image
-bin/error.st gemstone -- 	# execute bin/error.st using the gemstone image
-bin/error.st pharo -D -- 	# execute bin/error.st using the pharo image and debug flag (exit pharo without saving)
-bin/error.st gemstone -D -- 	# execute bin/error.st using the gemstone image and debug flag (type quit to exit the GemStone debugger)
+cat bin/error.st            # view error.st source
+bin/error.st --help         # view the help for bin/error.st
+bin/error.st                # execute bin/error.st using the default image
+bin/error.st pharo --       # execute bin/error.st using the pharo (headless) image
+bin/error.st gemstone --    # execute bin/error.st using the gemstone image
+bin/error.st pharo -D --    # execute bin/error.st using the pharo image and debug flag (exit pharo without saving)
+bin/error.st gemstone -D -- # execute bin/error.st using the gemstone image and debug flag (type quit to exit the GemStone debugger)
 ```
 ### GsDevKit_home-based development
 ```smalltalk
