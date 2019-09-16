@@ -44,11 +44,13 @@ pushd home
 	mkdir 70-64
 	cd 70-64
 	curl https://get.pharo.org/64/stable+vm | bash
-	# avoid pthread warnings from pharo vms
-	cat <<END | sudo tee /etc/security/limits.d/pharo.conf
-*      hard    rtprio  2
-*      soft    rtprio  2
-END
+# Unfortunately this patch doesn't take effect unless the user logs out first
+#		not useful for travis and should be left to the end user to decide
+#	 avoid pthread warnings from pharo vms
+#	cat <<END | sudo tee /etc/security/limits.d/pharo.conf
+#*      hard    rtprio  2
+#*      soft    rtprio  2
+#END
 popd
 
 curl  -L -O -s -S "https://github.com/dalehenrich/st_launcher/releases/download/$st_launcherVersion/st_launcher_default.env"
@@ -63,10 +65,10 @@ pushd home/images/pharo
 	unzip -q pharo.zip
 	rm pharo.zip
 popd
-if [ ! -d "/usr/local/bin/smalltalk"] ; then
+if [ ! -d "/usr/local/bin/smalltalk" ] ; then
 	sudo mkdir /usr/local/bin/smalltalk
 fi
-if [ ! -d "/usr/local/bin/smalltalk/gemstone"] ; then
+if [ ! -d "/usr/local/bin/smalltalk/gemstone" ] ; then
 	sudo mkdir /usr/local/bin/smalltalk/gemstone
 	sudo ln -s $st_launcher_HOME/interpreters/st_launcher /usr/local/bin/smalltalk/gemstone/st_launcher 
 	sudo ln -s $st_launcher_HOME/interpreters/st_topaz_launcher /usr/local/bin/smalltalk/gemstone/st_topaz_launcher 
