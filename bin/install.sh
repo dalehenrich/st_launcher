@@ -63,7 +63,11 @@ pushd home/images/pharo
 	unzip -q pharo.zip
 	rm pharo.zip
 popd
-sudo mkdir /usr/local/bin/smalltalk
-sudo mkdir /usr/local/bin/smalltalk/gemstone
-sudo ln -s $st_launcher_HOME/interpreters/st_launcher /usr/local/bin/smalltalk/gemstone/st_launcher 
-sudo ln -s $st_launcher_HOME/interpreters/st_topaz_launcher /usr/local/bin/smalltalk/gemstone/st_topaz_launcher 
+if [ ! -d "/usr/local/bin/smalltalk"] ; then
+	sudo mkdir /usr/local/bin/smalltalk
+fi
+if [ ! -d "/usr/local/bin/smalltalk/gemstone"] ; then
+	sudo mkdir /usr/local/bin/smalltalk/gemstone
+	sudo ln -s $st_launcher_HOME/interpreters/st_launcher /usr/local/bin/smalltalk/gemstone/st_launcher 
+	sudo ln -s $st_launcher_HOME/interpreters/st_topaz_launcher /usr/local/bin/smalltalk/gemstone/st_topaz_launcher 
+fi
