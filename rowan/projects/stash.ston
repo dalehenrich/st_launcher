@@ -2,7 +2,7 @@ RwComponentSpecification{
 	#specName : 'stash',
 	#version : '0.3.0',
 	#projectUrl : 'https://github.com/dalehenrich/stash',
-	#configsPath : 'rowan/configs',
+	#configsPath : 'rowan/components',
 	#projectsPath : 'rowan/projects',
 	#repoPath : 'rowan/src',
 	#specsPath : 'rowan/specs',
