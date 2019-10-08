@@ -1,0 +1,16 @@
+#!/usr/local/bin/smalltalk/gemstone/st_topaz_launcher
+#
+#	hello.tpz gemstone -- -lq
+#
+
+iferr 1 stk
+# comment out following line to debug interactively
+iferr 2 exit 
+
+login
+run
+GsFile stderr nextPutAll: 'hello world'; lf
+%
+logout
+
+exit
