@@ -163,10 +163,10 @@ testHello_invalidOption_pharo() {
   result=`bin/hello.st pharo -- -x`
 	status=$?
 #	see https://github.com/pharo-project/pharo/issues/4174
-#	assertEquals "testHello_invalidOption_pharo: invalid option error" \
-#	'1' "$status"
 	assertEquals "testHello_invalidOption_pharo: invalid option error" \
-	'0' "$status"
+	'1' "$status"
+#	assertEquals "testHello_invalidOption_pharo: invalid option error" \
+#	'0' "$status"
 }
 
 testAbout_pharo() {

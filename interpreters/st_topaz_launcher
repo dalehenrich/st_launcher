@@ -183,8 +183,12 @@ else
 %
 EXITIFNOERROR
 EOF
-	scriptCommandLine=`$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $generateCommandLineFile`
-	$scriptCommandLine -- $scriptArgs
+	# end up with a two line file ... $GEMSTONE on one line command on second line
+	scriptFile=`mktemp`
+	$GEMSTONE/bin/topaz -lq -I "$topaziniPath" $soloExtentArg -S $generateCommandLineFile > $scriptFile
+	chmod +x $scriptFile
+	$scriptFile
+#	$scriptCommandLine -- $scriptArgs
 fi
 
 

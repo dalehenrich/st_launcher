@@ -153,21 +153,33 @@ StLauncherGemStoneCommonImageProperties >> generateLaunchScriptFrom: scriptFileP
 
 { #category : 'launcher' }
 StLauncherGemStoneCommonImageProperties >> generateVmScriptLaunchCommandLineFrom: vmArgs vmScriptPath: scriptFilePath debugCommandError: debugCommandErrorBool [
-
 	"fabricate a topaz command line for executing the stashFile using a solo extent"
 
 	| theVmArgs |
-	theVmArgs := vmArgs isEmpty 
+	theVmArgs := vmArgs isEmpty
 		ifTrue: [ '-lq' ]
 		ifFalse: [ vmArgs ].
-	GsFile stdout 
-		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
-		nextPutAll: ' -I ', (self imageDirectory / self topaziniFilename) pathString;
-		nextPutAll: ' -S ', scriptFilePath;
-		nextPutAll: ' -u ', self cacheName;
-		nextPutAll: ' ', theVmArgs;
+	GsFile stdout
+		nextPutAll: 'export GEMSTONE="', self productDirectory pathString, '"';
 		lf;
+		nextPutAll: (self productDirectory / 'bin' / 'topaz') pathString;
+		nextPutAll: ' -I ' , (self imageDirectory / self topaziniFilename) pathString;
 		yourself.
+	self supportsTopazSFlag
+		ifTrue: [ 
+			GsFile stdout
+				nextPutAll: ' -S ' , scriptFilePath;
+				yourself ].
+	GsFile stdout
+		nextPutAll: ' -u ' , self cacheName;
+		nextPutAll: ' ' , theVmArgs;
+		yourself.
+	self supportsTopazSFlag
+		ifFalse: [ 
+			GsFile stdout
+				nextPutAll: ' < ' , scriptFilePath;
+				yourself ].
+	GsFile stdout lf
 ]
 
 { #category : 'testing' }
@@ -228,6 +240,13 @@ StLauncherGemStoneCommonImageProperties >> snapshotsPath [
 StLauncherGemStoneCommonImageProperties >> snapshotsPath: aString [
 
 	snapshotsPath := aString
+]
+
+{ #category : 'testing' }
+StLauncherGemStoneCommonImageProperties >> supportsTopazSFlag [
+	"-S flag supported in 3.5.0 and later"
+
+	^ false
 ]
 
 { #category : 'accessing' }

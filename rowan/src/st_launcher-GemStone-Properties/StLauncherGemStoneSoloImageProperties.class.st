@@ -29,6 +29,8 @@ StLauncherGemStoneSoloImageProperties >> generateVmScriptLaunchCommandLineFrom: 
 		ifTrue: [ ' -lq'  ]
 		ifFalse: [ vmArgs ].
 	GsFile stdout 
+		nextPutAll: 'export GEMSTONE="', self productDirectory pathString, '"';
+		lf;
 		nextPutAll: (self productDirectory / 'bin' / 'topaz' ) pathString;
 		nextPutAll: ' -I ', (self imageDirectory / self topaziniFilename) pathString;
 		nextPutAll: ' -C "GEM_SOLO_EXTENT=';
@@ -56,6 +58,13 @@ StLauncherGemStoneSoloImageProperties >> soloSnapshot [
 StLauncherGemStoneSoloImageProperties >> soloSnapshot: aStringOrFileRef [
 
 	soloSnapshot := aStringOrFileRef asFileReference resolve pathString	"resolve any env vars that may be present in path"
+]
+
+{ #category : 'testing' }
+StLauncherGemStoneSoloImageProperties >> supportsTopazSFlag [
+	"-S flag supported in 3.5.0 and later"
+
+	^ true
 ]
 
 { #category : 'actions' }

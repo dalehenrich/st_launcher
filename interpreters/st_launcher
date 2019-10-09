@@ -145,7 +145,14 @@ EXITIFNOERROR
 EOF
 	export GEMSTONE="$ST_LAUNCHER_DEFAULT_PRODUCT_PATH"
 	if [ "$debugCommandError" = "false" ] ; then
-		scriptCmdLine=`$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile`
+		scriptFile=`mktemp`
+		$GEMSTONE/bin/topaz -lq -I "$ST_LAUNCHER_DEFAULT_IMAGE_PATH/.topazini" -C "GEM_SOLO_EXTENT=$ST_LAUNCHER_DEFAULT_SNAPSHOT_PATH" -S $inputFile > $scriptFile
+		status=$?
+		if [ "$status" != "0" ]; then
+			exit $status
+		fi
+		chmod +x $scriptFile
+		$scriptFile
 		status=$?
 		if [ "$status" != "0" ]; then
 			exit $status
