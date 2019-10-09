@@ -4,6 +4,10 @@ RwComponentSpecification{
 	#projectAlias : 'stash_scripts',
 	#version : '0.3.0',
 	#projectUrl : 'https://github.com/dalehenrich/stash',
+	#repoSpec : RwGitRepositorySpecification {
+		#committish : 'candidateV0.1',
+		#committishType : 'branch'
+	},
 	#configsPath : 'rowan/components',
 	#projectsPath : 'rowan/projects',
 	#repoPath : 'rowan/src',
