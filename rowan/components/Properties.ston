@@ -24,5 +24,12 @@ RwComponentLoadConfiguration{
 				]
 			}
 		}
+	},
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'SystemUser' : {
+				#defaultSymbolDictName : 'Globals'
+			}
+		}
 	}
 }

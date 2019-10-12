@@ -33,7 +33,13 @@ RwComponentLoadConfiguration {
 			}
 		}
 	},
-	#conditionalPackageMapSpecs : { },
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'SystemUser' : {
+				#defaultSymbolDictName : 'Globals'
+			}
+		}
+	},
 	#definedGroupNames : {
 		'tests' : [
 			'core'
