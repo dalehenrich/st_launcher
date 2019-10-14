@@ -1,6 +1,6 @@
 Class {
 	#name : 'StLauncherScript',
-	#superclass : 'StashScript',
+	#superclass : 'AbstractStashScript',
 	#instVars : [
 		'currentImageName',
 		'scriptOptionsMap',

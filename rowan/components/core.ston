@@ -11,6 +11,8 @@ RwNestedProjectLoadConfiguration{
 		] : {
 			'core' : {
 				#packageNames : [
+					'st_launcher-Stash-Rowan',
+					'st_launcher-Stash',
 					'st_launcher-Core'
 				]
 			},
