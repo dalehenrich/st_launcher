@@ -41,5 +41,9 @@ RwComponentLoadConfiguration{
 				#defaultSymbolDictName : 'Globals'
 			}
 		}
-	}
+	},
+	#projectNames : [
+		'stash'
+	]
+
 }

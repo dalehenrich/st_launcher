@@ -12,7 +12,7 @@ RwComponentSpecification{
 	#specsPath : 'rowan/specs',
 	#defaultComponentName : 'Main',
 	#defaultGroupNames : [
-		'tests'
+		'core'
 	],
 	#comment : 'command line scripting support for GemStone 3.5.0 and later'
 }
