@@ -1,0 +1,42 @@
+RwNestedProjectLoadConfiguration{
+	#name : 'core',
+	#comment : '',
+	#version : '0.1.0',
+	#configurationNames : [
+		'Properties'
+	],
+	#conditionalPackages : {
+		[
+			'common'
+		] : {
+			'core' : {
+				#packageNames : [
+					'st_launcher-Core'
+				]
+			},
+			'tests' : {
+				#packageNames : [
+				]
+			}
+		},
+		[
+			'gs3.[2-]'
+		] : {
+			'core' : {
+				#packageNames : [
+					'st_launcher-GemStone-Core',
+					'st_launcher-GemStone-Services',
+					'st_launcher-GemStone-Kernel'
+				]
+			}
+		}
+	},
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'SystemUser' : {
+				#defaultSymbolDictName : 'Globals'
+			}
+		}
+	},
+	#comment : 'core package definition (nested to avoid Issue #517)'
+}

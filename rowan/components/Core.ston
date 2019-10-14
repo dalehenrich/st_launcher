@@ -7,43 +7,10 @@ RwComponentLoadConfiguration{
 		'tests' : [ 'core' ]
 	},
 	#configurationNames : [
-		'Properties'
+		'core'
 	],
-	#conditionalPackages : {
-		[
-			'common'
-		] : {
-			'core' : {
-				#packageNames : [
-					'st_launcher-Core'
-				]
-			},
-			'tests' : {
-				#packageNames : [
-				]
-			}
-		},
-		[
-			'gs3.[2-]'
-		] : {
-			'core' : {
-				#packageNames : [
-					'st_launcher-GemStone-Core',
-					'st_launcher-GemStone-Services',
-					'st_launcher-GemStone-Kernel'
-				]
-			}
-		}
-	},
-	#conditionalPackageMapSpecs : {
-		'gemstone' : {
-			'SystemUser' : {
-				#defaultSymbolDictName : 'Globals'
-			}
-		}
-	},
 	#projectNames : [
 		'stash'
-	]
-
+	],
+	#comment : 'core component (nested to avoid Issue #517) used to isolate different project dependencies between Core and Scripts'
 }
