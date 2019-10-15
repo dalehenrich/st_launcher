@@ -6,7 +6,7 @@ Class {
 		'objOut',
 		'sentinelObject'
 	],
-	#category : 'st_launcher-Stash'
+	#category : 'st_launcher-Program'
 }
 
 { #category : 'utility' }
