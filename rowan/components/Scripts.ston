@@ -40,9 +40,13 @@ RwComponentLoadConfiguration {
 	},
 	#definedGroupNames : {
 		'tests' : [
-			'core'
+			'core',
+			'services',
+			'pharo'
 		],
-		'core' : [ ]
+		'pharo' : [ ],
+		'core' : [ ],
+		'services' : [ ]
 	},
 	#projectNames : [
 		'stash_scripts'

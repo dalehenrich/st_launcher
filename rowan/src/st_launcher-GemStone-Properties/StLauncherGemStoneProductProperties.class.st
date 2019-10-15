@@ -27,7 +27,7 @@ StLauncherGemStoneProductProperties class >> _deleteStructure [
 								ifTrue: [
 									(self permanentProductTrees includesValue: productTree basename)
 										ifFalse: [
-											StLauncherGemStoneSystem chmod: ' +w -R ', productTree pathString.
+											StLauncherServices chmod: ' +w -R ', productTree pathString.
 											productTree ensureDeleteAll.
 											(launcherProperties productsMap
 												at: self platformName) 
@@ -146,7 +146,7 @@ StLauncherGemStoneProductProperties >> osVersion [
 	^ osVersion 
 		ifNil: [ 
 			| uname |
-			uname := StLauncherGemStoneSystem uname.
+			uname := StLauncherServices uname.
 			uname = 'Darwin-i386'
 				ifTrue: [ 
 					"normalize mac os name"

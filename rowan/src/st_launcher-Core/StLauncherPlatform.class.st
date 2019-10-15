@@ -64,7 +64,7 @@ StLauncherPlatform class >> generateSmalltalkScriptLaunchCommandLineFor: imageNa
 			debugCommandErrorBool
 				ifTrue: [ ex pass ]
 				ifFalse: [
-					StashScript 
+					StLauncherScript 
 						ansiRedOn: GsFile stderr 
 						during: [ GsFile stderr nextPutAll: ex description ].
 					GsFile stderr lf.
@@ -106,7 +106,7 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName vmSc
 			debugCommandErrorBool
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
-					StashScript
+					StLauncherScript
 						ansiRedOn: GsFile stderr
 						during: [ GsFile stderr nextPutAll: ex description ].
 					GsFile stderr lf.

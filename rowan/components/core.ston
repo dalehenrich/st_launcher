@@ -27,8 +27,12 @@ RwNestedProjectLoadConfiguration{
 			'core' : {
 				#packageNames : [
 					'st_launcher-GemStone-Core',
-					'st_launcher-GemStone-Services',
 					'st_launcher-GemStone-Kernel'
+				]
+			},
+			'services' : {
+				#packageNames : [
+					'st_launcher-GemStone-Services'
 				]
 			}
 		}

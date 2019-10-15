@@ -88,11 +88,11 @@ true ifTrue: [
 			'$GS_HOME/shared/downloads/zip/GemStone64Bit3.5.0-x86_64.Linux.zip' asFileReference copyTo: productProperties downloadFile.
 ]
 ifFalse: [
-			StLauncherGemStoneSystem 
+			StLauncherServices 
 				downloadHttps: productProperties downloadHttpsUrl
 				to: productProperties downloadFile pathString.
 ] ].
-	StLauncherGemStoneSystem unzip: productProperties downloadFile to: productProperties products.
+	StLauncherServices unzip: productProperties downloadFile to: productProperties products.
 
 	productProperties productDirectory exists
 		ifFalse: [ "ln -s $GS_SHARED_DOWNLOADS/products/${dlvers} ${gs_product}" self halt].

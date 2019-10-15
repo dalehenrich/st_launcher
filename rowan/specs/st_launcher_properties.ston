@@ -8,7 +8,7 @@ RwComponentSpecification{
 	#specsPath : 'rowan/specs',
 	#defaultComponentName : 'Properties',
 	#defaultGroupNames : [
-		'core'
+		'core', 'pharo'
 	],
 	#comment : 'Cross platform smalltalk image management'
 }

@@ -4,7 +4,7 @@ RwComponentLoadConfiguration{
 	#version : '0.1.0',
 	#definedGroupNames : {
 		'core' : [ ],
-		'tests' : [ 'core' ]
+		'tests' : [ ]
 	},
 	#conditionalPackages : {
 		[
@@ -14,8 +14,11 @@ RwComponentLoadConfiguration{
 				#packageNames : [
 					'st_launcher-Properties',
 					'st_launcher-GemStone-Platform',
+					'st_launcher-GemStone-Properties'				]
+			},
+			'pharo' : {
+				#packageNames : [
 					'st_launcher-Pharo-Platform',
-					'st_launcher-GemStone-Properties',
 					'st_launcher-Pharo-Properties'
 				]
 			},

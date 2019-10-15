@@ -102,7 +102,7 @@ StLauncherGemStoneSnapshots >> takeSnapshots: snapshotExtension compression: com
 		ensure: [ self checkpoints resumeCheckpoints ].
 	snapshots do: [:snapShotFile |
 		"in order for snapshot files to be usable by a topaz solo gem, the snapshot must be read only"
-		StLauncherGemStoneSystem chmod: ' -w ', snapShotFile pathString ].
+		StLauncherServices chmod: ' -w ', snapShotFile pathString ].
 	^ snapshots
 ]
 
