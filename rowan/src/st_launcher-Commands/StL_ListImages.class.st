@@ -26,7 +26,12 @@ StL_ListImages >> main [
 	| structureProperties |
 	structureProperties := StLauncherProperties defaultPropertyFile.
 	^ self isVerbose
-		ifTrue: [ structureProperties imageMap ]
+		ifTrue: [
+			| verboseMap |
+			verboseMap := Dictionary new. 
+			structureProperties imageMap keys do: [:imageName |
+				verboseMap at: imageName put: (structureProperties propertiesForImageNamed: imageName) ].
+			verboseMap ]
 		ifFalse: [ structureProperties imageMap keys sort ]
 ]
 
