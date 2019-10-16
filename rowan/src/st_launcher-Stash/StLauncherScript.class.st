@@ -1,25 +1,12 @@
 Class {
 	#name : 'StLauncherScript',
-	#superclass : 'AbstractStashScript',
+	#superclass : 'AbstractLauncherProgram',
 	#instVars : [
-		'currentImageName',
 		'scriptOptionsMap',
-		'orderedOptions',
-		'scriptname'
+		'orderedOptions'
 	],
 	#category : 'st_launcher-Stash'
 }
-
-{ #category : 'instance creation' }
-StLauncherScript class >> stashFilePath: stashFilePath imageName: theImageName stashArgs: stashArgs workingDir: workingDir [
-
-	^ self new
-		stashFilePath: stashFilePath;
-		currentImageName: theImageName; 
-		stashArgString: stashArgs; 
-		workingDirectoryPath: workingDir;
-		yourself
-]
 
 { #category : 'io' }
 StLauncherScript class >> stderr [
@@ -37,18 +24,6 @@ StLauncherScript class >> stdin [
 StLauncherScript class >> stdout [
 
 	^StLauncherCommon stdout
-]
-
-{ #category : 'accessing' }
-StLauncherScript >> currentImageName [
-
-	^ currentImageName
-]
-
-{ #category : 'accessing' }
-StLauncherScript >> currentImageName: aString [
-
-	currentImageName := aString
 ]
 
 { #category : 'script execution' }
@@ -89,18 +64,6 @@ StLauncherScript >> scriptMethodOptions [
 	^ {
 			#('help' $h  #none #usage).
 	}
-]
-
-{ #category : 'accessing' }
-StLauncherScript >> scriptName [
-
-	^ scriptname
-]
-
-{ #category : 'accessing' }
-StLauncherScript >> scriptName: aString [
-
-	scriptname := aString
 ]
 
 { #category : 'script execution' }

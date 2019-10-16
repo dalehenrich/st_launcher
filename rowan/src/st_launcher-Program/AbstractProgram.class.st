@@ -1,6 +1,6 @@
 Class {
 	#name : 'AbstractProgram',
-	#superclass : 'StLauncherScript',
+	#superclass : 'AbstractLauncherProgram',
 	#instVars : [
 		'objIn',
 		'objOut',
