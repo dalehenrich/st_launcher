@@ -38,12 +38,6 @@ AbstractProgram >> executeScript [
 		ifPresent: [ ^ self usage ]
 ]
 
-{ #category : 'info' }
-AbstractProgram >> imageProperties [
-
-	^ self structureProperties propertiesForImageNamed: self currentImageName
-]
-
 { #category : 'script execution' }
 AbstractProgram >> main [
 
@@ -77,12 +71,6 @@ AbstractProgram >> sentinelObject [
 	"unique instance that is used to indicate that the stream of objects being processed is complete"
 
 	sentinelObject ifNil: [ sentinelObject := Object new ]
-]
-
-{ #category : 'info' }
-AbstractProgram >> structureProperties [
-
-	^ StLauncherProperties defaultPropertyFile
 ]
 
 { #category : 'usage' }

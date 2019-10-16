@@ -20,19 +20,19 @@ StLauncherCommon >> error: aString [
 { #category : 'io' }
 StLauncherCommon >> stderr [
 
-	^ self class stderr
+	^ AbstractLauncherProgram stderr
 ]
 
 { #category : 'io' }
 StLauncherCommon >> stdin [
 
-	^ self class stdin
+	^ AbstractLauncherProgram stdin
 ]
 
 { #category : 'io' }
 StLauncherCommon >> stdout [
 
-	^ self class stdout
+	^ AbstractLauncherProgram stdout
 ]
 
 { #category : 'properties' }

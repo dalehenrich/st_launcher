@@ -22,36 +22,6 @@ AbstractLauncherProgram class >> stashFilePath: stashFilePath imageName: theImag
 ]
 
 { #category : 'accessing' }
-AbstractLauncherProgram >> orderedOptions [
-
-	^ orderedOptions ifNil: [ orderedOptions := OrderedCollection new ]
-]
-
-{ #category : 'accessing' }
-AbstractLauncherProgram >> scriptOptionsMap [
-
-	^ scriptOptionsMap ifNil: [ scriptOptionsMap := Dictionary new ]
-]
-
-{ #category : 'io' }
-AbstractLauncherProgram class >> stderr [
-
-	^StLauncherCommon stderr
-]
-
-{ #category : 'io' }
-AbstractLauncherProgram class >> stdin [
-
-	^StLauncherCommon stdin
-]
-
-{ #category : 'io' }
-AbstractLauncherProgram class >> stdout [
-
-	^StLauncherCommon stdout
-]
-
-{ #category : 'accessing' }
 AbstractLauncherProgram >> currentImageName [
 
 	^ currentImageName
@@ -61,6 +31,12 @@ AbstractLauncherProgram >> currentImageName [
 AbstractLauncherProgram >> currentImageName: aString [
 
 	currentImageName := aString
+]
+
+{ #category : 'accessing' }
+AbstractLauncherProgram >> orderedOptions [
+
+	^ orderedOptions ifNil: [ orderedOptions := OrderedCollection new ]
 ]
 
 { #category : 'script execution' }
@@ -100,6 +76,12 @@ AbstractLauncherProgram >> scriptOptions [
 		self scriptOptionsMap at: (argAr at: 1) put: argAr.
 		ordered add: (argAr at: 1).
 		argAr copyFrom: 1 to: 3 ].
+]
+
+{ #category : 'accessing' }
+AbstractLauncherProgram >> scriptOptionsMap [
+
+	^ scriptOptionsMap ifNil: [ scriptOptionsMap := Dictionary new ]
 ]
 
 { #category : 'script utilities' }

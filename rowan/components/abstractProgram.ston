@@ -16,6 +16,15 @@ RwNestedProjectLoadConfiguration{
 				#packageNames : [
 				]
 			}
+		},
+		[
+			'gs3.[2-]'
+		] : {
+			'core' : {
+				#packageNames : [
+					'st_launcher-Program-GemStone'
+				]
+			}
 		}
 	},
 	#conditionalPackageMapSpecs : {
