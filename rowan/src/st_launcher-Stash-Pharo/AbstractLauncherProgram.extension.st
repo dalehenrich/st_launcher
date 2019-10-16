@@ -1,7 +1,7 @@
-Extension { #name : #StLauncherScript }
+Extension { #name : #AbstractLauncherProgram }
 
 { #category : #'*st_launcher-Stash-Pharo' }
-StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName scriptName: theScriptName workingDir: working_dir [ 
+AbstractLauncherProgram class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName scriptName: theScriptName workingDir: working_dir [ 
 
 	| scriptClassFile  stashScriptClass definitions definitionOrders stash |
 	definitionOrders := TonelReader definitionOrders.
@@ -24,7 +24,7 @@ StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: 
 ]
 
 { #category : #'*st_launcher-Stash-Pharo' }
-StLauncherScript class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName workingDir: working_dir [ 
+AbstractLauncherProgram class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName workingDir: working_dir [ 
 
 	| scriptClassFile  stashScriptClass definitions definitionOrders stash |
 	definitionOrders := TonelReader definitionOrders.

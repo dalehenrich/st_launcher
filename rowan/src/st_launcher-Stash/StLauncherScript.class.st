@@ -8,24 +8,6 @@ Class {
 	#category : 'st_launcher-Stash'
 }
 
-{ #category : 'io' }
-StLauncherScript class >> stderr [
-
-	^StLauncherCommon stderr
-]
-
-{ #category : 'io' }
-StLauncherScript class >> stdin [
-
-	^StLauncherCommon stdin
-]
-
-{ #category : 'io' }
-StLauncherScript class >> stdout [
-
-	^StLauncherCommon stdout
-]
-
 { #category : 'script execution' }
 StLauncherScript >> executeScript [
 
@@ -82,22 +64,4 @@ StLauncherScript >> scriptOptions [
 StLauncherScript >> scriptOptionsMap [
 
 	^ scriptOptionsMap ifNil: [ scriptOptionsMap := Dictionary new ]
-]
-
-{ #category : 'script utilities' }
-StLauncherScript >> stderr [
-
-	^ self class stderr
-]
-
-{ #category : 'script utilities' }
-StLauncherScript >> stdin [
-
-	^ self class stdin
-]
-
-{ #category : 'script utilities' }
-StLauncherScript >> stdout [
-
-	^ self class stdout
 ]
