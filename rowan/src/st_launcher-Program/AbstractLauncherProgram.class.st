@@ -3,7 +3,9 @@ Class {
 	#superclass : 'AbstractStashScript',
 	#instVars : [
 		'currentImageName',
-		'_scriptName'
+		'_scriptName',
+		'scriptOptionsMap',
+		'orderedOptions'
 	],
 	#category : 'st_launcher-Program'
 }
@@ -17,6 +19,18 @@ AbstractLauncherProgram class >> stashFilePath: stashFilePath imageName: theImag
 		stashArgString: stashArgs; 
 		workingDirectoryPath: workingDir;
 		yourself
+]
+
+{ #category : 'accessing' }
+AbstractLauncherProgram >> orderedOptions [
+
+	^ orderedOptions ifNil: [ orderedOptions := OrderedCollection new ]
+]
+
+{ #category : 'accessing' }
+AbstractLauncherProgram >> scriptOptionsMap [
+
+	^ scriptOptionsMap ifNil: [ scriptOptionsMap := Dictionary new ]
 ]
 
 { #category : 'io' }
@@ -49,6 +63,21 @@ AbstractLauncherProgram >> currentImageName: aString [
 	currentImageName := aString
 ]
 
+{ #category : 'script execution' }
+AbstractLauncherProgram >> postExecute [
+]
+
+{ #category : 'script execution' }
+AbstractLauncherProgram >> preExecute [
+]
+
+{ #category : 'options' }
+AbstractLauncherProgram >> scriptMethodOptions [
+	^ {
+			#('help' $h  #none #usage).
+	}
+]
+
 { #category : 'accessing' }
 AbstractLauncherProgram >> scriptName [
 
@@ -59,6 +88,18 @@ AbstractLauncherProgram >> scriptName [
 AbstractLauncherProgram >> scriptName: aString [
 
 	_scriptName := aString
+]
+
+{ #category : 'script execution' }
+AbstractLauncherProgram >> scriptOptions [
+
+	| ar ordered |
+	ar := self scriptMethodOptions.
+	ordered := self orderedOptions.
+	^ ar collect: [:argAr |
+		self scriptOptionsMap at: (argAr at: 1) put: argAr.
+		ordered add: (argAr at: 1).
+		argAr copyFrom: 1 to: 3 ].
 ]
 
 { #category : 'script utilities' }
