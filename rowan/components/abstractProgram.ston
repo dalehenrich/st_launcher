@@ -1,0 +1,29 @@
+RwNestedProjectLoadConfiguration{
+	#name : 'abstractProgram',
+	#comment : '',
+	#version : '0.1.0',
+	#conditionalPackages : {
+		[
+			'common'
+		] : {
+			'core' : {
+				#packageNames : [
+					'st_launcher-Program-Rowan',
+					'st_launcher-Program'
+				]
+			},
+			'tests' : {
+				#packageNames : [
+				]
+			}
+		}
+	},
+	#conditionalPackageMapSpecs : {
+		'gemstone' : {
+			'SystemUser' : {
+				#defaultSymbolDictName : 'Globals'
+			}
+		}
+	},
+	#comment : 'abstract programs that are intended to be used by gsdevkit_launcher (nested to avoid Issue #517)'
+}

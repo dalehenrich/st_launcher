@@ -3,7 +3,8 @@ RwNestedProjectLoadConfiguration{
 	#comment : '',
 	#version : '0.1.0',
 	#configurationNames : [
-		'Properties'
+		'Properties',
+		'abstractProgram'
 	],
 	#conditionalPackages : {
 		[
@@ -11,10 +12,8 @@ RwNestedProjectLoadConfiguration{
 		] : {
 			'core' : {
 				#packageNames : [
-					'st_launcher-Stash-Rowan',
 					'st_launcher-Stash',
-					'st_launcher-Core',
-					'st_launcher-Program'
+					'st_launcher-Core'
 				]
 			},
 			'tests' : {

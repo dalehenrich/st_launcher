@@ -1,6 +1,6 @@
 Extension { #name : 'AbstractLauncherProgram' }
 
-{ #category : '*st_launcher-stash-rowan' }
+{ #category : '*st_launcher-program-rowan' }
 AbstractLauncherProgram class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName scriptName: theScriptName workingDir: working_dir [ 
 
 	^ self 
@@ -14,7 +14,7 @@ AbstractLauncherProgram class >> loadAndExecuteScriptClassFile: script_file stas
 			symDictName: '_EXECUTE_STASH_SCRIPT_SymbolDict__'
 ]
 
-{ #category : '*st_launcher-stash-rowan' }
+{ #category : '*st_launcher-program-rowan' }
 AbstractLauncherProgram class >> loadAndExecuteScriptClassFile: script_file stashArgs: stash_args imageName: theImageName scriptName: theScriptName workingDir: working_dir projectName: projectName packageName: packageName symDictName: symbolDictName [
 
 	| projectDefinition scriptClassDefinition stash |
