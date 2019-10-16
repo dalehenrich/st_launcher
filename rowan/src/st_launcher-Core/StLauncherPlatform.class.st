@@ -65,9 +65,9 @@ StLauncherPlatform class >> generateSmalltalkScriptLaunchCommandLineFor: imageNa
 				ifTrue: [ ex pass ]
 				ifFalse: [
 					StLauncherScript 
-						ansiRedOn: GsFile stderr 
-						during: [ GsFile stderr nextPutAll: ex description ].
-					GsFile stderr lf.
+						ansiRedOn: AbstractProgram stderr 
+						during: [ AbstractProgram stderr nextPutAll: ex description ].
+					AbstractProgram stderr lf.
 				^ false ] ].
 ]
 
@@ -107,9 +107,9 @@ StLauncherPlatform class >> generateVmScriptLaunchCommandLineFor: imageName vmSc
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
 					StLauncherScript
-						ansiRedOn: GsFile stderr
-						during: [ GsFile stderr nextPutAll: ex description ].
-					GsFile stderr lf.
+						ansiRedOn: AbstractProgram stderr
+						during: [ AbstractProgram stderr nextPutAll: ex description ].
+					AbstractProgram stderr lf.
 					^ false ] ]
 ]
 

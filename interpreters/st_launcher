@@ -105,9 +105,9 @@ cat - > $vmScriptFile << EOF
 				ifTrue: [ ex pass ]
 				ifFalse: [ 
 					StashScript
-						ansiRedOn: StLauncherCommon stderr 
-						during: [ StLauncherCommon stderr nextPutAll: ex description ].
-					StLauncherCommon stderr lf.
+						ansiRedOn: AbstractProgram stderr 
+						during: [ AbstractProgram stderr nextPutAll: ex description ].
+					AbstractProgram stderr lf.
 					false ] ].
 EOF
 
