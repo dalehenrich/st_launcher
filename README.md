@@ -21,6 +21,8 @@ export TRAVIS_SUDO_COMMAND=sudo
 export ST_LAUNCHER_HOME=`pwd`/home
 bin/install.sh
 ```
+### Presentation
+Here's a pdf of my ESUG 2019 presention [st_launcher Tonel-based Smalltalk shell scripts][6].
 
 ### Examples
 The following examples are intended to illustrate different features of st_launcher scripts.
@@ -81,7 +83,7 @@ ws/gsClassesAndMethodCounts.st          # execute ws/gsClassesAndMethodCounts.st
 ws/gsClassesAndMethodCounts.st gemstone # execute ws/gsClassesAndMethodCounts.st using the gemstone image
 ```
 #### bin/pie.pharo.st
-This script creates a pie chart using [Roassal][5] and a headful Pharo image.
+This script creates a pie chart using [RoaStLauncherScriptStLauncherScriptssal][5] and a headful Pharo image.
 The data for the pie chart is read from objIn.
 Here's an example where data produced in a GemStone image, is piped into a Pharo image:
 ```
@@ -100,3 +102,4 @@ cp -f snapshots/extent0.gemstone.dbf /home/dhenrich/rogue/_homes/rogue/_home/sha
 [3]: https://gemtalksystems.com/products/gs64/versions35x/
 [4]: https://pharo.org/news/pharo7.0-released
 [5]: https://github.com/ObjectProfile/Roassal2
+[6]: https://github.com/ESUG/esug.github.io/blob/source/2019-Conference/slides/03Wednesday/room-B/8-St_Script.pdf
