@@ -1,16 +1,19 @@
-RwComponentLoadConfiguration{
+RwComponentLoadConfiguration {
 	#name : 'AbstractProgram',
-	#comment : '',
+	#comment : 'abstract program component (nested to avoid Issue #517) usable by gsdevkit_launcher which has a different scheme for managing image names and does not need to Core and Properties functionality',
 	#version : '0.1.0',
-	#definedGroupNames : {
-		'core' : [ ],
-		'tests' : [ 'core' ]
-	},
 	#configurationNames : [
 		'abstractProgram'
 	],
+	#conditionalPackages : { },
+	#conditionalPackageMapSpecs : { },
+	#definedGroupNames : {
+		'tests' : [
+			'core'
+		],
+		'core' : [ ]
+	},
 	#projectNames : [
 		'stash'
-	],
-	#comment : 'abstract program component (nested to avoid Issue #517) usable by gsdevkit_launcher which has a different scheme for managing image names and does not need to Core and Properties functionality'
+	]
 }
