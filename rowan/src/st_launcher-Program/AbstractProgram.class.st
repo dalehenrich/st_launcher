@@ -50,6 +50,15 @@ AbstractProgram >> objIn [
 	^ objIn ifNil: [ objIn := STONReader on: self stdin ]
 ]
 
+{ #category : 'io' }
+AbstractProgram >> objOut [
+
+	^ objOut ifNil: [ 
+		objOut := (STONWriter on: self stdout)
+			prettyPrint: true; 
+			yourself ]
+]
+
 { #category : 'script execution' }
 AbstractProgram >> postExecute [
 
