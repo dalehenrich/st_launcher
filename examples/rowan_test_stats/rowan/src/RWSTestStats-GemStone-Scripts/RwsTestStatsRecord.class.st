@@ -2,9 +2,15 @@
 "
 This script provides support for recording and querying test results from Rowan test runs.
 	The standard Rowan test script produces a JSON file that matches the structure
-	of the RwsTestSuiteSample class. The `--load` option will cause the 
-	`testResult.json` file produced by a test run to be loaded and persisted in
-	the name GemStone db: 
+	of the RwsTestSuiteSample class.
+
+	Sample expression for removing a bad sample:
+
+		(RwsTestSuiteSample querySuiteSamples: '(each.branch=''issue_527'')') asArray
+			do: [:each | RwsTestSuiteSample suiteSamples remove: each ]
+
+	The `--load` option will cause the `testResult.json` file produced by a test
+	run to be loaded and persisted in the name GemStone db: 
 
 	--load=<json-file-path>
 		<json-file-path> is the path to the json file (`testResults.json`) produced by the 
@@ -185,7 +191,9 @@ RwsTestStatsRecord >> performQuery [
 			queryStream nextPutAll: '('.
 			hasTerm := false.
 			branch
-				ifNotNil: [ queryStream nextPutAll: '(each.branch = ' , self branch printString , ')' ].
+				ifNotNil: [ 
+					queryStream nextPutAll: '(each.branch = ' , self branch printString , ')'.
+					hasTerm := true ].
 			gsVersion
 				ifNotNil: [ 
 					hasTerm
