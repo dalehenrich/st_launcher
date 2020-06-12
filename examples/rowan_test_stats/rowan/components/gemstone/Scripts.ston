@@ -1,0 +1,7 @@
+RwSimpleNestedProjectLoadComponentV2 {
+	#name : 'gemstone/Scripts',
+	#condition : 'gemstone',
+	#packageNames : [
+		'RWSTestStats-GemStone-Scripts'
+	]
+}

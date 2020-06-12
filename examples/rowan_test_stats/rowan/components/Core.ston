@@ -1,37 +1,11 @@
-RwComponentLoadConfiguration {
+RwSimpleProjectLoadComponentV2 {
 	#name : 'Core',
-	#comment : '',
-	#version : '0.1.0',
-	#configurationNames : [
+	#condition : 'common',
+	#componentNames : [
 		'Samples',
 		'Scripts'
 	],
-	#conditionalPackages : {
-		[
-			'common'
-		] : {
-			'core' : {
-				#packageNames : [
-					'RWSTestStats-Core'
-				]
-			},
-			'tests' : {
-				#packageNames : [ ]
-			}
-		}
-	},
-	#conditionalPackageMapSpecs : {
-		'gemstone' : {
-			'SystemUser' : {
-				#defaultSymbolDictName : 'Globals'
-			}
-		}
-	},
-	#definedGroupNames : {
-		'tests' : [
-			'core'
-		],
-		'core' : [ ]
-	},
-	#projectNames : [ ]
+	#packageNames : [ 
+		'RWSTestStats-Core'
+	]
 }

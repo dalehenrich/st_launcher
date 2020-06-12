@@ -1,28 +1,9 @@
-RwComponentLoadConfiguration {
+RwSimpleProjectLoadComponentV2 {
 	#name : 'Samples',
-	#comment : '',
-	#version : '0.1.0',
-	#configurationNames : [
-		'Core'
+	#condition : 'common',
+	#componentNames : [
 	],
-	#conditionalPackages : {
-		[
-			'common'
-		] : {
-			'core' : {
-				#packageNames : [
-					'RWSTestStats-Samples'
-				]
-			},
-			'tests' : {
-				#packageNames : [ ]
-			}
-		}
-	},
-	#definedGroupNames : {
-		'tests' : [
-			'core'
-		],
-		'core' : [ ]
-	}
+	#packageNames : [ 
+		'RWSTestStats-Samples'
+	]
 }

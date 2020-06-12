@@ -1,13 +1,13 @@
 RwLoadSpecificationV2 {
-	#specName : 'rowan_test_stats',
+	#specName : 'rowan_test_samples',
 	#projectName : 'rowan_test_stats',
 	#gitUrl : 'https://github.com/dalehenrich/st_launcher',
 	#revision : 'candidateV0.2',
 	#projectSpecFile : 'rowan/project.ston',
 	#componentNames : [
-		'Core'
+		'Samples'
 	],
 	#customConditionalAttributes : [
 	],
-	#comment : 'test results tracking'
+	#comment : 'test results tracking - samples code for in-image work'
 }

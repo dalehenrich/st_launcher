@@ -1,0 +1,7 @@
+RwSimpleNestedProjectLoadComponentV2 {
+	#name : 'pharo/Scripts',
+	#condition : 'pharo',
+	#packageNames : [
+					'RWSTestStats-Pharo-Scripts'
+	]
+}

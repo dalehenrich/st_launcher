@@ -1,40 +1,10 @@
-RwComponentLoadConfiguration {
+RwSimpleProjectLoadComponentV2 {
 	#name : 'Scripts',
-	#comment : '',
-	#version : '0.1.0',
-	#configurationNames : [
-		'Core'
+	#componentNames : [
+		'Core',
+		'pharo/Scripts',
+		'gemstone/Scripts'
 	],
-	#conditionalPackages : {
-		[
-			'pharo'
-		] : {
-			'core' : {
-				#packageNames : [
-					'RWSTestStats-Pharo-Scripts'
-				]
-			},
-			'tests' : {
-				#packageNames : [ ]
-			}
-		},
-		[
-			'gemstone'
-		] : {
-			'core' : {
-				#packageNames : [
-					'RWSTestStats-GemStone-Scripts'
-				]
-			},
-			'tests' : {
-				#packageNames : [ ]
-			}
-		}
-	},
-	#definedGroupNames : {
-		'tests' : [
-			'core'
-		],
-		'core' : [ ]
-	}
+	#packageNames : [
+	]
 }
