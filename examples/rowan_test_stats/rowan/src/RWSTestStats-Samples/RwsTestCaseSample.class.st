@@ -12,11 +12,10 @@ Class {
 
 { #category : 'instance creation' }
 RwsTestCaseSample class >> fromDictionary: sampleDict [
-
 	| newTestCaseSample |
 	newTestCaseSample := self new.
-	sampleDict keysAndValuesDo: [:key :value |
-		newTestCaseSample perform: (key, ':') with: value ].
+	sampleDict
+		keysAndValuesDo: [ :key :value | newTestCaseSample perform: (key , ':') asSymbol with: value ].
 	^ newTestCaseSample
 ]
 

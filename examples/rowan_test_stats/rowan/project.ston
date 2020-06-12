@@ -6,5 +6,5 @@ RwProjectSpecificationV2 {
 	#projectsPath : 'rowan/projects',
 	#specsPath : 'rowan/specs',
 	#packageFormat : 'tonel',
-	#comment : 'Rowan V2.0 project specification'
+	#comment : 'rowan_test_stats project specification'
 }

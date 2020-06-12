@@ -50,6 +50,67 @@ RwsTestSuiteSample class >> fromJson: filePath [
 	^ self fromDictionary: sampleDict
 ]
 
+{ #category : 'example' }
+RwsTestSuiteSample class >> generateResultsDictionarFromTestSuite: suite testResult: res [
+	"results dictionary is suitable for writing out a JSON file"
+
+	| resultsDict resultCases |
+	resultsDict := Dictionary new.
+	resultCases := {}.
+	resultsDict
+		at: #'suiteName' put: suite name;
+		at: #'timeStamp' put: DateAndTime now printString;
+		at: #'properties' put: Dictionary new;
+		at: #'notes' put: '';
+		at: #'gsVersion' put: (System gemVersionAt: #'gsVersion');
+		at: #'testCases' put: resultCases;
+		at: #'resultsSummary'
+			put:
+				(Dictionary new
+						at: #'summary' put: res printString;
+						at: #'failures' put: res failureCount;
+						at: #'errors' put: res errorCount;
+						at: #'passed' put: res passedCount;
+						yourself) yourself.
+	res passed
+		do: [ :each | 
+			resultCases
+				add:
+					(Dictionary new
+						at: #'className' put: each class asString;
+						at: #'selector' put: each selector asString;
+						at: #'status' put: 'passed';
+						yourself) ].
+
+	res errors
+		do: [ :each | 
+			resultCases
+				add:
+					(Dictionary new
+						at: #'className' put: each class asString;
+						at: #'selector' put: each selector asString;
+						at: #'status' put: 'errors';
+						yourself) ].
+	res failures
+		do: [ :each | 
+			resultCases
+				add:
+					(Dictionary new
+						at: #'className' put: each class asString;
+						at: #'selector' put: each selector asString;
+						at: #'status' put: 'failures';
+						yourself).
+			each printString ].
+	^ resultsDict
+]
+
+{ #category : 'example' }
+RwsTestSuiteSample class >> generateSampleFromTestSuite: suite testResult: res [
+	^ self
+		fromDictionary:
+			(self generateResultsDictionarFromTestSuite: suite testResult: res)
+]
+
 { #category : 'queries' }
 RwsTestSuiteSample class >> latestQuerySuiteSampleFor: branch andVersion: gsVersion [
 	"return the latest suite sample for the given <branch> and <gsVersion>. Return nil if no sample satisfies the query"

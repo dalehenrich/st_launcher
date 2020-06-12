@@ -1,9 +1,10 @@
 RwSimpleProjectLoadComponentV2 {
 	#name : 'Samples',
 	#condition : 'common',
-	#componentNames : [
-	],
-	#packageNames : [ 
+	#projectNames : [ ],
+	#componentNames : [ ],
+	#packageNames : [
 		'RWSTestStats-Samples'
-	]
+	],
+	#comment : ''
 }
