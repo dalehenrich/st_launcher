@@ -159,7 +159,19 @@ RwsTestSuiteSample class >> resetSuiteSamples [
 	"
 		RwsTestSuiteSample resetSuiteSamples
 	"
+
+	suiteSamples ifNotNil: [ suiteSamples removeAllIndexes ].
 	suiteSamples := nil
+]
+
+{ #category : 'example' }
+RwsTestSuiteSample class >> saveSample: suiteSample [
+	self suiteSamples add: suiteSample
+]
+
+{ #category : 'example' }
+RwsTestSuiteSample class >> saveSampleFromTestSuite: suite testResult: res [
+	self saveSample: (self generateSampleFromTestSuite: suite testResult: res)
 ]
 
 { #category : 'accessing' }
@@ -188,6 +200,38 @@ RwsTestSuiteSample class >> suiteSamplesIndexSpec [
 		equalityIndex: 'each.timeStamp'
 			lastElementClass: DateAndTime
 			options: indexOptions yourself
+]
+
+{ #category : 'example' }
+RwsTestSuiteSample class >> summarizeTestResultsForSuite: suite testResults: res on: strm [
+	strm
+		nextPutAll:
+				suite name , ' for GemStone ' , (System gemVersionAt: #'gsVersion') printString;
+		lf.
+
+	strm
+		nextPutAll: res printString;
+		lf.
+	strm
+		nextPutAll: '  errors';
+		lf.
+	(res errors collect: [ :each | each printString ]) asArray sort
+		do: [ :each | 
+			strm
+				tab;
+				nextPutAll: each;
+				lf ].
+	res failures size > 0
+		ifTrue: [ 
+			strm
+				nextPutAll: '  failures';
+				lf.
+			(res failures collect: [ :each | each printString ]) asArray sort
+				do: [ :each | 
+					strm
+						tab;
+						nextPutAll: each;
+						lf ] ]
 ]
 
 { #category : 'comparison' }
@@ -432,6 +476,12 @@ RwsTestSuiteSample >> notes: aString [
 	notes := aString
 ]
 
+{ #category : 'enumeration' }
+RwsTestSuiteSample >> passed: passedBlock failed: failedBlock errored: erroredBlock [
+	self testCases
+		do: [ :testCaseSample | testCaseSample passed: passedBlock failed: failedBlock errored: erroredBlock ]
+]
+
 { #category : 'printing' }
 RwsTestSuiteSample >> printOn: aStream [ 
 	aStream
@@ -488,6 +538,52 @@ RwsTestSuiteSample >> suiteName [
 { #category : 'accessing' }
 RwsTestSuiteSample >> suiteName: aString [
 	suiteName := aString
+]
+
+{ #category : 'printing' }
+RwsTestSuiteSample >> suiteSummary [
+	| strm |
+	strm := WriteStream on: String new.
+	self suiteSummaryOn: strm.
+	^ strm contents
+]
+
+{ #category : 'printing' }
+RwsTestSuiteSample >> suiteSummaryOn: strm [
+	| passed failed errored |
+	self printOn: strm.
+	strm lf.
+	strm
+		nextPutAll: (self resultsSummary at: #'summary');
+		lf.
+	passed := {}.
+	failed := {}.
+	errored := {}.
+	self
+		passed: [ :each | passed add: each ]
+		failed: [ :each | failed add: each ]
+		errored: [ :each | errored add: each ].
+
+	strm
+		nextPutAll: '  errors';
+		lf.
+	(errored collect: [ :each | each printString ]) asArray sort
+		do: [ :each | 
+			strm
+				tab;
+				nextPutAll: each;
+				lf ].
+	failed size > 0
+		ifTrue: [ 
+			strm
+				nextPutAll: '  failures';
+				lf.
+			(failed collect: [ :each | each printString ]) asArray sort
+				do: [ :each | 
+					strm
+						tab;
+						nextPutAll: each;
+						lf ] ]
 ]
 
 { #category : 'accessing' }

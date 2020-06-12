@@ -39,6 +39,16 @@ RwsTestCaseSample >> className: aString [
 RwsTestCaseSample >> initialize [
 ]
 
+{ #category : 'enumerating' }
+RwsTestCaseSample >> passed: passedBlock failed: failedBlock errored: erroredBlock [
+	self status == #'passed'
+		ifTrue: [ ^ passedBlock cull: self ].
+	self status == #'errors'
+		ifTrue: [ ^ erroredBlock cull: self ].
+	self status == #'failures'
+		ifTrue: [ ^ failedBlock cull: self ]
+]
+
 { #category : 'printing' }
 RwsTestCaseSample >> printOn: aStream [ 
 	aStream nextPutAll: self className, ' debug: ', self selector printString
@@ -72,4 +82,37 @@ RwsTestCaseSample >> suite [
 { #category : 'accessing' }
 RwsTestCaseSample >> suite: aRwsTestCaseSample [
 	suite := aRwsTestCaseSample
+]
+
+{ #category : 'accessing' }
+RwsTestCaseSample >> testSummaryOn: strm [
+	| res |
+	strm
+		nextPutAll:
+				suite name , ' for GemStone ' , (System gemVersionAt: #'gsVersion') printString;
+		lf.
+
+	strm
+		nextPutAll: res printString;
+		lf.
+	strm
+		nextPutAll: '  errors';
+		lf.
+	(res errors collect: [ :each | each printString ]) asArray sort
+		do: [ :each | 
+			strm
+				tab;
+				nextPutAll: each;
+				lf ].
+	res failures size > 0
+		ifTrue: [ 
+			strm
+				nextPutAll: '  failures';
+				lf.
+			(res failures collect: [ :each | each printString ]) asArray sort
+				do: [ :each | 
+					strm
+						tab;
+						nextPutAll: each;
+						lf ] ]
 ]
