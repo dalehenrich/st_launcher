@@ -50,6 +50,19 @@ RwsTestSuiteSample class >> fromJson: filePath [
 	^ self fromDictionary: sampleDict
 ]
 
+{ #category : 'instance creation' }
+RwsTestSuiteSample class >> fromJsonStream: aStream [
+	| sample resultsSummary |
+	sample := self fromDictionary: (STON fromStream: aStream).
+	resultsSummary := sample resultsSummary.
+	resultsSummary copy
+		keysAndValuesDo: [ :key :value | 
+			"repair results summary for now"
+			resultsSummary at: key asSymbol put: value.
+			resultsSummary removeKey: key asString ifAbsent: [  ] ].
+	^ sample
+]
+
 { #category : 'example' }
 RwsTestSuiteSample class >> generateResultsDictionarFromTestSuite: suite testResult: res [
 	"results dictionary is suitable for writing out a JSON file"
